@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Архитектурное наследие — Кердемский музей-комплекс «Самыртай»</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        body { font-family: 'PT Sans', sans-serif; }
+        .font-serif { font-family: 'PT Serif', serif; }
+        
+    </style>
+</head>
+<body class="bg-[#FDF8F5] text-gray-800 antialiased">
+<div style="position: fixed; top: 0; left: 0; width: 80px; height: 100%; background: linear-gradient(to right, rgba(93,64,55,0.2), transparent); pointer-events: none; z-index: 0;"></div>
+<div style="position: fixed; top: 0; right: 0; width: 80px; height: 100%; background: linear-gradient(to left, rgba(93,64,55,0.2), transparent); pointer-events: none; z-index: 0;"></div>
+<!-- Шапка -->
+<header class="bg-white border-b-2 border-[#5D4037] shadow-md sticky top-0 z-50">
+    <!-- Основная строка: логотип + главные ссылки -->
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+        <!-- Логотип -->
+        <a href="/" class="flex items-center gap-3 flex-shrink-0">
+            <img src="img/logo-samartyai.png" 
+                 alt="Логотип музея" 
+                 class="h-12 w-auto object-contain flex-shrink-0">
+            <div>
+                <span class="font-serif text-xl font-bold text-[#3E2723] block leading-tight">Кердемский музей</span>
+                <span class="text-xs text-[#8D6E63] leading-tight">филиал комплекс «Самыртай» им. Р.К. Захарова</span>
+            </div>
+        </a>
+
+        <!-- Главные ссылки (десктоп) -->
+        <nav class="hidden lg:flex items-center gap-0 ml-8 text-base font-medium text-[#5D4037]">
+            <!-- О музее (выпадающий список) -->
+            <div class="relative group">
+                <button class="nav-link flex items-center gap-1 pb-1 border-b-2 border-transparent hover:border-[#5D4037] transition">
+                    О музее
+                    <i class="ri-arrow-down-s-line text-xs"></i>
+                </button>
+                <div class="absolute top-full left-0 mt-0 w-56 bg-white border border-gray-200 rounded-b-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                    <a href="/about.html" class="block px-4 py-2 text-sm text-[#5D4037] hover:bg-[#FDF8F5] hover:text-[#3E2723] transition">Общая информация</a>
+                    <a href="/history.html" class="block px-4 py-2 text-sm text-[#5D4037] hover:bg-[#FDF8F5] hover:text-[#3E2723] transition">История музея</a>
+                    <a href="https://hangalas-museum.kultura14.ru/" target="_blank" rel="noopener noreferrer" class="block px-4 py-2 text-sm text-[#5D4037] hover:bg-[#FDF8F5] hover:text-[#3E2723] transition">Головной музей</a>
+                </div>
+            </div>
+            
+            <span class="mx-2 text-gray-300">|</span>
+            <a href="/events.html" class="nav-link pb-1 border-b-2 border-transparent hover:border-[#5D4037] transition px-2">Афиша</a>
+            
+            <span class="mx-2 text-gray-300">|</span>
+<!-- Экспозиция (выпадающий список) -->
+<div class="relative group">
+    <button class="nav-link flex items-center gap-1 pb-1 border-b-2 border-transparent hover:border-[#5D4037] transition">
+        Экспозиция
+        <i class="ri-arrow-down-s-line text-xs"></i>
+    </button>
+    <div class="absolute top-full left-0 mt-0 w-56 bg-white border border-gray-200 rounded-b-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+        <a href="/explore.html" class="block px-4 py-2 text-sm text-[#5D4037] hover:bg-[#FDF8F5] hover:text-[#3E2723] transition">Смотреть всё</a>
+        <a href="/collections.html" class="block px-4 py-2 text-sm text-[#5D4037] hover:bg-[#FDF8F5] hover:text-[#3E2723] transition">Экспонаты</a>
+        <a href="/architecture.html" class="block px-4 py-2 text-sm text-[#5D4037] hover:bg-[#FDF8F5] hover:text-[#3E2723] transition">Архитектура и наследие</a>
+        <a href="/tour.html" class="block px-4 py-2 text-sm text-[#5D4037] hover:bg-[#FDF8F5] hover:text-[#3E2723] transition">Виртуальный тур</a>
+    </div>
+</div>
+            
+            <span class="mx-2 text-gray-300">|</span>
+            <a href="/news.html" class="nav-link pb-1 border-b-2 border-transparent hover:border-[#5D4037] transition px-2">Новости</a>
+        </nav>
+
+        <!-- Кнопка мобильного меню -->
+        <button id="menu-toggle" class="lg:hidden p-2 text-[#5D4037]">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+    </div>
+
+    <!-- Вторая строка (только десктоп): утилиты -->
+    <div class="hidden lg:block border-t border-gray-200">
+        <div class="container mx-auto px-4 py-2 flex items-center justify-between">
+            <!-- Левая часть: полезные ссылки и поиск -->
+            <div class="flex items-center gap-6">
+                <!-- Слабовидящим -->
+                <a href="#" id="visual-impaired-btn" class="text-sm font-medium text-[#5D4037] hover:text-[#3E2723] transition">👁️ Слабовидящим</a>
+                
+                <!-- Поиск -->
+                <div class="relative flex items-center">
+                    <input type="text" id="search-input-header" placeholder="Поиск…" autocomplete="off"
+                           class="w-36 px-3 py-1 rounded border border-gray-300 text-sm focus:outline-none focus:ring-1 focus:ring-[#5D4037]">
+                    <button type="button" id="search-button-header" class="ml-1 text-[#5D4037] hover:text-[#3E2723] transition" aria-label="Поиск">
+                        <i class="ri-search-line text-lg"></i>
+                    </button>
+                    <!-- Выпадающий блок результатов -->
+                    <div id="search-dropdown" class="absolute top-full left-0 w-80 bg-white border border-gray-200 rounded-lg shadow-lg mt-1 hidden z-50 max-h-96 overflow-y-auto"></div>
+                </div>
+            </div>
+
+            <!-- Правая часть: соцсети, языки, Посетить -->
+            <div class="flex items-center gap-4">
+                <!-- Соцсети -->
+                <div class="flex items-center gap-2">
+                    <a href="https://vk.com/samirtay" target="_blank" class="transition hover:opacity-80" title="ВКонтакте" style="color: #0077FF;">
+                        <i class="ri-vk-fill text-xl"></i>
+                    </a>
+                    <a href="https://wa.me/74114424317" target="_blank" class="transition hover:opacity-80" title="WhatsApp" style="color: #25D366;">
+                        <i class="ri-whatsapp-fill text-xl"></i>
+                    </a>
+                    <a href="https://max.ru/samirtay" target="_blank" class="transition hover:opacity-80" title="Max">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/%D0%9B%D0%BE%D0%B3%D0%BE%D1%82%D0%B8%D0%BF_MAX.svg/1280px-%D0%9B%D0%BE%D0%B3%D0%BE%D1%82%D0%B8%D0%BF_MAX.svg.png"
+                             alt="Max" class="w-5 h-5 object-contain">
+                    </a>
+                </div>
+
+                <!-- Переключатель языков -->
+                <div class="flex items-center gap-1 text-xs font-bold">
+                    <button class="lang-btn px-2 py-1 rounded border border-[#5D4037] bg-[#5D4037] text-white" data-lang="ru">РУС</button>
+                    <button class="lang-btn px-2 py-1 rounded border border-[#5D4037] text-[#5D4037] hover:bg-[#5D4037] hover:text-white transition" data-lang="sah">ЯКТ</button>
+                    <button class="lang-btn px-2 py-1 rounded border border-[#5D4037] text-[#5D4037] hover:bg-[#5D4037] hover:text-white transition" data-lang="en">ENG</button>
+                </div>
+
+                <!-- Кнопка Посетить -->
+                <a href="/visit.html" class="bg-[#5D4037] text-white px-6 py-2 rounded font-medium hover:bg-[#3E2723] transition whitespace-nowrap">Посетить</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Мобильное меню -->
+    <div id="mobile-menu" class="hidden lg:hidden bg-white border-t px-4 py-3 space-y-2">
+        <!-- О музее (раскрывающийся блок) -->
+        <div>
+            <button id="mobile-about-toggle" class="flex items-center justify-between w-full py-1 text-[#5D4037] font-medium">
+                О музее
+                <i class="ri-arrow-down-s-line text-xs transition-transform duration-200" id="mobile-about-arrow"></i>
+            </button>
+            <div id="mobile-about-submenu" class="hidden pl-3 space-y-1 mt-1">
+                <a href="/about.html" class="block py-1 text-[#5D4037] font-medium">Общая информация</a>
+                <a href="/history.html" class="block py-1 text-[#5D4037] font-medium">История музея</a>
+                <a href="https://hangalas-museum.kultura14.ru/" target="_blank" rel="noopener noreferrer" class="block py-1 text-[#5D4037] font-medium">Головной музей</a>
+            </div>
+        </div>
+        <a href="/events.html" class="block py-1 text-[#5D4037] font-medium">Афиша</a>
+        <!-- Экспозиция (раскрывающийся блок) -->
+<div>
+    <button id="mobile-expo-toggle" class="flex items-center justify-between w-full py-1 text-[#5D4037] font-medium">
+        Экспозиция
+        <i class="ri-arrow-down-s-line text-xs transition-transform duration-200" id="mobile-expo-arrow"></i>
+    </button>
+    <div id="mobile-expo-submenu" class="hidden pl-3 space-y-1 mt-1">
+        <a href="/explore.html" class="block py-1 text-[#5D4037] font-medium">Смотреть всё</a>
+        <a href="/collections.html" class="block py-1 text-[#5D4037] font-medium">Экспонаты</a>
+        <a href="/architecture.html" class="block py-1 text-[#5D4037] font-medium">Архитектура и наследие</a>
+        <a href="/tour.html" class="block py-1 text-[#5D4037] font-medium">Виртуальный тур</a>
+    </div>
+</div>
+        <a href="/news.html" class="block py-1 text-[#5D4037] font-medium">Новости</a>
+        <a href="#" id="visual-impaired-btn-mobile" class="block py-1 text-[#5D4037] font-medium">👁️ Слабовидящим</a>
+        <a href="/visit.html" class="block py-1 text-[#5D4037] font-semibold">Посетить</a>
+        <!-- Поиск в мобильном меню -->
+        <div class="relative mt-2">
+            <input type="text" id="search-input-mobile" placeholder="Поиск…" autocomplete="off"
+                   class="w-full px-3 py-1 rounded border border-gray-300 text-sm pr-8">
+            <button type="button" class="absolute right-2 top-1/2 -translate-y-1/2 text-[#5D4037] hover:text-[#3E2723] transition" aria-label="Поиск">
+                <i class="ri-search-line text-lg"></i>
+            </button>
+            <div id="search-dropdown-mobile" class="absolute top-full left-0 w-full bg-white border border-gray-200 rounded-lg shadow-lg mt-1 hidden z-50 max-h-96 overflow-y-auto"></div>
+        </div>
+    </div>
+</header>
+
+<main class="pt-8 pb-20">
+        <!-- Хлебные крошки -->
+<nav class="breadcrumbs" aria-label="Хлебные крошки">
+    <a href="/">Главная</a>
+    <span class="breadcrumb-separator">/</span>
+    <span class="breadcrumb-current">Текущая страница</span>
+</nav>
+                <!-- Кнопка "Назад" с круглым фоном -->
+    <div class="back-link-container">
+        <a href="/explore.html" class="back-link-circle" title="Главная">
+            <i class="ri-arrow-left-s-line"></i>
+        </a>
+    </div>
+        <!-- Горизонтальная разделительная линия -->
+    <hr class="divider-line" />
+    <div class="main-flex"> 
+<div class="main-content">
+
+    <div class="container mx-auto px-4 max-w-6xl">
+        <!-- Заголовок -->
+        <div class="mb-14 text-center md:text-left">
+            <span class="text-[#8D6E63] uppercase tracking-widest text-sm font-bold">Наследие</span>
+            <h1 class="font-serif text-4xl lg:text-5xl font-bold mt-2 text-[#3E2723]">Архитектурное наследие</h1>
+            <div class="w-16 h-1 bg-[#5D4037] mt-4 mx-auto md:mx-0"></div>
+            <p class="text-lg text-gray-700 mt-6 max-w-3xl">
+                На территории музея находятся архитектурные памятники XIX века. 
+                Эти постройки — живые свидетели быта и культуры якутов, сохранившиеся до наших дней.
+            </p>
+        </div>
+
+        <!-- ========== 1. Качикатская Николаевская церковь ========== -->
+        <div class="mb-20">
+            <h2 class="font-serif text-2xl font-bold mb-6 text-[#3E2723]">Качикатская Николаевская церковь, 1896 г.</h2>
+            <div class="flex flex-col lg:flex-row gap-8 items-start">
+                <!-- Левая колонка: слайдер + галерея деталей -->
+                <div class="lg:w-1/2 w-full">
+                    <div class="compare-container rounded-lg border border-gray-300 shadow-sm overflow-hidden" style="height: 400px;">
+                        <div class="compare-before" style="background-image: url('img/tserkov1.jpg');"></div>
+                        <div class="compare-after" style="background-image: url('img/tserkov2.jpg');"></div>
+                        <div class="compare-slider">
+                            <div class="compare-slider-handle">
+                                <span style="color: white; font-size: 18px; line-height: 1; user-select: none;">←→</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2 text-center">Передвиньте стрелки ← → для сравнения. Слева — 1939 г., справа — 2024 г.</p>
+
+                    <!-- Галерея деталей (перенесена под фото) -->
+                    <div class="mt-6">
+                        <h3 class="font-serif text-base font-semibold mb-3 text-[#3E2723]">Детали интерьера</h3>
+                        <div class="flex flex-wrap gap-3">
+                            <img src="https://picsum.photos/120/80" alt="Деталь 1" class="zoomable-image w-24 h-16 object-cover rounded border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105">
+                            <img src="https://picsum.photos/121/80" alt="Деталь 2" class="zoomable-image w-24 h-16 object-cover rounded border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105">
+                            <img src="https://picsum.photos/122/80" alt="Деталь 3" class="zoomable-image w-24 h-16 object-cover rounded border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105">
+                            <img src="https://picsum.photos/123/80" alt="Деталь 4" class="zoomable-image w-24 h-16 object-cover rounded border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105">
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1">Резной наличник, дверная ручка, угол сруба, текстура дерева</p>
+                    </div>
+                </div>
+
+                <!-- Правая колонка: описание + техпаспорт + аудио + цитата -->
+                <div class="lg:w-1/2 w-full">
+                    <p class="text-gray-700 leading-relaxed mb-4">
+                        Деревянная Николаевская церковь, построенная в 1896 году в селе Качикат, является одной из старейших сохранившихся церквей Хангаласского улуса. 
+                        Её архитектура сочетает традиции русского деревянного зодчества с местными приёмами строительства.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed">
+                        Церковь была перевезена на территорию музейного комплекса для сохранения и реставрации. Сегодня она открыта для посетителей и продолжает оставаться духовным центром.
+                        <span class="block mt-2 text-sm text-[#5D4037]">
+                            Подробнее об основании церкви и комплекса читайте в разделе 
+                            <a href="/history.html" class="font-semibold text-[#5D4037] hover:text-[#3E2723] border-b border-[#5D4037] hover:border-[#3E2723] transition">История</a>.
+                        </span>
+                    </p>
+
+                    <!-- Техпаспорт (перемещён в описание) -->
+                    <div class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-xs text-gray-600">
+                        <span class="inline-flex items-center gap-1"><i class="ri-calendar-line text-[#5D4037]"></i><span class="font-medium">1896 г.</span></span>
+                        <span class="inline-flex items-center gap-1"><i class="ri-plant-line text-[#5D4037]"></i>Лиственница (рубка «в обло»)</span>
+                        <span class="inline-flex items-center gap-1"><i class="ri-map-pin-line text-[#5D4037]"></i>с. Качикат, Хангаласский улус</span>
+                        <span class="inline-flex items-center gap-1"><i class="ri-ruler-2-line text-[#5D4037]"></i>≈ 52 кв. м</span>
+                    </div>
+
+                    <!-- Аудиогид (компактный) -->
+                    <div class="mt-6 flex items-center gap-3 text-sm text-gray-700">
+                        <i class="ri-volume-up-line text-[#5D4037] text-lg"></i>
+                        <audio controls class="flex-1 h-8 rounded border border-gray-200" style="max-width: 300px;">
+                            <source src="" type="audio/mpeg">
+                            Ваш браузер не поддерживает аудиоэлемент.
+                        </audio>
+                        <span class="text-xs text-gray-500">Рассказ о церкви</span>
+                    </div>
+
+                    <!-- Цитата / Легенда -->
+                    <div class="mt-6">
+                        <blockquote class="text-sm italic text-gray-600 border-l-4 border-[#5D4037] pl-3 py-1">
+                            «Старики говорили, что эта церковь была самым крепким строением во всей округе...»
+                            <div class="text-xs text-gray-400 mt-1 not-italic">— из воспоминаний старожилов села</div>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== 2. Амбар богача Кирилла Скрябина ========== -->
+        <div class="mb-20">
+            <h2 class="font-serif text-2xl font-bold mb-6 text-[#3E2723]">Амбар 2‑уровневый богача Кирилла Скрябина, с. Тит‑Эбэ</h2>
+            <div class="flex flex-col lg:flex-row-reverse gap-8 items-start">
+                <!-- Правая колонка: фото + галерея деталей -->
+                <div class="lg:w-1/2 w-full">
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <img src="img/ambar2_bogacha_kirilla2.jpg" alt="Амбар богача Кирилла" class="zoomable-image w-full sm:w-2/3 h-64 md:h-80 object-cover rounded-lg border border-gray-300 shadow-sm transition-transform duration-300 ease-in-out hover:scale-[1.02] cursor-pointer">
+                        <img src="img/ambar2_bogacha_kirilla.jpg" alt="Амбар богача Кирилла (второй ракурс)" class="zoomable-image w-full sm:w-1/3 h-64 md:h-80 object-cover rounded-lg border border-gray-300 shadow-sm transition-transform duration-300 ease-in-out hover:scale-[1.02] cursor-pointer">
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2 text-center">Два ракурса одного объекта</p>
+
+                    <!-- Галерея деталей (под фото) -->
+                    <div class="mt-6">
+                        <h3 class="font-serif text-base font-semibold mb-3 text-[#3E2723]">Детали интерьера</h3>
+                        <div class="flex flex-wrap gap-3">
+                            <img src="https://picsum.photos/124/80" alt="Деталь 1" class="zoomable-image w-24 h-16 object-cover rounded border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105">
+                            <img src="https://picsum.photos/125/80" alt="Деталь 2" class="zoomable-image w-24 h-16 object-cover rounded border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105">
+                            <img src="https://picsum.photos/126/80" alt="Деталь 3" class="zoomable-image w-24 h-16 object-cover rounded border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105">
+                            <img src="https://picsum.photos/127/80" alt="Деталь 4" class="zoomable-image w-24 h-16 object-cover rounded border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105">
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1">Резной декор, задвижка, угловое соединение, текстура</p>
+                    </div>
+                </div>
+
+                <!-- Левая колонка: описание + техпаспорт + аудио + цитата -->
+                <div class="lg:w-1/2 w-full">
+                    <p class="text-gray-700 leading-relaxed mb-4">
+                        Двухэтажный амбар из села Тит‑Эбэ принадлежал зажиточному якуту Кириллу Скрябину. Нижний ярус использовался для хранения припасов, верхний — как летнее жильё. 
+                        Постройка отличается сложной конструкцией и богатой резьбой по дереву.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed">
+                        Амбар был перевезён в музейный комплекс «Самыртай» и полностью отреставрирован. Сегодня он является ценным экспонатом, демонстрирующим социальное расслоение якутского общества XIX века.
+                    </p>
+
+                    <!-- Техпаспорт (компактный) -->
+                    <div class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-xs text-gray-600">
+                        <span class="inline-flex items-center gap-1"><i class="ri-calendar-line text-[#5D4037]"></i><span class="font-medium">кон. XIX в.</span></span>
+                        <span class="inline-flex items-center gap-1"><i class="ri-plant-line text-[#5D4037]"></i>Лиственница (рубка «в обло»)</span>
+                        <span class="inline-flex items-center gap-1"><i class="ri-map-pin-line text-[#5D4037]"></i>с. Тит‑Эбэ</span>
+                        <span class="inline-flex items-center gap-1"><i class="ri-ruler-2-line text-[#5D4037]"></i>≈ 45 кв. м</span>
+                    </div>
+
+                    <div class="mt-6 flex items-center gap-3 text-sm text-gray-700">
+                        <i class="ri-volume-up-line text-[#5D4037] text-lg"></i>
+                        <audio controls class="flex-1 h-8 rounded border border-gray-200" style="max-width: 300px;">
+                            <source src="" type="audio/mpeg">
+                            Ваш браузер не поддерживает аудиоэлемент.
+                        </audio>
+                        <span class="text-xs text-gray-500">Рассказ об амбаре</span>
+                    </div>
+
+                    <div class="mt-6">
+                        <blockquote class="text-sm italic text-gray-600 border-l-4 border-[#5D4037] pl-3 py-1">
+                            «Говорят, Кирилл Скрябин был настолько богат, что зерно из этого амбара кормило половину наслега...»
+                            <div class="text-xs text-gray-400 mt-1 not-italic">— из рассказов потомков Скрябиных</div>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== 3. Шестигранный балаган ========== -->
+        <div class="mb-20">
+            <h2 class="font-serif text-2xl font-bold mb-6 text-[#3E2723]">Балаган 6‑гранный, летник Даркылах (семья Марковых)</h2>
+            <div class="flex flex-col lg:flex-row gap-8 items-start">
+                <!-- Левая колонка: фото + галерея деталей -->
+                <div class="lg:w-1/2 w-full">
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <img src="img/chestigrannyi_balbalagan.jpg" alt="Шестигранный балаган" class="zoomable-image w-full sm:w-2/3 h-64 md:h-80 object-cover rounded-lg border border-gray-300 shadow-sm transition-transform duration-300 ease-in-out hover:scale-[1.02] cursor-pointer">
+                        <img src="img/chestigrannyi_balbalagan2.jpg" alt="Шестигранный балаган (второй ракурс)" class="zoomable-image w-full sm:w-1/3 h-64 md:h-80 object-cover rounded-lg border border-gray-300 shadow-sm transition-transform duration-300 ease-in-out hover:scale-[1.02] cursor-pointer">
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2 text-center">Два ракурса одного объекта</p>
+
+                    <!-- Галерея деталей (под фото) -->
+                    <div class="mt-6">
+                        <h3 class="font-serif text-base font-semibold mb-3 text-[#3E2723]">Детали интерьера</h3>
+                        <div class="flex flex-wrap gap-3">
+                            <img src="https://picsum.photos/128/80" alt="Деталь 1" class="zoomable-image w-24 h-16 object-cover rounded border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105">
+                            <img src="https://picsum.photos/129/80" alt="Деталь 2" class="zoomable-image w-24 h-16 object-cover rounded border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105">
+                            <img src="https://picsum.photos/130/80" alt="Деталь 3" class="zoomable-image w-24 h-16 object-cover rounded border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105">
+                            <img src="https://picsum.photos/131/80" alt="Деталь 4" class="zoomable-image w-24 h-16 object-cover rounded border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105">
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1">Очаг, нары, утварь, фрагмент сруба</p>
+                    </div>
+                </div>
+
+                <!-- Правая колонка: описание + техпаспорт + аудио + цитата -->
+                <div class="lg:w-1/2 w-full">
+                    <p class="text-gray-700 leading-relaxed mb-4">
+                        Редкий тип якутской постройки — шестигранный балаган, перевезённый с летника Даркылах, принадлежавшего семье Марковых. 
+                        В отличие от прямоугольных жилищ, такая форма обеспечивала лучшую устойчивость к сильным ветрам и морозам.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed">
+                        Балаган использовался как зимнее жильё. На сегодняшний день это единственный сохранившийся образец подобной архитектуры в Хангаласском улусе.
+                    </p>
+
+                    <div class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-xs text-gray-600">
+                        <span class="inline-flex items-center gap-1"><i class="ri-calendar-line text-[#5D4037]"></i><span class="font-medium">кон. XIX в.</span></span>
+                        <span class="inline-flex items-center gap-1"><i class="ri-plant-line text-[#5D4037]"></i>Лиственница (рубка «в лапу»)</span>
+                        <span class="inline-flex items-center gap-1"><i class="ri-map-pin-line text-[#5D4037]"></i>летник Даркылах</span>
+                        <span class="inline-flex items-center gap-1"><i class="ri-ruler-2-line text-[#5D4037]"></i>≈ 38 кв. м</span>
+                    </div>
+
+                    <div class="mt-6 flex items-center gap-3 text-sm text-gray-700">
+                        <i class="ri-volume-up-line text-[#5D4037] text-lg"></i>
+                        <audio controls class="flex-1 h-8 rounded border border-gray-200" style="max-width: 300px;">
+                            <source src="" type="audio/mpeg">
+                            Ваш браузер не поддерживает аудиоэлемент.
+                        </audio>
+                        <span class="text-xs text-gray-500">Рассказ о балагане</span>
+                    </div>
+
+                    <div class="mt-6">
+                        <blockquote class="text-sm italic text-gray-600 border-l-4 border-[#5D4037] pl-3 py-1">
+                            «Даркылахский балаган пережил столько бурь, что старожилы считали его заколдованным...»
+                            <div class="text-xs text-gray-400 mt-1 not-italic">— из легенд семьи Марковых</div>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== 4. Башня-двухэтажный амбар с бойницами ========== -->
+        <div class="mb-20">
+            <h2 class="font-serif text-2xl font-bold mb-6 text-[#3E2723]">Башня-двухэтажный амбар с бойницами, сер. XIX в. (ОКН)</h2>
+            <div class="flex flex-col lg:flex-row-reverse gap-8 items-start">
+                <!-- Правая колонка: фото + галерея деталей -->
+                <div class="lg:w-1/2 w-full">
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <img src="img/ambar.jpg" alt="Башня-амбар" class="zoomable-image w-full sm:w-2/3 h-64 md:h-80 object-cover rounded-lg border border-gray-300 shadow-sm transition-transform duration-300 ease-in-out hover:scale-[1.02] cursor-pointer">
+                        <img src="img/ambar2.jpg" alt="Башня-амбар (второй ракурс)" class="zoomable-image w-full sm:w-1/3 h-64 md:h-80 object-cover rounded-lg border border-gray-300 shadow-sm transition-transform duration-300 ease-in-out hover:scale-[1.02] cursor-pointer">
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2 text-center">Два ракурса одного объекта</p>
+
+                    <!-- Галерея деталей (под фото) -->
+                    <div class="mt-6">
+                        <h3 class="font-serif text-base font-semibold mb-3 text-[#3E2723]">Детали интерьера</h3>
+                        <div class="flex flex-wrap gap-3">
+                            <img src="https://picsum.photos/132/80" alt="Деталь 1" class="zoomable-image w-24 h-16 object-cover rounded border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105">
+                            <img src="https://picsum.photos/133/80" alt="Деталь 2" class="zoomable-image w-24 h-16 object-cover rounded border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105">
+                            <img src="https://picsum.photos/134/80" alt="Деталь 3" class="zoomable-image w-24 h-16 object-cover rounded border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105">
+                            <img src="https://picsum.photos/135/80" alt="Деталь 4" class="zoomable-image w-24 h-16 object-cover rounded border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105">
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1">Бойницы, крепёж, лестница, фрагмент сруба</p>
+                    </div>
+                </div>
+
+                <!-- Левая колонка: описание + техпаспорт + аудио + цитата -->
+                <div class="lg:w-1/2 w-full">
+                    <p class="text-gray-700 leading-relaxed mb-4">
+                        Деревянная башня-двухэтажный амбар с бойницами, построенная в середине XIX века, является объектом культурного наследия регионального значения. 
+                        Массивные стены и проёмы для обороны говорят о её двойном назначении — хозяйственном и оборонительном.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed">
+                        Башня перевезена в комплекс «Самыртай» и отреставрирована. Это уникальный образец фортификационной архитектуры якутов, не имеющий аналогов в республике.
+                    </p>
+
+                    <div class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-xs text-gray-600">
+                        <span class="inline-flex items-center gap-1"><i class="ri-calendar-line text-[#5D4037]"></i><span class="font-medium">сер. XIX в.</span></span>
+                        <span class="inline-flex items-center gap-1"><i class="ri-plant-line text-[#5D4037]"></i>Лиственница (рубка «в обло»)</span>
+                        <span class="inline-flex items-center gap-1"><i class="ri-map-pin-line text-[#5D4037]"></i>с. Кердем (окрестности)</span>
+                        <span class="inline-flex items-center gap-1"><i class="ri-ruler-2-line text-[#5D4037]"></i>≈ 32 кв. м</span>
+                    </div>
+
+                    <div class="mt-6 flex items-center gap-3 text-sm text-gray-700">
+                        <i class="ri-volume-up-line text-[#5D4037] text-lg"></i>
+                        <audio controls class="flex-1 h-8 rounded border border-gray-200" style="max-width: 300px;">
+                            <source src="" type="audio/mpeg">
+                            Ваш браузер не поддерживает аудиоэлемент.
+                        </audio>
+                        <span class="text-xs text-gray-500">Рассказ о башне-амбаре</span>
+                    </div>
+
+                    <div class="mt-6">
+                        <blockquote class="text-sm italic text-gray-600 border-l-4 border-[#5D4037] pl-3 py-1">
+                            «Эту башню строили не для зерна, а для защиты от набегов — из неё просматривается вся долина...»
+                            <div class="text-xs text-gray-400 mt-1 not-italic">— из архивных записей</div>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+        <!-- Sidebar (правая панель) -->
+<aside class="sidebar mt-0">
+<!-- Режим работы -->
+<div class="sidebar-card" id="working-hours-sidebar">
+    <div class="sidebar-icon bg-green-100 text-green-700" id="status-icon">
+        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+        </svg>
+    </div>
+    <div>
+        <h4 class="font-serif font-bold text-sm text-[#3E2723]">Режим работы</h4>
+        <p class="text-xs text-gray-600">Вт–Сб: 10:00–18:00</p>
+        <p class="text-xs font-semibold mt-1" id="open-status-text">
+            <span id="status-dot" class="inline-block w-2 h-2 rounded-full mr-1" style="background-color: #22c55e;"></span>
+            <span id="status-text">Загрузка…</span>
+        </p>
+    </div>
+</div>
+
+<!-- Пушкинская карта -->
+<a href="https://www.culture.ru/pushkinskaya-karta" target="_blank" rel="noopener noreferrer" class="sidebar-card hover:shadow-md transition">
+    <div class="sidebar-icon flex-shrink-0" style="background-color: transparent; border: none; padding: 0;">
+        <img src="img/pushkinskaya_karta.png" 
+             alt="Пушкинская карта" 
+             class="w-10 h-10 object-contain rounded-lg sepia-[0.4] saturate-[0.8]">
+    </div>
+    <div>
+        <h4 class="font-serif font-bold text-sm text-[#3E2723]">Пушкинская карта</h4>
+        <p class="text-xs text-gray-600">Оплата доступна</p>
+        <span class="text-xs text-blue-700 font-medium hover:underline mt-1 inline-block">Купить билет</span>
+    </div>
+</a>
+
+    <!-- Ближайшее мероприятие -->
+    <div class="sidebar-card" id="upcoming-event-sidebar">
+        <div class="sidebar-icon bg-purple-100 text-purple-700 flex-shrink-0" id="event-icon-container">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+        </div>
+        <div class="flex-1 min-w-0">
+            <h4 class="font-serif font-bold text-sm text-[#3E2723]">Ближайшее мероприятие</h4>
+            <p class="text-xs text-gray-600" id="upcoming-event-title">Загрузка…</p>
+            <p class="text-xs text-gray-500" id="upcoming-event-date"></p>
+            <a href="#" id="upcoming-event-link" class="text-xs text-[#5D4037] font-bold hover:underline hidden">Подробнее</a>
+        </div>
+        <img id="upcoming-event-image" src="" alt="" class="hidden w-16 h-16 rounded-lg object-cover flex-shrink-0 ml-2">
+    </div>
+
+<!-- Интересный факт -->
+<div class="sidebar-card border-l-4 border-[#5D4037]" id="fun-fact-card" style="display: none;">
+    <div class="flex-1">
+        <h4 class="font-serif font-bold text-sm text-[#3E2723]">Интересный факт</h4>
+        <p class="text-xs text-gray-600" id="fun-fact-text">Загрузка…</p>
+    </div>
+</div>
+
+<!-- Экспонат дня -->
+<div class="sidebar-card border-l-4 border-[#5D4037]" id="exhibit-of-day-card" style="display: none;">
+    <div class="flex-1">
+        <h4 class="font-serif font-bold text-sm text-[#3E2723] mb-2">Экспонат дня</h4>
+        <div class="flex gap-3">
+            <img id="exhibit-of-day-img" src="" alt="" class="w-16 h-16 rounded-lg object-cover flex-shrink-0 border border-gray-200" style="display: none;">
+            <div>
+                <p class="text-xs font-semibold text-[#3E2723]" id="exhibit-of-day-title">Загрузка…</p>
+                <p class="text-xs text-gray-500" id="exhibit-of-day-date"></p>
+                <p class="text-xs text-gray-600 mt-1 line-clamp-2" id="exhibit-of-day-desc"></p>
+                <a href="#" id="exhibit-of-day-link" class="inline-block mt-1 text-xs text-[#5D4037] font-bold hover:underline">Подробнее</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="https://vk.ru/js/api/openapi.js?168"></script>
+    <script type="text/javascript">
+      VK.init({
+        apiId: 54586103,
+        onlyWidgets: true
+      });
+</script>
+
+
+
+<!-- Put this div tag to the place, where the Group block will be -->
+<div id="vk_groups"></div>
+<script type="text/javascript">
+  VK.Widgets.Group("vk_groups", {mode: 4, wide: 1, height: 400, width: "auto", color1: "FFFFFF", color2: "000000", color3: "5181B8"}, 238549299);
+</script>
+</aside>
+    </div>
+</main>
+
+<!-- Модальное окно для просмотра фото -->
+<div id="photo-modal" class="photo-modal hidden">
+    <span class="photo-modal-close">&times;</span>
+    <img id="photo-modal-img" src="" alt="Просмотр фото">
+</div>
+
+<!-- Стили и скрипт для слайдера (оставьте перед закрывающим </body>) -->
+<style>
+.compare-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    cursor: ew-resize;
+    user-select: none;
+}
+.compare-before,
+.compare-after {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+}
+.compare-before {
+    left: 0;
+    width: 100%;
+    z-index: 1;
+}
+.compare-after {
+    right: 0;
+    width: 50%;
+    z-index: 2;
+}
+.compare-slider {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: #fff;
+    box-shadow: 0 0 8px rgba(0,0,0,0.3);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    pointer-events: none;
+}
+.compare-slider-handle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    background: #5D4037;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    pointer-events: auto;
+    cursor: ew-resize;
+}
+/* ── Модальное окно ── */
+.photo-modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.9);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.photo-modal.hidden { display: none; }
+.photo-modal-close {
+    position: absolute;
+    top: 20px; right: 30px;
+    font-size: 3rem;
+    color: #fff;
+    cursor: pointer;
+    z-index: 10001;
+    line-height: 1;
+}
+.photo-modal-close:hover { color: #ccc; }
+#photo-modal-img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+}
+</style>
+
+<script>
+(function() {
+    const container = document.querySelector('.compare-container');
+    if (!container) return;
+
+    const after = container.querySelector('.compare-after');
+    const slider = container.querySelector('.compare-slider');
+    let dragging = false;
+
+    function updatePosition(clientX) {
+        const rect = container.getBoundingClientRect();
+        let x = clientX - rect.left;
+        x = Math.max(0, Math.min(x, rect.width));
+        const percent = (x / rect.width) * 100;
+        after.style.width = (100 - percent) + '%';
+        slider.style.left = percent + '%';
+    }
+
+    function startDrag(e) {
+        e.preventDefault();
+        dragging = true;
+        container.classList.add('dragging');
+    }
+
+    function stopDrag() {
+        dragging = false;
+        container.classList.remove('dragging');
+    }
+
+    function onMove(e) {
+        if (!dragging) return;
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        updatePosition(clientX);
+    }
+
+    slider.querySelector('.compare-slider-handle').addEventListener('mousedown', startDrag);
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', stopDrag);
+
+    slider.querySelector('.compare-slider-handle').addEventListener('touchstart', startDrag);
+    window.addEventListener('touchmove', onMove);
+    window.addEventListener('touchend', stopDrag);
+
+    updatePosition(container.getBoundingClientRect().left + container.getBoundingClientRect().width / 2);
+})();
+</script>
+<script>
+// Открытие фото в модальном окне
+document.addEventListener('click', function(e) {
+    const img = e.target.closest('.zoomable-image');
+    if (!img) return;
+    const src = img.getAttribute('src');
+    if (!src) return;
+    document.getElementById('photo-modal-img').src = src;
+    document.getElementById('photo-modal').classList.remove('hidden');
+});
+// Закрытие модального окна
+document.getElementById('photo-modal')?.addEventListener('click', function(e) {
+    if (e.target === this || e.target.classList.contains('photo-modal-close')) {
+        this.classList.add('hidden');
+    }
+});
+// Закрытие по Escape
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        const modal = document.getElementById('photo-modal');
+        if (modal) modal.classList.add('hidden');
+    }
+});
+</script>
+
+<footer class="bg-[#3E2723] text-gray-300 py-12 border-t-4 border-[#5D4037]">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-8">
+            <!-- Логотип и название -->
+            <div>
+                <h4 class="font-serif text-2xl text-white mb-3">Кердемский музей</h4>
+                <p class="text-sm">Сохраняем историю и культуру якутского народа.</p>
+            </div>
+
+            <!-- Посетителям -->
+            <div>
+                <h5 class="font-bold text-white mb-3">Посетителям</h5>
+                <ul class="space-y-1 text-sm">
+                    <li><a href="/visit.html" class="hover:text-white">Часы работы</a></li>
+                    <li><a href="/reviews.html" class="hover:text-white">Отзывы</a></li>
+                    <li><a href="#" class="hover:text-white">Экскурсии</a></li>
+                    <li><a href="/rules.html" class="hover:text-white">Правила и льготы</a></li>
+                    <li><a href="#" class="hover:text-white" id="visual-impaired-footer">Версия для слабовидящих</a></li>
+                </ul>
+            </div>
+
+            <!-- О музее -->
+            <div>
+                <h5 class="font-bold text-white mb-3">О музее</h5>
+                <ul class="space-y-1 text-sm">
+                    <li><a href="/about.html" class="hover:text-white">История</a></li>
+                    <li><a href="/collections.html" class="hover:text-white">Коллекции</a></li>
+                   
+                    <li><a href="/documents.html" class="hover:text-white">Документы</a></li>
+                    <li><a href="/founder.html" class="hover:text-white">Сведения об учредителе</a></li>
+                    <li><a href="/quality.html" class="hover:text-white">Оценка качества услуг</a></li>
+                </ul>
+            </div>
+
+            <!-- Партнёрство -->
+            <div>
+                <h5 class="font-bold text-white mb-3">Партнёрство</h5>
+                <ul class="space-y-1 text-sm">
+                    <li><a href="/partnership.html" class="hover:text-white">Сотрудничество</a></li>
+                    <li><a href="/volunteers.html" class="hover:text-white">Волонтёрство</a></li>
+                    <li><a href="/donors.html" class="hover:text-white">Дарителям</a></li>
+                </ul>
+            </div>
+
+            <!-- Контакты -->
+            <div>
+                <h5 class="font-bold text-white mb-3">Контакты</h5>
+                <p class="text-sm">с. Кердем, ул. Ленина<br>+7 (41144) 24-3-17<br>samirtay@mail.ru</p>
+                <p class="mt-2 text-sm">
+                    <a href="/privacy.html" class="hover:text-white">Политика конфиденциальности</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Полезные ссылки -->
+        <div class="border-t border-[#5D4037]/20 mt-8 pt-6">
+            <h5 class="font-bold text-white text-center mb-4 text-base uppercase tracking-wider">Полезные ссылки</h5>
+            <div class="flex flex-wrap justify-center items-center gap-10 md:gap-14">
+                <!-- Госуслуги -->
+                <a href="https://www.gosuslugi.ru" target="_blank" rel="noopener noreferrer"
+                   class="transition-all duration-300 opacity-75 hover:opacity-100" style="filter: brightness(0.9) saturate(0.5);">
+                    <img src="img/gosuslugi.png" alt="Госуслуги" class="h-16 w-auto object-contain">
+                </a>
+                <!-- Минкульт Якутии -->
+                <a href="https://minkult.sakha.gov.ru" target="_blank" rel="noopener noreferrer"
+                   class="transition-all duration-300 opacity-75 hover:opacity-100" style="filter: brightness(0.9) saturate(0.5);">
+                    <img src="img/minkult_yakutia.png" alt="Министерство культуры Якутии" class="h-16 w-auto object-contain">
+                </a>
+                <!-- Портал Культура.РФ -->
+                <a href="https://culture.gov.ru/" target="_blank" rel="noopener noreferrer"
+                   class="transition-all duration-300 opacity-75 hover:opacity-100" style="filter: brightness(0.9) saturate(0.5);">
+                    <img src="img/ministerfstfo_kulutury_rf.png" alt="Культура.РФ" class="h-16 w-auto object-contain">
+                </a>
+                <!-- Pro.Культура.РФ -->
+                <a href="https://pro.culture.ru" target="_blank" rel="noopener noreferrer"
+                   class="transition-all duration-300 opacity-75 hover:opacity-100" style="filter: brightness(0.9) saturate(0.5);">
+                    <img src="img/kulutura_rf.png" alt="Pro.Культура.РФ" class="h-16 w-auto object-contain">
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Копирайт + ИНН/ОГРН -->
+    <div class="border-t border-[#5D4037] mt-8 pt-4 text-sm text-center text-gray-400">
+        <p>
+            © 2026 Кердемский музей-комплекс «Самыртай» им. Р.К. Захарова. Филиал МБУК «Хангаласский улусный краеведческий музей им. Г.В. Ксенофонтова».
+        </p>
+        <p class="mt-1">
+            ИНН 1234567890 / ОГРН 1234567890123
+        </p>
+    </div>
+</footer>
+
+<script src="js/accessibility.js"></script>
+<script src="js/search.js"></script>
+<script src="js/main.js"></script>
+<script>
+    document.getElementById('menu-toggle').addEventListener('click', () => {
+        document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+</script>
+<script>
+    // Мобильное меню: раскрытие подменю "О музее"
+    const mobileAboutToggle = document.getElementById('mobile-about-toggle');
+    const mobileAboutSubmenu = document.getElementById('mobile-about-submenu');
+    const mobileAboutArrow = document.getElementById('mobile-about-arrow');
+
+    if (mobileAboutToggle && mobileAboutSubmenu && mobileAboutArrow) {
+        mobileAboutToggle.addEventListener('click', () => {
+            mobileAboutSubmenu.classList.toggle('hidden');
+            mobileAboutArrow.classList.toggle('rotate-180');
+        });
+    }
+
+    // Мобильное меню: раскрытие подменю "Экспозиция"
+const mobileExpoToggle = document.getElementById('mobile-expo-toggle');
+const mobileExpoSubmenu = document.getElementById('mobile-expo-submenu');
+const mobileExpoArrow = document.getElementById('mobile-expo-arrow');
+
+if (mobileExpoToggle && mobileExpoSubmenu && mobileExpoArrow) {
+    mobileExpoToggle.addEventListener('click', () => {
+        mobileExpoSubmenu.classList.toggle('hidden');
+        mobileExpoArrow.classList.toggle('rotate-180');
+    });
+}
+</script>
+<script src="js/breadcrumbs.js"></script>
+</body>
+</html>

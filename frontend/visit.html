@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Посетителям — Кердемский музей-комплекс «Самыртай»</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'PT Sans', sans-serif; }
+        .font-serif { font-family: 'PT Serif', serif; }
+        .back-link-container {
+            width: 100%; padding: 0 1rem; margin-bottom: 0.5rem; box-sizing: border-box;
+        }
+        .back-link-circle {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 3rem; height: 3rem; border-radius: 50%;
+            background-color: rgba(93, 64, 55, 0.08); color: #5D4037;
+            font-size: 2rem; text-decoration: none;
+            transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
+        }
+        .back-link-circle:hover {
+            background-color: rgba(93, 64, 55, 0.15);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08); transform: scale(1.05);
+        }
+.divider-line {
+    border: none;
+    border-top: 1px solid rgba(93, 64, 55, 0.2);
+    margin: 1.5rem auto;
+    max-width: calc(72rem + 280px + 2rem);
+    width: 100%;
+    box-sizing: border-box;
+}
+        .visit-sidebar-card {
+            background: #FDF8F5; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.25rem; margin-bottom: 1rem;
+        }
+        .visit-sidebar-card {
+    background: #FDF8F5;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    font-size: 15px;
+}
+
+.visit-sidebar-card h3 {
+    font-size: 18px;
+}
+
+.visit-sidebar-card ul li {
+    font-size: 14px;
+    line-height: 1.6;
+}
+    </style>
+</head>
+<body class="text-gray-800 antialiased">
+<div style="position: fixed; top: 0; left: 0; width: 80px; height: 100%; background: linear-gradient(to right, rgba(93,64,55,0.2), transparent); pointer-events: none; z-index: 0;"></div>
+<div style="position: fixed; top: 0; right: 0; width: 80px; height: 100%; background: linear-gradient(to left, rgba(93,64,55,0.2), transparent); pointer-events: none; z-index: 0;"></div>
+<!-- Шапка (как на главной) -->
+<header class="bg-white border-b-2 border-[#5D4037] shadow-md sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+        <a href="/" class="flex items-center gap-3 flex-shrink-0">
+            <img src="img/logo-samartyai.png" alt="Логотип музея" class="h-12 w-auto object-contain flex-shrink-0">
+            <div>
+                <span class="font-serif text-xl font-bold text-[#3E2723] block leading-tight">Кердемский музей</span>
+                <span class="text-xs text-[#8D6E63] leading-tight">филиал комплекс «Самыртай» им. Р.К. Захарова</span>
+            </div>
+        </a>
+        <nav class="hidden lg:flex items-center gap-0 ml-8 text-base font-medium text-[#5D4037]">
+            <div class="relative group">
+                <button class="nav-link flex items-center gap-1 pb-1 border-b-2 border-transparent hover:border-[#5D4037] transition">О музее <i class="ri-arrow-down-s-line text-xs"></i></button>
+                <div class="absolute top-full left-0 mt-0 w-56 bg-white border border-gray-200 rounded-b-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                    <a href="/about.html" class="block px-4 py-2 text-sm text-[#5D4037] hover:bg-[#FDF8F5] hover:text-[#3E2723] transition">Общая информация</a>
+                    <a href="/history.html" class="block px-4 py-2 text-sm text-[#5D4037] hover:bg-[#FDF8F5] hover:text-[#3E2723] transition">История музея</a>
+                    <a href="https://hangalas-museum.kultura14.ru/" target="_blank" rel="noopener noreferrer" class="block px-4 py-2 text-sm text-[#5D4037] hover:bg-[#FDF8F5] hover:text-[#3E2723] transition">Головной музей</a>
+                </div>
+            </div>
+            <span class="mx-2 text-gray-300">|</span>
+            <a href="/events.html" class="nav-link pb-1 border-b-2 border-transparent hover:border-[#5D4037] transition px-2">Афиша</a>
+            <span class="mx-2 text-gray-300">|</span>
+            <div class="relative group">
+                <button class="nav-link flex items-center gap-1 pb-1 border-b-2 border-transparent hover:border-[#5D4037] transition">Экспозиция <i class="ri-arrow-down-s-line text-xs"></i></button>
+                <div class="absolute top-full left-0 mt-0 w-56 bg-white border border-gray-200 rounded-b-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                    <a href="/explore.html" class="block px-4 py-2 text-sm text-[#5D4037] hover:bg-[#FDF8F5] hover:text-[#3E2723] transition">Смотреть всё</a>
+                    <a href="/collections.html" class="block px-4 py-2 text-sm text-[#5D4037] hover:bg-[#FDF8F5] hover:text-[#3E2723] transition">Экспонаты</a>
+                    <a href="/architecture.html" class="block px-4 py-2 text-sm text-[#5D4037] hover:bg-[#FDF8F5] hover:text-[#3E2723] transition">Архитектура и наследие</a>
+                    <a href="/tour.html" class="block px-4 py-2 text-sm text-[#5D4037] hover:bg-[#FDF8F5] hover:text-[#3E2723] transition">Виртуальный тур</a>
+                </div>
+            </div>
+            <span class="mx-2 text-gray-300">|</span>
+            <a href="/news.html" class="nav-link pb-1 border-b-2 border-transparent hover:border-[#5D4037] transition px-2">Новости</a>
+        </nav>
+        <button id="menu-toggle" class="lg:hidden p-2 text-[#5D4037]">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+    </div>
+    <div class="hidden lg:block border-t border-gray-200">
+        <div class="container mx-auto px-4 py-2 flex items-center justify-between">
+            <div class="flex items-center gap-6">
+                <a href="#" id="visual-impaired-btn" class="text-sm font-medium text-[#5D4037] hover:text-[#3E2723] transition">👁️ Слабовидящим</a>
+                <div class="relative flex items-center">
+                    <input type="text" id="search-input-header" placeholder="Поиск…" autocomplete="off" class="w-36 px-3 py-1 rounded border border-gray-300 text-sm focus:outline-none focus:ring-1 focus:ring-[#5D4037]">
+                    <button type="button" id="search-button-header" class="ml-1 text-[#5D4037] hover:text-[#3E2723] transition" aria-label="Поиск"><i class="ri-search-line text-lg"></i></button>
+                    <div id="search-dropdown" class="absolute top-full left-0 w-80 bg-white border border-gray-200 rounded-lg shadow-lg mt-1 hidden z-50 max-h-96 overflow-y-auto"></div>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2">
+                    <a href="https://vk.com/samirtay" target="_blank" class="transition hover:opacity-80" title="ВКонтакте" style="color: #0077FF;"><i class="ri-vk-fill text-xl"></i></a>
+                    <a href="https://wa.me/74114424317" target="_blank" class="transition hover:opacity-80" title="WhatsApp" style="color: #25D366;"><i class="ri-whatsapp-fill text-xl"></i></a>
+                    <a href="https://max.ru/samirtay" target="_blank" class="transition hover:opacity-80" title="Max"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/%D0%9B%D0%BE%D0%B3%D0%BE%D1%82%D0%B8%D0%BF_MAX.svg/1280px-%D0%9B%D0%BE%D0%B3%D0%BE%D1%82%D0%B8%D0%BF_MAX.svg.png" alt="Max" class="w-5 h-5 object-contain"></a>
+                </div>
+                <div class="flex items-center gap-1 text-xs font-bold">
+                    <button class="lang-btn px-2 py-1 rounded border border-[#5D4037] bg-[#5D4037] text-white" data-lang="ru">РУС</button>
+                    <button class="lang-btn px-2 py-1 rounded border border-[#5D4037] text-[#5D4037] hover:bg-[#5D4037] hover:text-white transition" data-lang="sah">ЯКТ</button>
+                    <button class="lang-btn px-2 py-1 rounded border border-[#5D4037] text-[#5D4037] hover:bg-[#5D4037] hover:text-white transition" data-lang="en">ENG</button>
+                </div>
+                <a href="/visit.html" class="bg-[#5D4037] text-white px-6 py-2 rounded font-medium hover:bg-[#3E2723] transition whitespace-nowrap">Посетить</a>
+            </div>
+        </div>
+    </div>
+    <div id="mobile-menu" class="hidden lg:hidden bg-white border-t px-4 py-3 space-y-2">
+        <div>
+            <button id="mobile-about-toggle" class="flex items-center justify-between w-full py-1 text-[#5D4037] font-medium">О музее <i class="ri-arrow-down-s-line text-xs transition-transform duration-200" id="mobile-about-arrow"></i></button>
+            <div id="mobile-about-submenu" class="hidden pl-3 space-y-1 mt-1">
+                <a href="/about.html" class="block py-1 text-[#5D4037] font-medium">Общая информация</a>
+                <a href="/history.html" class="block py-1 text-[#5D4037] font-medium">История музея</a>
+                <a href="https://hangalas-museum.kultura14.ru/" target="_blank" rel="noopener noreferrer" class="block py-1 text-[#5D4037] font-medium">Головной музей</a>
+            </div>
+        </div>
+        <a href="/events.html" class="block py-1 text-[#5D4037] font-medium">Афиша</a>
+        <div>
+            <button id="mobile-expo-toggle" class="flex items-center justify-between w-full py-1 text-[#5D4037] font-medium">Экспозиция <i class="ri-arrow-down-s-line text-xs transition-transform duration-200" id="mobile-expo-arrow"></i></button>
+            <div id="mobile-expo-submenu" class="hidden pl-3 space-y-1 mt-1">
+                <a href="/explore.html" class="block py-1 text-[#5D4037] font-medium">Смотреть всё</a>
+                <a href="/collections.html" class="block py-1 text-[#5D4037] font-medium">Экспонаты</a>
+                <a href="/architecture.html" class="block py-1 text-[#5D4037] font-medium">Архитектура и наследие</a>
+                <a href="/tour.html" class="block py-1 text-[#5D4037] font-medium">Виртуальный тур</a>
+            </div>
+        </div>
+        <a href="/news.html" class="block py-1 text-[#5D4037] font-medium">Новости</a>
+        <a href="#" id="visual-impaired-btn-mobile" class="block py-1 text-[#5D4037] font-medium">Слабовидящим</a>
+        <a href="/visit.html" class="block py-1 text-[#5D4037] font-semibold">Посетить</a>
+        <div class="relative mt-2">
+            <input type="text" id="search-input-mobile" placeholder="Поиск…" autocomplete="off" class="w-full px-3 py-1 rounded border border-gray-300 text-sm pr-8">
+            <button type="button" class="absolute right-2 top-1/2 -translate-y-1/2 text-[#5D4037] hover:text-[#3E2723] transition" aria-label="Поиск"><i class="ri-search-line text-lg"></i></button>
+            <div id="search-dropdown-mobile" class="absolute top-full left-0 w-full bg-white border border-gray-200 rounded-lg shadow-lg mt-1 hidden z-50 max-h-96 overflow-y-auto"></div>
+        </div>
+    </div>
+</header>
+
+<main class="pt-0 pb-20">
+ 
+    <!-- Hero-баннер (как на главной) -->
+    <section class="relative py-16 px-4 overflow-hidden text-white mb-8">
+        <div class="absolute inset-0">
+            <img src="img/muzej-kompleks-samyrtaj.jpg" alt="Музейный комплекс Самыртай" class="w-full h-full object-cover">
+        </div>
+        <div class="absolute inset-0 bg-black/50 z-10"></div>
+        <div class="container mx-auto max-w-5xl text-center relative z-20">
+            <h1 class="font-serif text-4xl lg:text-5xl font-bold mb-4 leading-tight">Посетителям</h1>
+            <p class="text-lg lg:text-xl text-gray-200 max-w-2xl mx-auto">Вся необходимая информация для вашего визита в музей</p>
+        </div>
+    </section>
+       <!-- Хлебные крошки -->
+<nav class="breadcrumbs" aria-label="Хлебные крошки">
+    <a href="/">Главная</a>
+    <span class="breadcrumb-separator">/</span>
+    <span class="breadcrumb-current">Текущая страница</span>
+</nav>
+    <!-- Кнопка "Назад" -->
+    <div class="back-link-container">
+        <a href="/index.html" class="back-link-circle" title="Главная"><i class="ri-arrow-left-s-line"></i></a>
+    </div>
+         <!-- Горизонтальная разделительная линия -->
+    <hr class="divider-line" />
+
+    <div class="container mx-auto px-4 max-w-6xl">
+        <span class="text-[#8D6E63] uppercase tracking-widest text-sm font-bold">Информация</span>
+  
+<h1 class="font-serif text-4xl lg:text-5xl font-bold mt-3 mb-4 text-[#3E2723]">Посетителям</h1>
+<div class="w-16 h-1 bg-[#5D4037] mt-2 mb-8"></div>
+        
+
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Левая колонка (основной контент) -->
+            <div class="lg:w-2/3 space-y-14">
+                <!-- 1. Часы работы -->
+                <section id="hours">
+                    <h2 class="font-serif text-3xl font-bold mb-6 text-[#3E2723]"><i class="ri-time-line text-[#5D4037] mr-2"></i>Часы работы</h2>
+                    <div class="bg-[#FDF8F5] p-6 rounded-lg border border-gray-200">
+                        <p class="text-lg font-semibold text-[#3E2723] mb-2">Режим работы:</p>
+                        <p class="text-gray-700 text-base leading-relaxed">Вторник – Воскресенье: 10:00 – 18:00</p>
+                        <p class="text-gray-700 text-base leading-relaxed">Понедельник — выходной день</p>
+                        <p class="text-gray-700 text-base leading-relaxed">Последняя пятница месяца — санитарный день</p>
+                        <p class="text-[#5D4037] font-semibold mt-3">Касса закрывается за 30 минут до окончания работы музея.</p>
+                    </div>
+                </section>
+
+                <div class="decorative-line"></div>
+
+                <!-- 2. Стоимость билетов и Льготы -->
+                <section id="benefits">
+                    <h2 class="font-serif text-2xl font-bold mb-6 text-[#3E2723]"><i class="ri-bank-card-line text-[#5D4037] mr-2"></i>Стоимость билетов и льготы</h2>
+                    <div class="bg-[#FDF8F5] p-6 rounded-lg border border-gray-200">
+                        <table class="w-full text-base text-left border-collapse mb-6">
+                            <thead>
+                                <tr class="border-b border-[#5D4037]">
+                                    <th class="py-2 pr-4 font-bold text-[#3E2723]">Категория</th>
+                                    <th class="py-2 font-bold text-[#3E2723]">Цена</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-200"><td class="py-2 pr-4">Взрослый билет</td><td class="py-2">100 руб.</td></tr>
+                                <tr class="border-b border-gray-200"><td class="py-2 pr-4">Студенческий билет</td><td class="py-2">50 руб.</td></tr>
+                                <tr class="border-b border-gray-200"><td class="py-2 pr-4">Пенсионный билет</td><td class="py-2">50 руб.</td></tr>
+                                <tr><td class="py-2 pr-4">Школьный билет</td><td class="py-2">30 руб.</td></tr>
+                            </tbody>
+                        </table>
+                        <p class="font-semibold text-[#3E2723] mb-2">Бесплатные категории (при предъявлении подтверждающего документа):</p>
+                        <p class="text-gray-700">Дети до 7 лет, ветераны ВОВ, многодетные семьи, инвалиды I и II групп, сотрудники музеев РФ.</p>
+                        <div class="mt-4 bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                            <p class="text-sm text-blue-800"><strong>Пушкинская карта:</strong> Онлайн-покупка билетов, в том числе по Пушкинской карте, временно находится в разработке. Продажа билетов осуществляется в кассе музея.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="decorative-line"></div>
+
+                <!-- 3. Экскурсии -->
+                <section id="tours">
+                    <h2 class="font-serif text-2xl font-bold mb-6 text-[#3E2723]"><i class="ri-group-line text-[#5D4037] mr-2"></i>Экскурсии</h2>
+                    <div class="bg-[#FDF8F5] p-6 rounded-lg border border-gray-200">
+                        <p class="text-gray-700 mb-4">Для организованных групп (школьные классы, туристические автобусы) проводится экскурсионное обслуживание по предварительной записи за 3 дня до визита.</p>
+                        <p class="text-gray-700 mb-4">Стоимость экскурсионного обслуживания: 300 руб./группа.</p>
+                        <form action="https://formsubmit.co/samirtay@mail.ru" method="POST" class="space-y-4 mt-6">
+                            <input type="text" name="_honey" style="display:none">
+                            <input type="hidden" name="_captcha" value="false">
+                            <input type="hidden" name="_next" value="/thanks.html">
+                            <input type="text" name="name" placeholder="Ваше имя" required class="w-full border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-[#5D4037]">
+                            <input type="tel" name="phone" placeholder="Номер телефона" required class="w-full border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-[#5D4037]">
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="date" name="date" placeholder="Желаемая дата" required class="w-full border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-[#5D4037]">
+                                <input type="time" name="time" placeholder="Желаемое время" required class="w-full border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-[#5D4037]">
+                            </div>
+                            <input type="number" name="count" placeholder="Количество человек в группе" min="5" required class="w-full border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-[#5D4037]">
+                            <button type="submit" class="bg-[#5D4037] text-white px-6 py-3 rounded font-bold hover:bg-[#3E2723] transition w-full">Отправить заявку</button>
+                        </form>
+                    </div>
+                </section>
+
+                <div class="decorative-line"></div>
+
+<!-- 4. Контакты и Карта -->
+<section id="map">
+    <h2 class="font-serif text-3xl font-bold mb-6 text-[#3E2723]"><i class="ri-map-pin-line text-[#5D4037] mr-2"></i>Контакты и карта</h2>
+    
+    <div class="bg-[#FDF8F5] p-6 rounded-lg border border-gray-200 space-y-6">
+        <!-- Адрес и телефон -->
+        <div>
+            <h3 class="font-serif text-xl font-semibold text-[#3E2723] mb-2">Адрес</h3>
+            <p class="text-gray-700 text-base">Республика Саха (Якутия), Хангаласский улус, с. Кердем, ул. Ленина</p>
+            <p class="text-2xl font-bold text-[#5D4037] mt-2">+7 (41144) 24-3-17</p>
+            <div class="flex items-center gap-3 mt-2">
+                <a href="#" id="dgis-route-btn" class="inline-flex items-center text-[#5D4037] font-bold hover:text-[#3E2723] transition text-sm">
+                    <i class="ri-map-pin-line mr-1"></i> Проложить маршрут в 2ГИС
+                </a>
+            </div>
+            <!-- Мессенджеры -->
+            <div class="flex items-center gap-3 mt-3 pt-3 border-t border-gray-200">
+                <span class="text-sm text-gray-600">Написать в мессенджеры:</span>
+                <a href="https://vk.com/samirtay" target="_blank" class="text-blue-700 hover:opacity-80 transition" title="ВКонтакте">
+                    <i class="ri-vk-fill text-2xl"></i>
+                </a>
+                <a href="https://wa.me/74114424317" target="_blank" class="text-green-600 hover:opacity-80 transition" title="WhatsApp">
+                    <i class="ri-whatsapp-fill text-2xl"></i>
+                </a>
+                <a href="https://max.ru/samirtay" target="_blank" class="hover:opacity-80 transition" title="Max">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/%D0%9B%D0%BE%D0%B3%D0%BE%D1%82%D0%B8%D0%BF_MAX.svg/1280px-%D0%9B%D0%BE%D0%B3%D0%BE%D1%82%D0%B8%D0%BF_MAX.svg.png"
+                         alt="Max" class="w-5 h-5 object-contain">
+                </a>
+            </div>
+        </div>
+
+        <!-- Как проехать -->
+        <div class="pt-2">
+            <h3 class="font-serif text-xl font-semibold text-[#3E2723] mb-3">Как проехать</h3>
+            <div class="space-y-3 text-base text-gray-700">
+                <div>
+                    <span class="font-semibold">На автомобиле:</span>
+                    <p>По Покровскому тракту до поворота на Кердем, далее 15 км по асфальтированной дороге. Координаты для навигатора: 61.429328, 129.201886.</p>
+                </div>
+                <div>
+                    <span class="font-semibold">На автобусе:</span>
+                    <p>Из Якутска автобусы № 102, 105 до остановки «Кердем». Время в пути около 2 часов.</p>
+                </div>
+                <div>
+                    <span class="font-semibold">Парковка:</span>
+                    <p>Бесплатная парковка на обочине ул. Ленина, рядом с церковью.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Карта -->
+        <div>
+            <div class="rounded-lg overflow-hidden border border-gray-200 shadow-sm">
+                <div id="dgis-map" style="width:100%; height:400px;"></div>
+            </div>
+            <p class="text-xs text-gray-500 mt-1">При включении режима для слабовидящих карта заменяется текстовым описанием маршрута.</p>
+            <div id="map-text-fallback" class="hidden p-4 bg-gray-100 rounded text-sm text-gray-800 mt-2">
+                Расположение музея: село Кердем, улица Ленина. Ориентир — рядом с церковью. Координаты: 61.429328, 129.201886.
+            </div>
+        </div>
+    </div>
+</section>
+            </div>
+
+            <!-- Правая колонка (сайдбар) -->
+<div class="lg:w-1/3 mt-12 lg:mt-0">
+    <div class="sticky top-28 space-y-4">
+                    <!-- Кнопки быстрой связи -->
+                    <div class="visit-sidebar-card">
+                        <h3 class="font-serif font-bold text-lg mb-3 text-[#3E2723]">Быстрая связь</h3>
+                        <div class="space-y-2">
+                            <a href="tel:+74114424317" class="flex items-center justify-center bg-[#5D4037] text-white px-5 py-3 rounded font-semibold hover:bg-[#3E2723] transition text-sm">
+                                <i class="ri-phone-line mr-2"></i> Позвонить в кассу
+                            </a>
+                            <a href="mailto:samirtay@mail.ru" class="flex items-center justify-center border border-[#5D4037] text-[#5D4037] px-5 py-3 rounded font-semibold hover:bg-[#5D4037] hover:text-white transition text-sm">
+                                <i class="ri-mail-line mr-2"></i> Написать нам
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Краткая информация -->
+                    <div class="visit-sidebar-card">
+                        <h3 class="font-serif font-bold text-lg mb-3 text-[#3E2723]">Краткая информация</h3>
+                        <ul class="text-sm text-gray-700 space-y-2">
+                            <li><strong>Адрес:</strong> с. Кердем, ул. Ленина</li>
+                            <li><strong>Телефон:</strong> +7 (41144) 24-3-17</li>
+                            <li><strong>Email:</strong> samirtay@mail.ru</li>
+                            <li><strong>Часы работы:</strong> Вт–Вс 10:00–18:00</li>
+                            <li><strong>Выходной:</strong> Пн</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="bg-[#3E2723] text-gray-300 py-12 border-t-4 border-[#5D4037]">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-8">
+            <!-- Логотип и название -->
+            <div>
+                <h4 class="font-serif text-2xl text-white mb-3">Кердемский музей</h4>
+                <p class="text-sm">Сохраняем историю и культуру якутского народа.</p>
+            </div>
+
+            <!-- Посетителям -->
+            <div>
+                <h5 class="font-bold text-white mb-3">Посетителям</h5>
+                <ul class="space-y-1 text-sm">
+                    <li><a href="/visit.html" class="hover:text-white">Часы работы</a></li>
+                    <li><a href="/reviews.html" class="hover:text-white">Отзывы</a></li>
+                    <li><a href="#" class="hover:text-white">Экскурсии</a></li>
+                    <li><a href="/rules.html" class="hover:text-white">Правила и льготы</a></li>
+                    <li><a href="#" class="hover:text-white" id="visual-impaired-footer">Версия для слабовидящих</a></li>
+                </ul>
+            </div>
+
+            <!-- О музее -->
+            <div>
+                <h5 class="font-bold text-white mb-3">О музее</h5>
+                <ul class="space-y-1 text-sm">
+                    <li><a href="/about.html" class="hover:text-white">История</a></li>
+                    <li><a href="/collections.html" class="hover:text-white">Коллекции</a></li>
+                   
+                    <li><a href="/documents.html" class="hover:text-white">Документы</a></li>
+                    <li><a href="/founder.html" class="hover:text-white">Сведения об учредителе</a></li>
+                    <li><a href="/quality.html" class="hover:text-white">Оценка качества услуг</a></li>
+                </ul>
+            </div>
+
+            <!-- Партнёрство -->
+            <div>
+                <h5 class="font-bold text-white mb-3">Партнёрство</h5>
+                <ul class="space-y-1 text-sm">
+                    <li><a href="/partnership.html" class="hover:text-white">Сотрудничество</a></li>
+                    <li><a href="/volunteers.html" class="hover:text-white">Волонтёрство</a></li>
+                    <li><a href="/donors.html" class="hover:text-white">Дарителям</a></li>
+                </ul>
+            </div>
+
+            <!-- Контакты -->
+            <div>
+                <h5 class="font-bold text-white mb-3">Контакты</h5>
+                <p class="text-sm">с. Кердем, ул. Ленина<br>+7 (41144) 24-3-17<br>samirtay@mail.ru</p>
+                <p class="mt-2 text-sm">
+                    <a href="/privacy.html" class="hover:text-white">Политика конфиденциальности</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Полезные ссылки -->
+        <div class="border-t border-[#5D4037]/20 mt-8 pt-6">
+            <h5 class="font-bold text-white text-center mb-4 text-base uppercase tracking-wider">Полезные ссылки</h5>
+            <div class="flex flex-wrap justify-center items-center gap-10 md:gap-14">
+                <!-- Госуслуги -->
+                <a href="https://www.gosuslugi.ru" target="_blank" rel="noopener noreferrer"
+                   class="transition-all duration-300 opacity-75 hover:opacity-100" style="filter: brightness(0.9) saturate(0.5);">
+                    <img src="img/gosuslugi.png" alt="Госуслуги" class="h-16 w-auto object-contain">
+                </a>
+                <!-- Минкульт Якутии -->
+                <a href="https://minkult.sakha.gov.ru" target="_blank" rel="noopener noreferrer"
+                   class="transition-all duration-300 opacity-75 hover:opacity-100" style="filter: brightness(0.9) saturate(0.5);">
+                    <img src="img/minkult_yakutia.png" alt="Министерство культуры Якутии" class="h-16 w-auto object-contain">
+                </a>
+                <!-- Портал Культура.РФ -->
+                <a href="https://culture.gov.ru/" target="_blank" rel="noopener noreferrer"
+                   class="transition-all duration-300 opacity-75 hover:opacity-100" style="filter: brightness(0.9) saturate(0.5);">
+                    <img src="img/ministerfstfo_kulutury_rf.png" alt="Культура.РФ" class="h-16 w-auto object-contain">
+                </a>
+                <!-- Pro.Культура.РФ -->
+                <a href="https://pro.culture.ru" target="_blank" rel="noopener noreferrer"
+                   class="transition-all duration-300 opacity-75 hover:opacity-100" style="filter: brightness(0.9) saturate(0.5);">
+                    <img src="img/kulutura_rf.png" alt="Pro.Культура.РФ" class="h-16 w-auto object-contain">
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Копирайт + ИНН/ОГРН -->
+    <div class="border-t border-[#5D4037] mt-8 pt-4 text-sm text-center text-gray-400">
+        <p>
+            © 2026 Кердемский музей-комплекс «Самыртай» им. Р.К. Захарова. Филиал МБУК «Хангаласский улусный краеведческий музей им. Г.В. Ксенофонтова».
+        </p>
+        <p class="mt-1">
+            ИНН 1234567890 / ОГРН 1234567890123
+        </p>
+    </div>
+</footer>
+
+<script src="js/accessibility.js"></script>
+<script src="js/main.js"></script>
+<script src="https://maps.api.2gis.ru/2.0/loader.js?pkg=full&key=ВАШ_API_КЛЮЧ"></script>
+<script>
+    document.getElementById('menu-toggle').addEventListener('click', () => {
+        document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const museumLat = 61.429328;
+        const museumLon = 129.201886;
+        const mapEl = document.getElementById('dgis-map');
+        if (!mapEl) return;
+        DG.then(function () {
+            const map = DG.map('dgis-map', { center: [museumLat, museumLon], zoom: 17, scrollWheelZoom: true });
+            DG.marker([museumLat, museumLon]).addTo(map).bindPopup('Кердемский музей-комплекс «Самыртай»').openPopup();
+        });
+    });
+
+    // Подменю в мобильной версии
+    const mobileAboutToggle = document.getElementById('mobile-about-toggle');
+    const mobileAboutSubmenu = document.getElementById('mobile-about-submenu');
+    const mobileAboutArrow = document.getElementById('mobile-about-arrow');
+    if (mobileAboutToggle && mobileAboutSubmenu && mobileAboutArrow) {
+        mobileAboutToggle.addEventListener('click', () => {
+            mobileAboutSubmenu.classList.toggle('hidden');
+            mobileAboutArrow.classList.toggle('rotate-180');
+        });
+    }
+
+    const mobileExpoToggle = document.getElementById('mobile-expo-toggle');
+    const mobileExpoSubmenu = document.getElementById('mobile-expo-submenu');
+    const mobileExpoArrow = document.getElementById('mobile-expo-arrow');
+    if (mobileExpoToggle && mobileExpoSubmenu && mobileExpoArrow) {
+        mobileExpoToggle.addEventListener('click', () => {
+            mobileExpoSubmenu.classList.toggle('hidden');
+            mobileExpoArrow.classList.toggle('rotate-180');
+        });
+    }
+</script>
+<script src="js/search.js"></script>
+<script src="js/breadcrumbs.js"></script>
+</body>
+</html>

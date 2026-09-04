@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кердемский музей-комплекс «Самыртай» им. Р.К. Захарова</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+    <script src="https://vk.ru/js/api/openapi.js?169" type="text/javascript"></script>
+    <style>
+        body { font-family: 'PT Sans', sans-serif; }
+        .font-serif { font-family: 'PT Serif', serif; }
+    </style>
+</head>
+<body class="text-gray-800 antialiased">
+
+<div style="position: fixed; top: 0; left: 0; width: 80px; height: 100%; background: linear-gradient(to right, rgba(93,64,55,0.2), transparent); pointer-events: none; z-index: 0;"></div>
+<div style="position: fixed; top: 0; right: 0; width: 80px; height: 100%; background: linear-gradient(to left, rgba(93,64,55,0.2), transparent); pointer-events: none; z-index: 0;"></div>    
+
+<!-- Шапка -->
+<header class="bg-white border-b-2 border-[#5D4037] shadow-md sticky top-0 z-50">
+    <!-- Основная строка: логотип + главные ссылки -->
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+        <!-- Логотип -->
+        <a href="/" class="flex items-center gap-3 flex-shrink-0">
+            <img src="img/logo-samartyai.png" 
+                 alt="Логотип музея" 
+                 class="h-12 w-auto object-contain flex-shrink-0">
+            <div>
+                <span class="font-serif text-xl font-bold text-[#3E2723] block leading-tight">Кердемский музей</span>
+                <span class="text-xs text-[#8D6E63] leading-tight">филиал комплекс «Самыртай» им. Р.К. Захарова</span>
+            </div>
+        </a>
+
+        <!-- Главные ссылки (десктоп) -->
+        <nav class="hidden lg:flex items-center gap-0 ml-8 text-base font-medium text-[#5D4037]">
+            <!-- О музее (выпадающий список) -->
+            <div class="relative group">
+                <button class="nav-link flex items-center gap-1 pb-1 border-b-2 border-transparent hover:border-[#5D4037] transition">
+                    О музее
+                    <i class="ri-arrow-down-s-line text-xs"></i>
+                </button>
+                <div class="absolute top-full left-0 mt-0 w-56 bg-white border border-gray-200 rounded-b-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                    <a href="/about.html" class="block px-4 py-2 text-sm text-[#5D4037] hover:bg-[#FDF8F5] hover:text-[#3E2723] transition">Общая информация</a>
+                    <a href="/history.html" class="block px-4 py-2 text-sm text-[#5D4037] hover:bg-[#FDF8F5] hover:text-[#3E2723] transition">История музея</a>
+                    <a href="https://hangalas-museum.kultura14.ru/" target="_blank" rel="noopener noreferrer" class="block px-4 py-2 text-sm text-[#5D4037] hover:bg-[#FDF8F5] hover:text-[#3E2723] transition">Головной музей</a>
+                </div>
+            </div>
+            
+            <span class="mx-2 text-gray-300">|</span>
+            <a href="/events.html" class="nav-link pb-1 border-b-2 border-transparent hover:border-[#5D4037] transition px-2">Афиша</a>
+            
+            <span class="mx-2 text-gray-300">|</span>
+<!-- Экспозиция (выпадающий список) -->
+<div class="relative group">
+    <button class="nav-link flex items-center gap-1 pb-1 border-b-2 border-transparent hover:border-[#5D4037] transition">
+        Экспозиция
+        <i class="ri-arrow-down-s-line text-xs"></i>
+    </button>
+    <div class="absolute top-full left-0 mt-0 w-56 bg-white border border-gray-200 rounded-b-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+        <a href="/explore.html" class="block px-4 py-2 text-sm text-[#5D4037] hover:bg-[#FDF8F5] hover:text-[#3E2723] transition">Смотреть всё</a>
+        <a href="/collections.html" class="block px-4 py-2 text-sm text-[#5D4037] hover:bg-[#FDF8F5] hover:text-[#3E2723] transition">Экспонаты</a>
+        <a href="/architecture.html" class="block px-4 py-2 text-sm text-[#5D4037] hover:bg-[#FDF8F5] hover:text-[#3E2723] transition">Архитектура и наследие</a>
+        <a href="/tour.html" class="block px-4 py-2 text-sm text-[#5D4037] hover:bg-[#FDF8F5] hover:text-[#3E2723] transition">Виртуальный тур</a>
+    </div>
+</div>
+            
+            <span class="mx-2 text-gray-300">|</span>
+            <a href="/news.html" class="nav-link pb-1 border-b-2 border-transparent hover:border-[#5D4037] transition px-2">Новости</a>
+        </nav>
+
+        <!-- Кнопка мобильного меню -->
+        <button id="menu-toggle" class="lg:hidden p-2 text-[#5D4037]">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+    </div>
+
+    <!-- Вторая строка (только десктоп): утилиты -->
+    <div class="hidden lg:block border-t border-gray-200">
+        <div class="container mx-auto px-4 py-2 flex items-center justify-between">
+            <!-- Левая часть: полезные ссылки и поиск -->
+            <div class="flex items-center gap-6">
+                <!-- Слабовидящим -->
+                <a href="#" id="visual-impaired-btn" class="text-sm font-medium text-[#5D4037] hover:text-[#3E2723] transition">👁️ Слабовидящим</a>
+                
+                <!-- Поиск -->
+                <div class="relative flex items-center">
+                    <input type="text" id="search-input-header" placeholder="Поиск…" autocomplete="off"
+                           class="w-36 px-3 py-1 rounded border border-gray-300 text-sm focus:outline-none focus:ring-1 focus:ring-[#5D4037]">
+                    <button type="button" id="search-button-header" class="ml-1 text-[#5D4037] hover:text-[#3E2723] transition" aria-label="Поиск">
+                        <i class="ri-search-line text-lg"></i>
+                    </button>
+                    <!-- Выпадающий блок результатов -->
+                    <div id="search-dropdown" class="absolute top-full left-0 w-80 bg-white border border-gray-200 rounded-lg shadow-lg mt-1 hidden z-50 max-h-96 overflow-y-auto"></div>
+                </div>
+            </div>
+
+            <!-- Правая часть: соцсети, языки, Посетить -->
+            <div class="flex items-center gap-4">
+                <!-- Соцсети -->
+                <div class="flex items-center gap-2">
+                    <a href="https://vk.com/samirtay" target="_blank" class="transition hover:opacity-80" title="ВКонтакте" style="color: #0077FF;">
+                        <i class="ri-vk-fill text-xl"></i>
+                    </a>
+                    <a href="https://wa.me/74114424317" target="_blank" class="transition hover:opacity-80" title="WhatsApp" style="color: #25D366;">
+                        <i class="ri-whatsapp-fill text-xl"></i>
+                    </a>
+                    <a href="https://max.ru/samirtay" target="_blank" class="transition hover:opacity-80" title="Max">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/%D0%9B%D0%BE%D0%B3%D0%BE%D1%82%D0%B8%D0%BF_MAX.svg/1280px-%D0%9B%D0%BE%D0%B3%D0%BE%D1%82%D0%B8%D0%BF_MAX.svg.png"
+                             alt="Max" class="w-5 h-5 object-contain">
+                    </a>
+                </div>
+
+                <!-- Переключатель языков -->
+                <div class="flex items-center gap-1 text-xs font-bold">
+                    <button class="lang-btn px-2 py-1 rounded border border-[#5D4037] bg-[#5D4037] text-white" data-lang="ru">РУС</button>
+                    <button class="lang-btn px-2 py-1 rounded border border-[#5D4037] text-[#5D4037] hover:bg-[#5D4037] hover:text-white transition" data-lang="sah">ЯКТ</button>
+                    <button class="lang-btn px-2 py-1 rounded border border-[#5D4037] text-[#5D4037] hover:bg-[#5D4037] hover:text-white transition" data-lang="en">ENG</button>
+                </div>
+
+                <!-- Кнопка Посетить -->
+                <a href="/visit.html" class="bg-[#5D4037] text-white px-6 py-2 rounded font-medium hover:bg-[#3E2723] transition whitespace-nowrap">Посетить</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Мобильное меню -->
+    <div id="mobile-menu" class="hidden lg:hidden bg-white border-t px-4 py-3 space-y-2">
+        <!-- О музее (раскрывающийся блок) -->
+        <div>
+            <button id="mobile-about-toggle" class="flex items-center justify-between w-full py-1 text-[#5D4037] font-medium">
+                О музее
+                <i class="ri-arrow-down-s-line text-xs transition-transform duration-200" id="mobile-about-arrow"></i>
+            </button>
+            <div id="mobile-about-submenu" class="hidden pl-3 space-y-1 mt-1">
+                <a href="/about.html" class="block py-1 text-[#5D4037] font-medium">Общая информация</a>
+                <a href="/history.html" class="block py-1 text-[#5D4037] font-medium">История музея</a>
+                <a href="https://hangalas-museum.kultura14.ru/" target="_blank" rel="noopener noreferrer" class="block py-1 text-[#5D4037] font-medium">Головной музей</a>
+            </div>
+        </div>
+        <a href="/events.html" class="block py-1 text-[#5D4037] font-medium">Афиша</a>
+        <!-- Экспозиция (раскрывающийся блок) -->
+<div>
+    <button id="mobile-expo-toggle" class="flex items-center justify-between w-full py-1 text-[#5D4037] font-medium">
+        Экспозиция
+        <i class="ri-arrow-down-s-line text-xs transition-transform duration-200" id="mobile-expo-arrow"></i>
+    </button>
+    <div id="mobile-expo-submenu" class="hidden pl-3 space-y-1 mt-1">
+        <a href="/explore.html" class="block py-1 text-[#5D4037] font-medium">Смотреть всё</a>
+        <a href="/collections.html" class="block py-1 text-[#5D4037] font-medium">Экспонаты</a>
+        <a href="/architecture.html" class="block py-1 text-[#5D4037] font-medium">Архитектура и наследие</a>
+        <a href="/tour.html" class="block py-1 text-[#5D4037] font-medium">Виртуальный тур</a>
+    </div>
+</div>
+        <a href="/news.html" class="block py-1 text-[#5D4037] font-medium">Новости</a>
+        <a href="#" id="visual-impaired-btn-mobile" class="block py-1 text-[#5D4037] font-medium">👁️ Слабовидящим</a>
+        <a href="/visit.html" class="block py-1 text-[#5D4037] font-semibold">Посетить</a>
+        <!-- Поиск в мобильном меню -->
+        <div class="relative mt-2">
+            <input type="text" id="search-input-mobile" placeholder="Поиск…" autocomplete="off"
+                   class="w-full px-3 py-1 rounded border border-gray-300 text-sm pr-8">
+            <button type="button" class="absolute right-2 top-1/2 -translate-y-1/2 text-[#5D4037] hover:text-[#3E2723] transition" aria-label="Поиск">
+                <i class="ri-search-line text-lg"></i>
+            </button>
+            <div id="search-dropdown-mobile" class="absolute top-full left-0 w-full bg-white border border-gray-200 rounded-lg shadow-lg mt-1 hidden z-50 max-h-96 overflow-y-auto"></div>
+        </div>
+    </div>
+</header>
+
+<main>
+    <!-- Hero (с автоматической сменой фото) -->
+<section class="relative py-24 px-4 overflow-hidden text-white">
+    <div class="hero-slides">
+        <img src="img/muzej-kompleks-samyrtaj.jpg" alt="Музейный комплекс Самыртай" class="hero-slide active">
+        <!-- <img src="#" alt="Музейный комплекс Самыртай (фото 2)" class="hero-slide">
+                        Добавляйте новые фото по мере необходимости -->     
+    </div>
+    <div class="absolute inset-0 bg-black/50 z-10"></div>
+    <div class="container mx-auto max-w-5xl text-center relative z-20">
+        <h1 class="font-serif text-4xl lg:text-6xl font-bold mb-4 leading-tight">Кердемский музей.<br>Комплекс «Самыртай»</h1>
+        <p class="text-lg lg:text-xl text-gray-200 mb-8 max-w-2xl mx-auto">Этнографический музей под открытым небом. Памятники XIX века, быт и культура якутов.</p>
+        <div class="flex justify-center gap-4">
+            <a href="/explore.html" class="bg-white text-[#3E2723] px-8 py-3 rounded font-bold hover:bg-gray-200 transition">Исследовать комплекс</a>
+            <a href="#map" class="border-2 border-white text-white px-8 py-3 rounded font-bold hover:bg-white hover:text-[#3E2723] transition">Как добраться</a>
+        </div>
+    </div>
+</section>
+
+    <!-- Основной контент в две колонки -->
+    <div class="main-flex">
+        <!-- Левая колонка: весь контент (70%) -->
+        <div class="main-content">
+<!-- Быстрые карточки (с попапами и анимацией) -->
+<section class="py-6 bg-[#FDF8F5]">
+    <div class="px-4 lg:px-0 max-w-6xl mx-auto">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+
+            <!-- Часы работы -->
+            <div class="info-card bg-white px-4 py-5 rounded border border-gray-200 text-center hover:border-[#5D4037] hover:shadow-md transition-all duration-200 group flex flex-col items-center cursor-pointer"
+                 data-info="hours">
+                <div class="w-8 h-8 mx-auto mb-2 bg-[#5D4037] rounded-full flex items-center justify-center group-hover:bg-[#8D6E63] transition-colors">
+                    <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                </div>
+                <h3 class="font-serif font-semibold text-sm text-[#3E2723] mb-1">Часы работы</h3>
+                <p class="text-xs text-gray-500">10:00–18:00 (Вт–Сб)</p>
+            </div>
+
+            <!-- Билеты и цены -->
+            <div class="info-card bg-white px-4 py-5 rounded border border-gray-200 text-center hover:border-[#5D4037] hover:shadow-md transition-all duration-200 group flex flex-col items-center cursor-pointer"
+                 data-info="tickets">
+                <div class="w-8 h-8 mx-auto mb-2 bg-[#5D4037] rounded-full flex items-center justify-center group-hover:bg-[#8D6E63] transition-colors">
+                    <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 5h16v4a2 2 0 0 1 0 6v4H4v-4a2 2 0 0 1 0-6V5z" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h3 class="font-serif font-semibold text-sm text-[#3E2723] mb-1">Билеты и цены</h3>
+                <p class="text-xs text-gray-500">Стоимость билетов</p>
+            </div>
+
+            <!-- Адрес -->
+            <div class="info-card bg-white px-4 py-5 rounded border border-gray-200 text-center hover:border-[#5D4037] hover:shadow-md transition-all duration-200 group flex flex-col items-center cursor-pointer"
+                 data-info="address">
+                <div class="w-8 h-8 mx-auto mb-2 bg-[#5D4037] rounded-full flex items-center justify-center group-hover:bg-[#8D6E63] transition-colors">
+                    <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                </div>
+                <h3 class="font-serif font-semibold text-sm text-[#3E2723] mb-1">Адрес</h3>
+                <p class="text-xs text-gray-500">с. Кердем, ул. Ленина</p>
+            </div>
+
+            <!-- Телефон -->
+            <div class="info-card bg-white px-4 py-5 rounded border border-gray-200 text-center hover:border-[#5D4037] hover:shadow-md transition-all duration-200 group flex flex-col items-center cursor-pointer"
+                 data-info="phone">
+                <div class="w-8 h-8 mx-auto mb-2 bg-[#5D4037] rounded-full flex items-center justify-center group-hover:bg-[#8D6E63] transition-colors">
+                    <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                    </svg>  
+                </div>
+                <h3 class="font-serif font-semibold text-sm text-[#3E2723] mb-1">Телефон</h3>
+                <p class="text-xs text-gray-500">+7 (41144) 24-3-17</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Свежие новости (карусель) -->
+<section class="py-8 bg-white">
+    <div class="container mx-auto px-4 max-w-6xl">
+        <div class="flex items-center justify-between mb-4">
+            <div>
+                <span class="text-[#8D6E63] uppercase tracking-widest text-xs font-bold">Новостной</span>
+                <h2 class="font-serif text-3xl font-bold mt-1 text-[#3E2723]">Свежие новости</h2>
+            </div>
+            <a href="/news.html" class="inline-flex items-center text-[#5D4037] font-semibold hover:text-[#3E2723] hover:border-b-2 hover:border-[#5D4037] transition text-sm">
+                Все новости
+                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </a>
+        </div>
+
+        <!-- Карусель -->
+        <div class="relative">
+            <div id="news-carousel" class="overflow-x-auto pb-2 scrollbar-hide">
+                <div id="news-carousel-track" class="flex gap-4 w-max">
+                    <!-- Карточки будут вставлены через JS -->
+                </div>
+            </div>
+            <button id="news-scroll-left" class="absolute left-0 top-1/2 -translate-y-1/2 bg-white/80 rounded-full shadow-md p-2 hover:bg-white transition z-10">
+                <svg class="w-5 h-5 text-[#5D4037]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <button id="news-scroll-right" class="absolute right-0 top-1/2 -translate-y-1/2 bg-white/80 rounded-full shadow-md p-2 hover:bg-white transition z-10">
+                <svg class="w-5 h-5 text-[#5D4037]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
+        </div>
+    </div>
+</section>  
+<div class="py-3" aria-hidden="true"></div>
+
+<!-- Модальное окно с информацией -->
+<div id="info-modal" class="fixed inset-0 flex items-center justify-center bg-black/60 z-[9999] opacity-0 pointer-events-none transition-all duration-300">
+    <div id="info-modal-content" class="bg-white rounded-xl shadow-xl p-8 max-w-sm w-full relative transform scale-95 transition-all duration-300">
+        <button type="button" class="absolute top-3 right-4 text-gray-500 hover:text-gray-700 text-2xl leading-none" onclick="closeModal()">&times;</button>
+        <h3 id="info-modal-title" class="font-serif text-xl font-bold text-[#3E2723] mb-3"></h3>
+        <div id="info-modal-body" class="text-sm text-gray-700 space-y-2"></div>
+    </div>
+</div>
+
+<script>
+const infoData = {
+    hours: {
+        title: 'Часы работы',
+        content: '<p>Вт–Сб: 10:00 – 18:00</p><p>Вс, Пн: выходной</p><p>Обед: 13:00 – 14:00</p>'
+    },
+    tickets: {
+        title: 'Билеты и цены',
+        content: '<p>Взрослый: 100 руб.</p><p>Детский (до 14 лет): бесплатно</p><p>Экскурсионное обслуживание: 300 руб./группа</p>'
+    },
+    address: {
+        title: 'Адрес',
+        content: '<p>Республика Саха (Якутия),<br>Хангаласский улус, с. Кердем, ул. Ленина</p><p>Ориентир: рядом с церковью</p>'
+    },
+    phone: {
+        title: 'Телефон',
+        content: '<p>+7 (41144) 24-3-17</p><p>Email: samirtay@mail.ru</p><p>Звоните в рабочее время</p>'
+    }
+};
+
+function closeModal() {
+    const modal = document.getElementById('info-modal');
+    const content = document.getElementById('info-modal-content');
+    modal.classList.add('opacity-0', 'pointer-events-none');
+    modal.classList.remove('opacity-100', 'pointer-events-auto');
+    content.classList.add('scale-95');
+    content.classList.remove('scale-100');
+}
+
+document.querySelectorAll('.info-card').forEach(card => {
+    card.addEventListener('click', () => {
+        const type = card.dataset.info;
+        const data = infoData[type];
+        if (data) {
+            document.getElementById('info-modal-title').textContent = data.title;
+            document.getElementById('info-modal-body').innerHTML = data.content;
+
+            const modal = document.getElementById('info-modal');
+            const content = document.getElementById('info-modal-content');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.classList.add('opacity-100', 'pointer-events-auto');
+            content.classList.remove('scale-95');
+            content.classList.add('scale-100');
+        }
+    });
+});
+
+// Закрытие по клику на оверлей
+document.getElementById('info-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+});
+
+// Закрытие по Escape
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+});
+</script>
+
+<!-- О музее -->
+<section class="py-16 bg-white">
+    <div class="container mx-auto px-4 max-w-6xl">
+        <span class="text-[#8D6E63] uppercase tracking-widest text-sm font-bold">Основан в 1991 году</span>
+        <h2 class="font-serif text-4xl font-bold mt-2 mb-4 text-[#3E2723]">Музейный комплекс «Самыртай»</h2>
+
+        <!-- Фото прижато вправо, текст обтекает -->
+        <div class="lg:float-right lg:ml-8 mb-6 w-full lg:w-2/5">
+            <div class="rounded-lg overflow-hidden border border-gray-300 shadow-sm">
+                <img src="img/kerdem2.jpg" alt="Музейный комплекс" class="w-full h-auto lg:h-56 object-cover sepia-[0.25]">
+            </div>
+            <p class="text-xs text-gray-500 mt-1 text-center italic">Музейный комплекс «Самыртай»</p>
+        </div>
+
+        <div class="text-gray-700 leading-relaxed space-y-4">
+            <p>Создан по инициативе краеведа Роберта Константиновича Захарова. Сегодня в фондах музея более 900 предметов, рассказывающих о традиционном быте якутов, природе края и истории Кердема. На территории комплекса расположены памятники архитектуры XIX века.</p>
+            <p>Центральное место занимает Качикатская Николаевская церковь (1896 г.) — единственный сохранившийся в улусе образец русского деревянного зодчества с элементами местной строительной культуры. Рядом с ней располагаются двухуровневый амбар богача Кирилла Скрябина из с. Тит‑Эбэ, шестигранный балаган, перевезённый с летника Даркылах, зерносушилка мецената С.П. Барашкова и другие уникальные постройки, позволяющие в деталях представить жизнь якутского наслега XIX – начала XX веков.</p>
+            <p>Музей является филиалом Хангаласского улусного краеведческого музея им. Г.В. Ксенофонтова с 2021 года. Это открыло новые возможности для научной работы, пополнения фондов и проведения культурных мероприятий. Сегодня «Самыртай» — не только хранилище артефактов, но и живая площадка для праздников, мастер-классов и исследовательской деятельности.</p>
+        </div>
+
+        <p class="text-[#5D4037] font-semibold mt-6 flex flex-wrap justify-between items-baseline gap-2 clear-both">
+            <span>С 2020 года носит имя основателя — <span class="whitespace-nowrap">Роберта Константиновича Захарова</span>.</span>
+            <a href="/about.html" class="inline-flex items-center text-blue-800 font-bold hover:text-blue-600 transition whitespace-nowrap shrink-0">
+                Читать подробнее
+                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                </svg>
+            </a>
+        </p>
+    </div>
+</section>
+            <div class="decorative-line"></div> 
+
+<!-- Наше наследие в цифрах -->
+<section class="py-16 bg-[#FDF8F5]">
+    <div class="container mx-auto px-4 max-w-6xl">
+        <div class="text-center mb-8">
+            <h2 class="font-serif text-2xl font-bold text-[#3E2723]">Наше наследие в цифрах</h2>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+            <!-- Цифра 1 -->
+            <div class="py-2">
+                <div class="text-2xl font-serif font-bold text-[#5D4037] mb-1">
+                    <span class="digit-animate" data-target="1991">0</span>
+                </div>
+                <p class="text-xs text-gray-500">год основания</p>
+            </div>
+
+            <!-- Цифра 2 -->
+            <div class="py-2">
+                <div class="text-2xl font-serif font-bold text-[#5D4037] mb-1">
+                    <span class="digit-animate" data-target="800" data-suffix="+">0</span>
+                </div>
+                <p class="text-xs text-gray-500">единиц хранения</p>
+            </div>
+
+            <!-- Цифра 3 -->
+            <div class="py-2">
+                <div class="text-2xl font-serif font-bold text-[#5D4037] mb-1">
+                    <span class="digit-animate" data-target="4">0</span>
+                </div>
+                <p class="text-xs text-gray-500">памятника архитектуры</p>
+            </div>
+
+            <!-- Цифра 4 -->
+            <div class="py-2">
+                <div class="text-2xl font-serif font-bold text-[#5D4037] mb-1">
+                    <span class="digit-animate" data-target="33">0</span>
+                </div>
+                <p class="text-xs text-gray-500">года работы</p>
+            </div>
+        </div>
+    </div>
+</section>  
+
+<div class="decorative-line"></div> 
+
+<!-- Памятники под открытым небом -->
+<section class="py-12 bg-white">
+    <div class="container mx-auto px-4 max-w-6xl">
+        <div class="mb-8">
+            <span class="text-[#8D6E63] uppercase tracking-widest text-sm font-bold">Наследие</span>
+            <h2 class="font-serif text-3xl md:text-4xl font-bold mt-2 text-[#3E2723]">Памятники под открытым небом</h2>
+            <div class="w-16 h-1 bg-[#5D4037] mt-2"></div>
+            <p class="text-gray-600 text-sm leading-relaxed mt-3 max-w-3xl">
+                На территории музейного комплекса «Самыртай» расположены уникальные архитектурные свидетельства ушедших эпох, перевезённые из разных уголков Хангаласского улуса и бережно восстановленные мастерами-реставраторами. Каждое строение — живой рассказ о быте, традициях и мастерстве якутских зодчих XIX – начала XX веков.
+            </p>
+        </div>
+
+        <!-- Блок 1: Амбар 2-уровневый богача Кирилла Скрябина – фото слева, текст справа -->
+        <div class="flex flex-col md:flex-row gap-4 mb-8 items-start">
+            <div class="md:w-1/2 w-full">
+                <img src="img/ambar2_bogacha_kirilla2.jpg" 
+                     alt="Амбар 2-уровневый богача Кирилла Скрябина" 
+                     class="w-full h-48 md:h-56 object-cover rounded-lg border border-gray-200">
+            </div>
+            <div class="md:w-1/2 w-full">
+                <h3 class="font-serif text-xl font-semibold mb-2 text-[#3E2723]">Амбар 2‑уровневый богача Кирилла Скрябина, с. Тит‑Эбэ</h3>
+                <p class="text-gray-600 text-sm leading-relaxed">
+                    Двухэтажный амбар, построенный в XIX веке, принадлежал зажиточному якуту Кириллу Скрябину. Нижний ярус использовался как склад, верхний — как летнее жильё. Постройка отличается сложной конструкцией и богатой резьбой по дереву.
+                </p>
+                <ul class="mt-2 space-y-1 text-xs text-gray-500 list-disc list-inside">
+                    <li><span class="font-medium text-[#5D4037]">Год постройки:</span> конец XIX века</li>
+                    <li><span class="font-medium text-[#5D4037]">Материал:</span> лиственница (рубка «в обло»)</li>
+                    <li><span class="font-medium text-[#5D4037]">Происхождение:</span> с. Тит‑Эбэ</li>
+                    <li><span class="font-medium text-[#5D4037]">Площадь:</span> ≈ 45 кв. м</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Блок 2: Башня-двухэтажный амбар с бойницами – текст слева, фото справа -->
+        <div class="flex flex-col md:flex-row-reverse gap-4 mb-8 items-start">
+            <div class="md:w-1/2 w-full">
+                <img src="img/ambar.jpg" 
+                     alt="Башня-двухэтажный амбар с бойницами" 
+                     class="w-full h-48 md:h-56 object-cover rounded-lg border border-gray-200">
+            </div>
+            <div class="md:w-1/2 w-full">
+                <h3 class="font-serif text-xl font-semibold mb-2 text-[#3E2723]">Башня-двухэтажный амбар с бойницами, сер. XIX в. (ОКН)</h3>
+                <p class="text-gray-600 text-sm leading-relaxed">
+                    Деревянная башня-двухэтажный амбар с бойницами, построенная в середине XIX века, является объектом культурного наследия регионального значения. Массивные стены и проёмы для обороны говорят о двойном назначении — хозяйственном и оборонительном.
+                </p>
+                <ul class="mt-2 space-y-1 text-xs text-gray-500 list-disc list-inside">
+                    <li><span class="font-medium text-[#5D4037]">Год постройки:</span> середина XIX века</li>
+                    <li><span class="font-medium text-[#5D4037]">Материал:</span> лиственница (рубка «в обло»)</li>
+                    <li><span class="font-medium text-[#5D4037]">Происхождение:</span> с. Кердем (окрестности)</li>
+                    <li><span class="font-medium text-[#5D4037]">Площадь:</span> ≈ 32 кв. м</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Блок 3: Балаган 6-гранный – фото слева, текст справа -->
+        <div class="flex flex-col md:flex-row gap-4 items-start">
+            <div class="md:w-1/2 w-full">
+                <img src="img/chestigrannyi_balbalagan.jpg" 
+                     alt="Балаган 6-гранный" 
+                     class="w-full h-48 md:h-56 object-cover rounded-lg border border-gray-200">
+            </div>
+            <div class="md:w-1/2 w-full">
+                <h3 class="font-serif text-xl font-semibold mb-2 text-[#3E2723]">Балаган 6‑гранный, летник Даркылах (семья Марковых)</h3>
+                <p class="text-gray-600 text-sm leading-relaxed">
+                    Редкий тип якутской постройки — шестигранный балаган, перевезённый с летника Даркылах, принадлежавшего семье Марковых. Форма обеспечивала устойчивость к сильным ветрам и морозам, использовался как зимнее жильё.
+                </p>
+                <ul class="mt-2 space-y-1 text-xs text-gray-500 list-disc list-inside">
+                    <li><span class="font-medium text-[#5D4037]">Год постройки:</span> конец XIX века</li>
+                    <li><span class="font-medium text-[#5D4037]">Материал:</span> лиственница (рубка «в лапу»)</li>
+                    <li><span class="font-medium text-[#5D4037]">Происхождение:</span> летник Даркылах</li>
+                    <li><span class="font-medium text-[#5D4037]">Площадь:</span> ≈ 38 кв. м</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="text-center mt-6">
+            <a href="/architecture.html" class="inline-flex items-center bg-[#5D4037] text-white px-6 py-2 rounded font-semibold text-sm hover:bg-[#3E2723] transition">
+                Исследовать территорию
+                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </a>
+        </div>
+    </div>
+</section>
+
+            <div class="decorative-line"></div>
+
+<!-- Экспонаты -->
+<section id="exhibits" class="py-16 bg-[#FDF8F5]">
+    <div class="container mx-auto px-4 max-w-6xl">
+        <div class="mb-8">
+            <span class="text-[#8D6E63] uppercase tracking-widest text-sm font-bold">Фонды музея</span>
+            <h2 class="font-serif text-4xl font-bold mt-2 text-[#3E2723]">Уникальные экспонаты</h2>
+            <div class="w-16 h-1 bg-[#5D4037] mt-2"></div>
+            <p class="text-gray-600 text-sm leading-relaxed mt-4 max-w-3xl">
+                В витринах и запасниках музейного комплекса «Самыртай» собрано более 800 предметов, каждый из которых является частью живой истории якутского народа. От старинных орудий труда до национальных украшений — наша коллекция раскрывает богатство и разнообразие культурного наследия Хангаласского улуса.
+            </p>
+        </div>
+        <!-- Модальное окно экспоната -->
+         <div id="featured-exhibits-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+        <div class="text-right mt-6">
+            <a href="/collections.html" class="inline-flex items-center border border-[#5D4037] text-[#5D4037] px-5 py-1.5 rounded font-semibold text-sm hover:bg-[#5D4037] hover:text-white transition">
+                Все коллекции
+                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </a>
+        </div>
+    </div>
+</section>
+            <div class="decorative-line"></div>
+
+
+
+           
+
+
+
+<!-- Мероприятия -->
+<section id="events-list-section" class="py-16 bg-[#FDF8F5]">
+    <div class="container mx-auto px-4 max-w-6xl">
+        <div class="mb-8">
+            <span class="text-[#8D6E63] uppercase tracking-widest text-sm font-bold">Афиша</span>
+            <h2 class="font-serif text-4xl font-bold mt-2 text-[#3E2723]">Мероприятий и событий</h2>
+            <div class="w-16 h-1 bg-[#5D4037] mt-2"></div>
+            <p class="text-gray-600 text-sm leading-relaxed mt-3 max-w-3xl">
+                Анонсы ближайших событий, лекций, мастер-классов и праздников, которые проводит музей. Выберите интересное вам мероприятие и запланируйте визит.
+            </p>
+        </div>
+        <div id="events-list" class="bg-white rounded shadow-md divide-y divide-gray-200 border border-gray-200"></div>
+        <div class="text-right mt-6">
+            <a href="/events.html" class="inline-flex items-center text-[#5D4037] font-semibold hover:text-[#3E2723] hover:border-b-2 hover:border-[#5D4037] transition">
+                Вся афиша
+                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </a>
+        </div>
+    </div>
+</section>
+            <div class="decorative-line"></div>
+
+<!-- Часто задаваемые вопросы / FAQ -->
+<section class="py-16 bg-white">
+    <div class="container mx-auto px-4 max-w-6xl text-left">
+        <span class="text-[#8D6E63] uppercase tracking-widest text-sm font-bold">FAQ</span>
+        <h2 class="font-serif text-4xl font-bold mt-2 text-[#3E2723]">Часто задаваемые вопросы</h2>
+        
+        <div class="w-16 h-1 bg-[#5D4037] mt-2 mb-8"></div>
+        
+        <div class="space-y-4 max-w-3xl">
+            <!-- Вопрос 1 – открыт по умолчанию -->
+            <div class="faq-item bg-[#FDF8F5] rounded-lg border border-gray-200 shadow-sm overflow-hidden open">
+                <button class="faq-question w-full flex justify-between items-center px-6 py-4 text-left text-[#3E2723] font-semibold hover:bg-gray-100 transition-colors" aria-expanded="true">
+                    <span>Нужно ли записываться заранее?</span>
+                    <span class="faq-icon text-[#5D4037] text-xl">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="px-6 pb-4">
+                        <p class="text-gray-700 text-sm leading-relaxed">
+                            <i class="ri-user-line mr-1 text-[#5D4037]"></i> Одиночные туристы могут посещать музей в часы работы без предварительной записи.<br>
+                            <i class="ri-group-line mr-1 text-[#5D4037]"></i> Для экскурсионных групп от 5 человек требуется предварительная бронь по телефону <a href="tel:+74114424317" class="text-[#5D4037] underline"><i class="ri-phone-line mr-1"></i>+7 (41144) 24-3-17</a> (за 2–3 дня до визита).
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Вопрос 2 -->
+            <div class="faq-item bg-[#FDF8F5] rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+                <button class="faq-question w-full flex justify-between items-center px-6 py-4 text-left text-[#3E2723] font-semibold hover:bg-gray-100 transition-colors" aria-expanded="false">
+                    <span>Как купить билет и действует ли Пушкинская карта?</span>
+                    <span class="faq-icon text-[#5D4037] text-xl">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="px-6 pb-4">
+                        <div class="text-gray-700 text-sm leading-relaxed">
+                            <p class="mb-3">
+                                <i class="ri-bank-card-line mr-1 text-[#5D4037]"></i> На кассе принимаются наличные и банковские карты:
+                                <span class="inline-flex items-center gap-1 ml-2">
+                                    <span class="bg-gray-200 rounded px-1 text-xs font-semibold">Мир</span>
+                                    <i class="ri-visa-fill text-blue-600 text-lg"></i>
+                                    <i class="ri-mastercard-fill text-red-600 text-lg"></i>
+                                </span>
+                            </p>
+                            <p class="mb-3">
+                                <i class="ri-shopping-cart-2-line mr-1 text-[#5D4037]"></i> Онлайн-оплата через боковую панель сайта 
+                                <span class="inline-flex items-center gap-1 align-middle">
+                                    <img src="img/pushkinskaya_karta.png" alt="Пушкинская карта" class="w-6 h-6 inline-block mx-1">
+                                    Пушкинская карта
+                                </span>
+                            </p>
+                            <p>
+                                <strong class="text-[#5D4037]">Важно:</strong> Пушкинская карта принимается только при онлайн-покупке. Оплатить ею на кассе филиала нельзя.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Вопрос 3 -->
+            <div class="faq-item bg-[#FDF8F5] rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+                <button class="faq-question w-full flex justify-between items-center px-6 py-4 text-left text-[#3E2723] font-semibold hover:bg-gray-100 transition-colors" aria-expanded="false">
+                    <span>Сколько времени заложить на осмотр и как одеться?</span>
+                    <span class="faq-icon text-[#5D4037] text-xl">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="px-6 pb-4">
+                        <p class="text-gray-700 text-sm leading-relaxed">
+                            <i class="ri-time-line mr-1 text-[#5D4037]"></i> Среднее время осмотра павильона и уличных памятников — от 1 до 1,5 часов.<br>
+                            <i class="ri-footprint-line mr-1 text-[#5D4037]"></i> Территория музея имеет грунтовые дорожки, поэтому рекомендуем удобную обувь и одежду по погоде. На территории есть лавочки и зоны отдыха.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Вопрос 4 -->
+            <div class="faq-item bg-[#FDF8F5] rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+                <button class="faq-question w-full flex justify-between items-center px-6 py-4 text-left text-[#3E2723] font-semibold hover:bg-gray-100 transition-colors" aria-expanded="false">
+                    <span>Разрешена ли фотосъемка и можно ли с детьми?</span>
+                    <span class="faq-icon text-[#5D4037] text-xl">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="px-6 pb-4">
+                        <p class="text-gray-700 text-sm leading-relaxed">
+                            <i class="ri-camera-line mr-1 text-[#5D4037]"></i> Любительская фотосъемка на телефоны без вспышки и штативов разрешена и приветствуется.<br>
+                            <i class="ri-parent-line mr-1 text-[#5D4037]"></i> Дети до 7 лет — бесплатно. Для детей старше 7 лет действуют льготные билеты (приобретаются в кассе).
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ссылки на документы -->
+        <div class="mt-8 flex flex-wrap gap-4 max-w-3xl">
+            <a href="#" class="inline-flex items-center text-[#5D4037] font-semibold hover:underline text-sm">
+                <i class="ri-file-pdf-2-line mr-1 text-lg"></i> Скачать правила посещения (PDF)
+            </a>
+            <a href="#" class="inline-flex items-center text-[#5D4037] font-semibold hover:underline text-sm">
+                <i class="ri-file-pdf-2-line mr-1 text-lg"></i> Скачать договор оферты (PDF)
+            </a>
+        </div>
+    </div>
+</section>
+
+<style>
+    .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease-in-out;
+    }
+    .faq-item.open .faq-answer {
+        max-height: 500px;
+    }
+    .faq-icon {
+        display: inline-block;
+        transition: transform 0.3s ease;
+    }
+    .faq-item.open .faq-icon {
+        transform: rotate(180deg);
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const items = document.querySelectorAll('.faq-item');
+    
+    items.forEach((item) => {
+        const button = item.querySelector('.faq-question');
+        if (!button) return;
+        
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const wasOpen = item.classList.contains('open');
+            
+            // Закрываем все
+            items.forEach(it => it.classList.remove('open'));
+            
+            // Открываем текущий, если он был закрыт
+            if (!wasOpen) {
+                item.classList.add('open');
+            }
+            
+            // Обновляем aria-expanded
+            items.forEach(it => {
+                const btn = it.querySelector('.faq-question');
+                if (btn) btn.setAttribute('aria-expanded', it.classList.contains('open'));
+            });
+        });
+    });
+});
+</script>
+<div class="decorative-line"></div>
+<!-- Как добраться -->
+<section id="map" class="py-12 bg-[#FDF8F5]">
+    <div class="container mx-auto px-4 max-w-6xl text-left">
+        <span class="text-[#8D6E63] uppercase tracking-widest text-sm font-bold">Связь</span>
+        <h2 class="font-serif text-3xl font-bold mt-2 mb-2 text-[#3E2723]">Как добраться</h2>
+        <div class="w-16 h-1 bg-[#5D4037] mb-8"></div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
+            <!-- Левая колонка: адрес, маршрут, инструкция, фото входа -->
+            <div class="space-y-6">
+                <!-- Адрес -->
+                <div>
+                    <h3 class="font-serif text-xl font-semibold text-[#3E2723] mb-2">Адрес</h3>
+                    <p class="text-gray-700">Республика Саха (Якутия), Хангаласский улус, с. Кердем, ул. Ленина</p>
+                    <a href="#" id="dgis-route-btn" class="inline-flex items-center mt-2 text-[#5D4037] font-bold hover:text-[#3E2723] transition">
+                        <i class="ri-map-pin-line mr-1"></i> Проложить маршрут в 2ГИС
+                    </a>
+                </div>
+
+                <!-- Инструкция -->
+                <div>
+                    <h3 class="font-serif text-xl font-semibold text-[#3E2723] mb-3">Как проехать</h3>
+                    <div class="space-y-3 text-sm text-gray-700">
+                        <div>
+                            <span class="font-semibold">На автомобиле:</span>
+                            <p>По Покровскому тракту до поворота на Кердем, далее 15 км по асфальтированной дороге. Координаты для навигатора: 61.429328, 129.201886.</p>
+                        </div>
+                        <div>
+                            <span class="font-semibold">На автобусе:</span>
+                            <p>Из Якутска автобусы № 102, 105 до остановки «Кердем». Время в пути около 2 часов.</p>
+                        </div>
+                        <div>
+                            <span class="font-semibold">Парковка:</span>
+                            <p>Бесплатная парковка на обочине ул. Ленина, рядом с церковью.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Фото входа (временная заглушка) -->
+                <div>
+                    <h3 class="font-serif text-xl font-semibold text-[#3E2723] mb-2">Вход в музей</h3>
+                    <div class="rounded-lg overflow-hidden border border-gray-200 shadow-sm">
+                        <img src="img/entrance.jpg" alt="Вход в музей" class="w-full h-48 object-cover">
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">Главный вход музейного комплекса</p>
+                </div>
+            </div>
+
+            <!-- Правая колонка: телефон, мессенджеры, форма -->
+            <div class="space-y-6">
+                <!-- Телефон с мессенджерами -->
+                <div>
+                    <h3 class="font-serif text-xl font-semibold text-[#3E2723] mb-2">Телефон для справок</h3>
+                    <p class="text-2xl font-bold text-[#5D4037] mb-2">+7 (41144) 24-3-17</p>
+                    <div class="flex items-center gap-3 text-sm text-gray-600">
+    <span>Написать в мессенджеры:</span>
+        <a href="https://vk.com/samirtay" target="_blank" class="text-blue-700 hover:opacity-80 transition" title="ВКонтакте">
+        <i class="ri-vk-fill text-xl"></i>
+    </a>
+    <a href="https://wa.me/74114424317" target="_blank" class="text-green-600 hover:opacity-80 transition" title="WhatsApp">
+        <i class="ri-whatsapp-fill text-xl"></i>
+    </a>
+    <a href="https://max.ru/samirtay" target="_blank" class="hover:opacity-80 transition" title="Max">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/%D0%9B%D0%BE%D0%B3%D0%BE%D1%82%D0%B8%D0%BF_MAX.svg/1280px-%D0%9B%D0%BE%D0%B3%D0%BE%D1%82%D0%B8%D0%BF_MAX.svg.png"
+             alt="Max" class="w-5 h-5 object-contain">
+    </a>
+
+</div>
+                </div>
+
+                <!-- Форма -->
+                <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+                    <h3 class="font-serif text-xl font-bold mb-2 text-[#3E2723]">Заказать экскурсию или задать вопрос</h3>
+                    <p class="text-sm text-gray-600 mb-4">Оставьте заявку — мы свяжемся с вами в ближайшее время</p>
+                    <form action="https://formsubmit.co/samirtay@mail.ru" method="POST" class="space-y-4">
+                        <input type="text" name="_honey" style="display:none">
+                        <input type="hidden" name="_captcha" value="false">
+                        <input type="hidden" name="_next" value="/thanks.html">
+                        <input type="text" name="name" placeholder="Ваше имя" required class="w-full border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-[#5D4037]">
+                        <input type="email" name="email" placeholder="Ваш email" required class="w-full border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-[#5D4037]">
+                        <textarea name="message" rows="3" placeholder="Ваше сообщение или пожелания" required class="w-full border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-[#5D4037]"></textarea>
+                        <button type="submit" class="bg-[#5D4037] text-white px-6 py-3 rounded font-bold hover:bg-[#3E2723] transition w-full">Отправить заявку</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Широкая карта -->
+        <div class="rounded-lg overflow-hidden border border-gray-200 shadow-sm">
+            <div id="dgis-map" style="width:100%; height:400px;"></div>
+        </div>
+    </div>
+</section>
+        </div>
+
+        <!-- Sidebar (правая панель) -->
+<aside class="sidebar">
+<!-- Режим работы -->
+<div class="sidebar-card" id="working-hours-sidebar">
+    <div class="sidebar-icon bg-green-100 text-green-700" id="status-icon">
+        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+        </svg>
+    </div>
+    <div>
+        <h4 class="font-serif font-bold text-sm text-[#3E2723]">Режим работы</h4>
+        <p class="text-xs text-gray-600">Вт–Сб: 10:00–18:00</p>
+        <p class="text-xs font-semibold mt-1" id="open-status-text">
+            <span id="status-dot" class="inline-block w-2 h-2 rounded-full mr-1" style="background-color: #22c55e;"></span>
+            <span id="status-text">Загрузка…</span>
+        </p>
+    </div>
+</div>
+
+<!-- Пушкинская карта -->
+<a href="https://www.culture.ru/pushkinskaya-karta" target="_blank" rel="noopener noreferrer" class="sidebar-card hover:shadow-md transition">
+    <div class="sidebar-icon flex-shrink-0" style="background-color: transparent; border: none; padding: 0;">
+        <img src="img/pushkinskaya_karta.png" 
+             alt="Пушкинская карта" 
+             class="w-10 h-10 object-contain rounded-lg sepia-[0.4] saturate-[0.8]">
+    </div>
+    <div>
+        <h4 class="font-serif font-bold text-sm text-[#3E2723]">Пушкинская карта</h4>
+        <p class="text-xs text-gray-600">Оплата доступна</p>
+        <span class="text-xs text-blue-700 font-medium hover:underline mt-1 inline-block">Купить билет</span>
+    </div>
+</a>
+
+    <!-- Ближайшее мероприятие -->
+    <div class="sidebar-card" id="upcoming-event-sidebar">
+        <div class="sidebar-icon bg-purple-100 text-purple-700 flex-shrink-0" id="event-icon-container">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+        </div>
+        <div class="flex-1 min-w-0">
+            <h4 class="font-serif font-bold text-sm text-[#3E2723]">Ближайшее мероприятие</h4>
+            <p class="text-xs text-gray-600" id="upcoming-event-title">Загрузка…</p>
+            <p class="text-xs text-gray-500" id="upcoming-event-date"></p>
+            <a href="#" id="upcoming-event-link" class="text-xs text-[#5D4037] font-bold hover:underline hidden">Подробнее</a>
+        </div>
+        <img id="upcoming-event-image" src="" alt="" class="hidden w-16 h-16 rounded-lg object-cover flex-shrink-0 ml-2">
+    </div>
+
+<!-- Интересный факт -->
+<div class="sidebar-card border-l-4 border-[#5D4037]" id="fun-fact-card" style="display: none;">
+    <div class="flex-1">
+        <h4 class="font-serif font-bold text-sm text-[#3E2723]">Интересный факт</h4>
+        <p class="text-xs text-gray-600" id="fun-fact-text">Загрузка…</p>
+    </div>
+</div>
+
+<!-- Экспонат дня -->
+<div class="sidebar-card border-l-4 border-[#5D4037]" id="exhibit-of-day-card" style="display: none;">
+    <div class="flex-1">
+        <h4 class="font-serif font-bold text-sm text-[#3E2723] mb-2">Экспонат дня</h4>
+        <div class="flex gap-3">
+            <img id="exhibit-of-day-img" src="" alt="" class="w-16 h-16 rounded-lg object-cover flex-shrink-0 border border-gray-200" style="display: none;">
+            <div>
+                <p class="text-xs font-semibold text-[#3E2723]" id="exhibit-of-day-title">Загрузка…</p>
+                <p class="text-xs text-gray-500" id="exhibit-of-day-date"></p>
+                <p class="text-xs text-gray-600 mt-1 line-clamp-2" id="exhibit-of-day-desc"></p>
+                <a href="#" id="exhibit-of-day-link" class="inline-block mt-1 text-xs text-[#5D4037] font-bold hover:underline">Подробнее</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="https://vk.ru/js/api/openapi.js?168"></script>
+    <script type="text/javascript">
+      VK.init({
+        apiId: 54586103,
+        onlyWidgets: true
+      });
+</script>
+
+
+
+<!-- Put this div tag to the place, where the Group block will be -->
+<div id="vk_groups"></div>
+<script type="text/javascript">
+  VK.Widgets.Group("vk_groups", {mode: 4, wide: 1, height: 400, width: "auto", color1: "FFFFFF", color2: "000000", color3: "5181B8"}, 238549299);
+</script>
+</aside>
+    </div>
+
+</main>
+
+<footer class="bg-[#3E2723] text-gray-300 py-12 border-t-4 border-[#5D4037]">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-8">
+            <!-- Логотип и название -->
+            <div>
+                <h4 class="font-serif text-2xl text-white mb-3">Кердемский музей</h4>
+                <p class="text-sm">Сохраняем историю и культуру якутского народа.</p>
+            </div>
+
+            <!-- Посетителям -->
+            <div>
+                <h5 class="font-bold text-white mb-3">Посетителям</h5>
+                <ul class="space-y-1 text-sm">
+                    <li><a href="/visit.html" class="hover:text-white">Часы работы</a></li>
+                    <li><a href="/reviews.html" class="hover:text-white">Отзывы</a></li>
+                    <li><a href="#" class="hover:text-white">Экскурсии</a></li>
+                    <li><a href="/rules.html" class="hover:text-white">Правила и льготы</a></li>
+                    <li><a href="#" class="hover:text-white" id="visual-impaired-footer">Версия для слабовидящих</a></li>
+                </ul>
+            </div>
+
+            <!-- О музее -->
+            <div>
+                <h5 class="font-bold text-white mb-3">О музее</h5>
+                <ul class="space-y-1 text-sm">
+                    <li><a href="/about.html" class="hover:text-white">История</a></li>
+                    <li><a href="/collections.html" class="hover:text-white">Коллекции</a></li>
+                   
+                    <li><a href="/documents.html" class="hover:text-white">Документы</a></li>
+                    <li><a href="/founder.html" class="hover:text-white">Сведения об учредителе</a></li>
+                    <li><a href="/quality.html" class="hover:text-white">Оценка качества услуг</a></li>
+                </ul>
+            </div>
+
+            <!-- Партнёрство -->
+            <div>
+                <h5 class="font-bold text-white mb-3">Партнёрство</h5>
+                <ul class="space-y-1 text-sm">
+                    <li><a href="/partnership.html" class="hover:text-white">Сотрудничество</a></li>
+                    <li><a href="/volunteers.html" class="hover:text-white">Волонтёрство</a></li>
+                    <li><a href="/donors.html" class="hover:text-white">Дарителям</a></li>
+                </ul>
+            </div>
+
+            <!-- Контакты -->
+            <div>
+                <h5 class="font-bold text-white mb-3">Контакты</h5>
+                <p class="text-sm">с. Кердем, ул. Ленина<br>+7 (41144) 24-3-17<br>samirtay@mail.ru</p>
+                <p class="mt-2 text-sm">
+                    <a href="/privacy.html" class="hover:text-white">Политика конфиденциальности</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Полезные ссылки -->
+        <div class="border-t border-[#5D4037]/20 mt-8 pt-6">
+            <h5 class="font-bold text-white text-center mb-4 text-base uppercase tracking-wider">Полезные ссылки</h5>
+            <div class="flex flex-wrap justify-center items-center gap-10 md:gap-14">
+                <!-- Госуслуги -->
+                <a href="https://www.gosuslugi.ru" target="_blank" rel="noopener noreferrer"
+                   class="transition-all duration-300 opacity-75 hover:opacity-100" style="filter: brightness(0.9) saturate(0.5);">
+                    <img src="img/gosuslugi.png" alt="Госуслуги" class="h-16 w-auto object-contain">
+                </a>
+                <!-- Минкульт Якутии -->
+                <a href="https://minkult.sakha.gov.ru" target="_blank" rel="noopener noreferrer"
+                   class="transition-all duration-300 opacity-75 hover:opacity-100" style="filter: brightness(0.9) saturate(0.5);">
+                    <img src="img/minkult_yakutia.png" alt="Министерство культуры Якутии" class="h-16 w-auto object-contain">
+                </a>
+                <!-- Портал Культура.РФ -->
+                <a href="https://culture.gov.ru/" target="_blank" rel="noopener noreferrer"
+                   class="transition-all duration-300 opacity-75 hover:opacity-100" style="filter: brightness(0.9) saturate(0.5);">
+                    <img src="img/ministerfstfo_kulutury_rf.png" alt="Культура.РФ" class="h-16 w-auto object-contain">
+                </a>
+                <!-- Pro.Культура.РФ -->
+                <a href="https://pro.culture.ru" target="_blank" rel="noopener noreferrer"
+                   class="transition-all duration-300 opacity-75 hover:opacity-100" style="filter: brightness(0.9) saturate(0.5);">
+                    <img src="img/kulutura_rf.png" alt="Pro.Культура.РФ" class="h-16 w-auto object-contain">
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Копирайт + ИНН/ОГРН -->
+    <div class="border-t border-[#5D4037] mt-8 pt-4 text-sm text-center text-gray-400">
+        <p>
+            © 2026 Кердемский музей-комплекс «Самыртай» им. Р.К. Захарова. Филиал МБУК «Хангаласский улусный краеведческий музей им. Г.В. Ксенофонтова».
+        </p>
+        <p class="mt-1">
+            ИНН 1234567890 / ОГРН 1234567890123
+        </p>
+    </div>
+</footer>
+
+
+<script src="js/main.js"></script>
+<script src="https://maps.api.2gis.ru/2.0/loader.js?pkg=full&key=a49e24e8-5b8a-4ccf-a669-fa3a4c710d11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const museumLat = 61.429328;
+        const museumLon = 129.201886;
+        const mapEl = document.getElementById('dgis-map');
+        if (!mapEl) return;
+        DG.then(function () {
+            const map = DG.map('dgis-map', { center: [museumLat, museumLon], zoom: 17, scrollWheelZoom: true });
+            DG.marker([museumLat, museumLon]).addTo(map).bindPopup('Кердемский музей-комплекс «Самыртай»').openPopup();
+        });
+        document.getElementById('dgis-route-btn')?.addEventListener('click', function () {
+            const lat = museumLat, lon = museumLon;
+            const appScheme = `dgis://2gis.ru/routeSearch/rsType/car/to/${lon},${lat}`;
+            const webUrl = `https://2gis.ru/geo/${lon},${lat}`;
+            const start = Date.now();
+            window.location.href = appScheme;
+            setTimeout(function () { if (Date.now() - start < 1500) window.location.href = webUrl; }, 1000);
+        });
+    });
+</script>
+<!-- Кнопка "Наверх" -->
+<div id="scroll-to-top" style="position: fixed; bottom: 30px; right: 30px; width: 48px; height: 48px; background: #5D4037; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</div>
+<script>
+    const scrollBtn = document.getElementById('scroll-to-top');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 600) {
+            scrollBtn.style.opacity = '1';
+            scrollBtn.style.visibility = 'visible';
+        } else {
+            scrollBtn.style.opacity = '0';
+            scrollBtn.style.visibility = 'hidden';
+        }
+    });
+    scrollBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+</script>
+<script src="js/search.js"></script>
+<script>
+(function() {
+    // 1. Плавное появление секций и карточек при скролле
+const revealElements = document.querySelectorAll(`
+    .exhibit-card,
+    .sidebar-card,
+    .event-list-item,
+    [id^="exhibits"],
+    [id^="news-container"],
+    [id^="events-list"]
+`);
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, { threshold: 0.2 });
+
+    revealElements.forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+        observer.observe(el);
+    });
+
+    // 2. Декоративные линии – расширение при появлении
+    const decorativeLines = document.querySelectorAll('.decorative-line');
+    decorativeLines.forEach(line => {
+        line.style.transform = 'scaleX(0)';
+        line.style.transition = 'transform 0.8s ease-out';
+        const lineObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    line.style.transform = 'scaleX(1)';
+                }
+            });
+        }, { threshold: 0.5 });
+        lineObserver.observe(line);
+    });
+
+    // 3. Анимация цифр в блоке «Наше наследие в цифрах»
+    const digitElements = document.querySelectorAll('.digit-animate');
+    const digitObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const el = entry.target;
+                const target = parseInt(el.getAttribute('data-target'));
+                const suffix = el.getAttribute('data-suffix') || '';
+                let current = 0;
+                const step = Math.ceil(target / 30);
+                const timer = setInterval(() => {
+                    current += step;
+                    if (current >= target) { current = target; clearInterval(timer); }
+                    el.textContent = current + suffix;
+                }, 40);
+                digitObserver.unobserve(el);
+            }
+        });
+    }, { threshold: 0.5 });
+
+    // Назначаем классы цифрам (нужно добавить в HTML)
+    // Для этого в index.html замените числовые значения в блоке «Наше наследие» на такие span:
+    // <span class="digit-animate" data-target="1991">0</span>
+    // <span class="digit-animate" data-target="900" data-suffix="+">0</span>
+    // <span class="digit-animate" data-target="3">0</span>
+    // <span class="digit-animate" data-target="33">0</span>
+    // (если не хотите трогать вёрстку, можно просто пропустить этот пункт)
+
+    document.querySelectorAll('.digit-animate').forEach(el => digitObserver.observe(el));
+
+    // 4. Ken Burns для Hero (очень медленное приближение)
+    const heroImg = document.querySelector('section.relative img');
+    if (heroImg) {
+        heroImg.style.transition = 'transform 20s ease-in-out';
+        heroImg.style.transform = 'scale(1.05)';
+    }
+})();
+</script>
+<script>
+(function() {
+    const slides = document.querySelectorAll('.hero-slide');
+    if (slides.length < 2) return;
+
+    let currentIndex = 0;
+
+    function nextSlide() {
+        const previousIndex = currentIndex;
+        currentIndex = (currentIndex + 1) % slides.length;
+
+        slides[previousIndex].classList.remove('active');
+        slides[currentIndex].classList.add('active');
+    }
+
+    // Смена каждые 6 секунд
+    setInterval(nextSlide, 6000);
+})();
+</script>
+<script>
+// Плавная прокрутка для всех якорных ссылок
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const target = document.querySelector(targetId);
+        if (target) {
+            e.preventDefault();
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
+</script>
+<div id="exhibit-modal" class="fixed inset-0 flex items-center justify-center bg-black/60 z-[9999] opacity-0 pointer-events-none transition-all duration-300">
+    <div id="exhibit-modal-content" class="bg-white rounded-xl shadow-xl p-6 max-w-lg w-full relative transform scale-95 transition-all duration-300">
+        <button type="button" class="absolute top-3 right-4 text-gray-500 hover:text-gray-700 text-2xl leading-none" onclick="closeExhibitModal()">&times;</button>
+        <img id="modal-exhibit-image" src="" alt="" class="w-full h-48 object-cover rounded-lg mb-4">
+        <span id="modal-exhibit-date" class="text-xs bg-[#5D4037] text-white px-2 py-1 rounded-full mb-2 inline-block"></span>
+        <h3 id="modal-exhibit-title" class="font-serif text-2xl font-bold text-[#3E2723] mt-2 mb-2"></h3>
+        <p id="modal-exhibit-desc" class="text-gray-600 text-sm mb-6"></p>
+        <a id="modal-exhibit-link" href="#" class="inline-block bg-[#5D4037] text-white px-5 py-2 rounded font-semibold hover:bg-[#3E2723] transition">Открыть карточку</a>
+        <!-- В будущем админка сможет скрывать эту кнопку через data-show-detail-button -->
+    </div>
+</div>
+<style>
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+</style>
+<script>
+    // Мобильное меню: раскрытие подменю "О музее"
+    const mobileAboutToggle = document.getElementById('mobile-about-toggle');
+    const mobileAboutSubmenu = document.getElementById('mobile-about-submenu');
+    const mobileAboutArrow = document.getElementById('mobile-about-arrow');
+
+    if (mobileAboutToggle && mobileAboutSubmenu && mobileAboutArrow) {
+        mobileAboutToggle.addEventListener('click', () => {
+            mobileAboutSubmenu.classList.toggle('hidden');
+            mobileAboutArrow.classList.toggle('rotate-180');
+        });
+    }
+
+    // Мобильное меню: раскрытие подменю "Экспозиция"
+const mobileExpoToggle = document.getElementById('mobile-expo-toggle');
+const mobileExpoSubmenu = document.getElementById('mobile-expo-submenu');
+const mobileExpoArrow = document.getElementById('mobile-expo-arrow');
+
+if (mobileExpoToggle && mobileExpoSubmenu && mobileExpoArrow) {
+    mobileExpoToggle.addEventListener('click', () => {
+        mobileExpoSubmenu.classList.toggle('hidden');
+        mobileExpoArrow.classList.toggle('rotate-180');
+    });
+}
+</script>
+</body>
+
+<script src="js/accessibility.js"></script>
+</html>

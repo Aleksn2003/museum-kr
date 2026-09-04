@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Админ‑панель</title>
+    <style>
+        body { font-family: sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+        .hidden { display: none; }
+        .tabs { margin-bottom: 1rem; }
+        .tab-btn { padding: 0.5rem 1rem; margin-right: 0.5rem; cursor: pointer; background: #eee; border: 1px solid #aaa; border-radius: 4px; }
+        .tab-btn.active { background: #5D4037; color: white; border-color: #5D4037; }
+        .form-group { margin-bottom: 0.8rem; }
+        label { display: block; margin-bottom: 0.2rem; font-weight: bold; }
+        input, textarea, select { width: 100%; padding: 0.4rem; box-sizing: border-box; }
+        button { padding: 0.4rem 1rem; background: #5D4037; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button.delete-btn { background: #c0392b; padding: 0.2rem 0.5rem; font-size: 0.85rem; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        th, td { border: 1px solid #ddd; padding: 0.5rem; text-align: left; }
+        th { background: #f5f5f5; }
+        .msg { margin: 0.5rem 0; padding: 0.5rem; border-radius: 4px; }
+        .msg.success { background: #d4edda; color: #155724; }
+        .msg.error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <div id="admin-panel">
+        <h1>Управление музеем</h1>
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="exhibits">Экспонаты</button>
+            <button class="tab-btn" data-tab="news">Новости</button>
+            <button class="tab-btn" data-tab="events">Мероприятия</button>
+            <button class="tab-btn" data-tab="categories">Категории</button>
+            <button class="tab-btn" data-tab="pages">Страницы</button>
+        </div>
+
+        <!-- Экспонаты -->
+        <div id="tab-exhibits" class="tab-content">
+            <h2>Добавить экспонат</h2>
+            <form id="exhibit-add-form">
+    <div class="form-group"><input type="text" id="ex-title" placeholder="Название" required></div>
+    <div class="form-group"><textarea id="ex-short" placeholder="Краткое описание"></textarea></div>
+    <div class="form-group"><textarea id="ex-desc" placeholder="Полное описание"></textarea></div>
+    <div class="form-group"><input type="text" id="ex-date" placeholder="Эпоха / дата"></div>
+    <div class="form-group"><input type="text" id="ex-material" placeholder="Материал (например, Лиственница)"></div>
+    <div class="form-group"><input type="text" id="ex-dimensions" placeholder="Размеры (например, 45×30×20 см)"></div>
+    <div class="form-group"><input type="text" id="ex-origin" placeholder="Происхождение (например, с. Тит‑Эбэ)"></div>
+    <div class="form-group"><input type="text" id="ex-audio-url" placeholder="Ссылка на аудиофайл (mp3)"></div>
+    <div class="form-group"><input type="text" id="ex-quote" placeholder="Цитата или легенда"></div>
+    <div class="form-group"><input type="text" id="ex-quote-author" placeholder="Автор цитаты"></div>
+    <!-- Категория -->
+    <div class="form-group">
+        <select id="ex-category" class="w-full border p-2 rounded">
+            <option value="">Без категории</option>
+        </select>
+    </div>
+    <!-- Главное фото -->
+    <div class="form-group">
+        <input type="file" id="ex-image-file" accept="image/*">
+        <small>Главное фото</small>
+    </div>
+    <!-- Галерея деталей (до 4 файлов) -->
+    <div class="form-group">
+        <label>Детали интерьера (до 4 фото)</label>
+        <input type="file" id="ex-gallery" accept="image/*" multiple>
+    </div>
+    <div class="form-group"><label><input type="checkbox" id="ex-featured"> Показать на главной</label></div>
+    <button type="submit">Добавить экспонат</button>
+</form>
+            <div id="exhibit-msg"></div>
+            <h3>Существующие экспонаты</h3>
+            <div id="exhibits-list"></div>
+        </div>
+
+        <!-- Новости -->
+        <div id="tab-news" class="tab-content hidden">
+            <h2>Добавить новость</h2>
+            <form id="news-add-form">
+                <div class="form-group"><input type="text" id="news-title" placeholder="Заголовок" required></div>
+                <div class="form-group"><textarea id="news-short" placeholder="Краткий анонс"></textarea></div>
+                <div class="form-group"><textarea id="news-full" placeholder="Полный текст"></textarea></div>
+                <div class="form-group"><input type="datetime-local" id="news-date" placeholder="Дата публикации"></div>
+                <div class="form-group">
+                    <input type="file" id="news-image-file" accept="image/*">
+                    <small style="color:#888">Загрузить изображение</small>
+                </div>
+                <button type="submit">Добавить новость</button>
+            </form>
+            <div id="news-msg"></div>
+            <h3>Существующие новости</h3>
+            <div id="news-list"></div>
+        </div>
+
+        <!-- Мероприятия -->
+        <div id="tab-events" class="tab-content hidden">
+            <h2>Добавить мероприятие</h2>
+            <form id="event-add-form">
+                <div class="form-group"><input type="text" id="event-title" placeholder="Название" required></div>
+                <div class="form-group"><textarea id="event-short" placeholder="Краткое описание"></textarea></div>
+                <div class="form-group"><textarea id="event-desc" placeholder="Полное описание"></textarea></div>
+                <div class="form-group"><input type="datetime-local" id="event-start" required></div>
+                <div class="form-group"><input type="datetime-local" id="event-end"></div>
+                <div class="form-group"><input type="text" id="event-location" placeholder="Место"></div>
+                <div class="form-group">
+                    <input type="file" id="event-image-file" accept="image/*">
+                    <small style="color:#888">Загрузить афишу</small>
+                </div>
+                <div class="form-group"><label><input type="checkbox" id="event-featured"> Показать на главной</label></div>
+                <button type="submit">Добавить мероприятие</button>
+            </form>
+            <div id="event-msg"></div>
+            <h3>Существующие мероприятия</h3>
+            <div id="events-list"></div>
+        </div>
+
+        <!-- Категории -->
+        <div id="tab-categories" class="tab-content hidden">
+            <h2>Добавить категорию</h2>
+            <form id="category-add-form">
+                <div class="form-group"><input type="text" id="cat-name" placeholder="Название" required></div>
+                <div class="form-group"><input type="text" id="cat-slug" placeholder="Slug (url-имя)" required></div>
+                <div class="form-group"><textarea id="cat-desc" placeholder="Описание"></textarea></div>
+                <div class="form-group"><input type="number" id="cat-order" placeholder="Порядок"></div>
+                <button type="submit">Добавить</button>
+            </form>
+            <div id="cat-msg"></div>
+            <h3>Существующие категории</h3>
+            <div id="categories-list"></div>
+        </div>
+        <!-- Вкладка "Страницы" -->
+<div id="tab-pages" class="tab-content hidden">
+    <h2>Редактирование страниц</h2>
+    
+    <div class="form-group">
+        <label>Выберите страницу:</label>
+        <select id="page-select">
+            <option value="">-- Выберите --</option>
+            <option value="/about.html">О музее</option>
+            <option value="/visit.html">Посетителям</option>
+            <option value="/history.html">История</option>
+            <option value="/architecture.html">Архитектура</option>
+        </select>
+    </div>
+
+    <div id="editor-container" style="display:none;">
+        <div class="form-group">
+            <label>Содержимое страницы:</label>
+            <div id="page-editor" style="height:400px; border:1px solid #ccc; padding:10px; background:#fff;"></div>
+        </div>
+        <button id="save-page-btn">Сохранить страницу</button>
+        <div id="page-msg"></div>
+    </div>
+</div>
+    </div>
+
+    <script>
+        const TOKEN = localStorage.getItem('token');
+        if (!TOKEN) window.location.href = '/admin.html';
+
+        // Переключение вкладок
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+                document.getElementById('tab-' + btn.dataset.tab).classList.remove('hidden');
+            });
+        });
+
+        // ====== ЗАГРУЗКА КАТЕГОРИЙ В SELECT ======
+        async function loadCategoryOptions() {
+            const select = document.getElementById('ex-category');
+            if (!select) return;
+            try {
+                const res = await fetch('/api/categories');
+                const cats = await res.json();
+                select.innerHTML = '<option value="">Без категории</option>';
+                cats.forEach(cat => {
+                    select.innerHTML += `<option value="${cat.id}">${cat.name}</option>`;
+                });
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        // ====== ЗАГРУЗКА СПИСКОВ ======
+        async function loadExhibitsList() {
+            const res = await fetch('/api/exhibits?page=1&per_page=100');
+            const data = await res.json();
+            const items = data.items || data; // fallback для старого формата
+            let html = '<table><tr><th>Название</th><th>Дата</th><th></th></tr>';
+            items.forEach(item => {
+                html += `<tr><td>${item.title}</td><td>${item.creation_date || ''}</td>
+                <td><button class="delete-btn" onclick="deleteItem('exhibits','${item.id}')">Удалить</button></td></tr>`;
+            });
+            html += '</table>';
+            document.getElementById('exhibits-list').innerHTML = html || '<p>Нет экспонатов</p>';
+        }
+
+        async function loadNewsList() {
+            const res = await fetch('/api/news');
+            const data = await res.json();
+            let html = '<table><tr><th>Заголовок</th><th>Дата</th><th></th></tr>';
+            data.forEach(item => {
+                html += `<tr><td>${item.title}</td><td>${item.published_at ? new Date(item.published_at).toLocaleDateString('ru-RU') : ''}</td>
+                <td><button class="delete-btn" onclick="deleteItem('news','${item.id}')">Удалить</button></td></tr>`;
+            });
+            html += '</table>';
+            document.getElementById('news-list').innerHTML = html || '<p>Нет новостей</p>';
+        }
+
+        async function loadEventsList() {
+            const res = await fetch('/api/events');
+            const data = await res.json();
+            let html = '<table><tr><th>Название</th><th>Начало</th><th></th></tr>';
+            data.forEach(item => {
+                html += `<tr><td>${item.title}</td><td>${new Date(item.start_date).toLocaleString('ru-RU')}</td>
+                <td><button class="delete-btn" onclick="deleteItem('events','${item.id}')">Удалить</button></td></tr>`;
+            });
+            html += '</table>';
+            document.getElementById('events-list').innerHTML = html || '<p>Нет мероприятий</p>';
+        }
+
+        async function loadCategoriesList() {
+            const res = await fetch('/api/categories');
+            const data = await res.json();
+            let html = '<table><tr><th>Название</th><th>Slug</th><th></th></tr>';
+            data.forEach(item => {
+                html += `<tr><td>${item.name}</td><td>${item.slug}</td>
+                <td><button class="delete-btn" onclick="deleteItem('categories','${item.id}')">Удалить</button></td></tr>`;
+            });
+            html += '</table>';
+            document.getElementById('categories-list').innerHTML = html || '<p>Нет категорий</p>';
+        }
+
+        window.deleteItem = async (type, id) => {
+            if (!confirm('Удалить?')) return;
+            await fetch(`/api/${type}/${id}`, { method: 'DELETE', headers: {'Authorization': 'Bearer ' + TOKEN} });
+            if (type === 'exhibits') loadExhibitsList();
+            else if (type === 'news') loadNewsList();
+            else if (type === 'events') loadEventsList();
+            else if (type === 'categories') {
+                loadCategoriesList();
+                loadCategoryOptions(); // обновить select при добавлении экспоната
+            }
+        };
+
+        // Инициализация
+        loadExhibitsList();
+        loadNewsList();
+        loadEventsList();
+        loadCategoriesList();
+        loadCategoryOptions();
+
+        // ====== УНИВЕРСАЛЬНАЯ ФУНКЦИЯ ЗАГРУЗКИ ФАЙЛА ======
+        async function uploadImage(fileInput) {
+            if (!fileInput || fileInput.files.length === 0) return '';
+            const formData = new FormData();
+            formData.append('image', fileInput.files[0]);
+            const res = await fetch('/api/upload', {
+                method: 'POST',
+                headers: {'Authorization': 'Bearer ' + TOKEN},
+                body: formData
+            });
+            const data = await res.json();
+            if (data.url) return data.url;
+            throw new Error(data.error || 'Ошибка загрузки');
+        }
+
+        // ====== ДОБАВЛЕНИЕ ЭКСПОНАТА (ПОЛНЫЙ) ======
+        document.getElementById('exhibit-add-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const msgEl = document.getElementById('exhibit-msg');
+            try {
+                // Загружаем главное фото
+                const mainImageUrl = await uploadImage(document.getElementById('ex-image-file'));
+
+                // Загружаем галерею деталей
+                const galleryInput = document.getElementById('ex-gallery');
+                let galleryUrls = [];
+                if (galleryInput.files.length > 0) {
+                    for (let i = 0; i < Math.min(galleryInput.files.length, 4); i++) {
+                        const formData = new FormData();
+                        formData.append('image', galleryInput.files[i]);
+                        const res = await fetch('/api/upload', {
+                            method: 'POST',
+                            headers: {'Authorization': 'Bearer ' + TOKEN},
+                            body: formData
+                        });
+                        const data = await res.json();
+                        if (data.url) galleryUrls.push(data.url);
+                    }
+                }
+
+                const body = {
+                    title: document.getElementById('ex-title').value,
+                    short_description: document.getElementById('ex-short').value,
+                    description: document.getElementById('ex-desc').value,
+                    creation_date: document.getElementById('ex-date').value,
+                    material: document.getElementById('ex-material').value,
+                    dimensions: document.getElementById('ex-dimensions').value,
+                    origin: document.getElementById('ex-origin').value,
+                    audio_url: document.getElementById('ex-audio-url').value,
+                    quote: document.getElementById('ex-quote').value,
+                    quote_author: document.getElementById('ex-quote-author').value,
+                    image_url: mainImageUrl,
+                    images: galleryUrls,
+                    category_id: document.getElementById('ex-category').value || null,
+                    is_featured: document.getElementById('ex-featured').checked
+                };
+
+                const res = await fetch('/api/exhibits', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN},
+                    body: JSON.stringify(body)
+                });
+                const data = await res.json();
+
+                if (data.id) {
+                    msgEl.className = 'msg success';
+                    msgEl.textContent = '✅ Экспонат добавлен!';
+                    document.getElementById('exhibit-add-form').reset();
+                    loadExhibitsList();           // обновить таблицу
+                    loadCategoryOptions();        // обновить счётчики в категориях
+                } else {
+                    msgEl.className = 'msg error';
+                    msgEl.textContent = '❌ Ошибка: ' + JSON.stringify(data);
+                }
+            } catch (err) {
+                msgEl.className = 'msg error';
+                msgEl.textContent = '❌ Ошибка соединения: ' + err.message;
+            }
+        });
+
+        // ====== ДОБАВЛЕНИЕ НОВОСТИ ======
+        document.getElementById('news-add-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            try {
+                const imageUrl = await uploadImage(document.getElementById('news-image-file'));
+                const body = {
+                    title: document.getElementById('news-title').value,
+                    short_text: document.getElementById('news-short').value,
+                    content: document.getElementById('news-full').value,
+                    image_url: imageUrl,
+                    published_at: document.getElementById('news-date').value || undefined
+                };
+                const res = await fetch('/api/news', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN},
+                    body: JSON.stringify(body)
+                });
+                const data = await res.json();
+                document.getElementById('news-msg').className = data.id ? 'msg success' : 'msg error';
+                document.getElementById('news-msg').textContent = data.id ? 'Добавлено' : ('Ошибка: '+JSON.stringify(data));
+                if (data.id) {
+                    document.getElementById('news-add-form').reset();
+                    loadNewsList();
+                }
+            } catch (err) {
+                document.getElementById('news-msg').className = 'msg error';
+                document.getElementById('news-msg').textContent = err.message;
+            }
+        });
+
+        // ====== ДОБАВЛЕНИЕ МЕРОПРИЯТИЯ ======
+        document.getElementById('event-add-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            try {
+                const imageUrl = await uploadImage(document.getElementById('event-image-file'));
+                const body = {
+                    title: document.getElementById('event-title').value,
+                    short_text: document.getElementById('event-short').value,
+                    description: document.getElementById('event-desc').value,
+                    start_date: document.getElementById('event-start').value,
+                    end_date: document.getElementById('event-end').value || null,
+                    location: document.getElementById('event-location').value,
+                    image_url: imageUrl,
+                    is_featured: document.getElementById('event-featured').checked
+                };
+                const res = await fetch('/api/events', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN},
+                    body: JSON.stringify(body)
+                });
+                const data = await res.json();
+                document.getElementById('event-msg').className = data.id ? 'msg success' : 'msg error';
+                document.getElementById('event-msg').textContent = data.id ? 'Добавлено' : ('Ошибка: '+JSON.stringify(data));
+                if (data.id) {
+                    document.getElementById('event-add-form').reset();
+                    loadEventsList();
+                }
+            } catch (err) {
+                document.getElementById('event-msg').className = 'msg error';
+                document.getElementById('event-msg').textContent = err.message;
+            }
+        });
+
+        // ====== ДОБАВЛЕНИЕ КАТЕГОРИИ ======
+        document.getElementById('category-add-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            try {
+                const body = {
+                    name: document.getElementById('cat-name').value,
+                    slug: document.getElementById('cat-slug').value,
+                    description: document.getElementById('cat-desc').value,
+                    order_index: document.getElementById('cat-order').value || 0
+                };
+                const res = await fetch('/api/categories', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN},
+                    body: JSON.stringify(body)
+                });
+                const data = await res.json();
+                document.getElementById('cat-msg').className = data.id ? 'msg success' : 'msg error';
+                document.getElementById('cat-msg').textContent = data.id ? 'Добавлено' : ('Ошибка: '+JSON.stringify(data));
+                if (data.id) {
+                    document.getElementById('category-add-form').reset();
+                    loadCategoriesList();
+                    loadCategoryOptions();
+                }
+            } catch (err) {
+                document.getElementById('cat-msg').className = 'msg error';
+                document.getElementById('cat-msg').textContent = err.message;
+            }
+        });
+    </script>
+    <!-- Quill Editor -->
+<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+
+<script>
+    let quill;
+
+    // Инициализация редактора
+    function initEditor() {
+        if (quill) return;
+        quill = new Quill('#page-editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['link', 'image'],
+                    ['clean']
+                ]
+            }
+        });
+    }
+
+    // Загрузка контента страницы
+    document.getElementById('page-select').addEventListener('change', async function() {
+        const url = this.value;
+        if (!url) {
+            document.getElementById('editor-container').style.display = 'none';
+            return;
+        }
+
+        document.getElementById('editor-container').style.display = 'block';
+        initEditor();
+
+        const res = await fetch('/api/page?url=' + encodeURIComponent(url));
+        const data = await res.json();
+        if (data.content) {
+            quill.root.innerHTML = data.content;
+        } else {
+            quill.root.innerHTML = '<p>Новый контент страницы...</p>';
+        }
+    });
+
+    // Сохранение контента
+    document.getElementById('save-page-btn').addEventListener('click', async function() {
+        const url = document.getElementById('page-select').value;
+        const content = quill.root.innerHTML;
+        const msg = document.getElementById('page-msg');
+
+        const res = await fetch('/api/page', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + TOKEN
+            },
+            body: JSON.stringify({ page_url: url, content: content })
+        });
+
+        const data = await res.json();
+        if (data.success) {
+            msg.className = 'msg success';
+            msg.textContent = 'Страница сохранена!';
+        } else {
+            msg.className = 'msg error';
+            msg.textContent = 'Ошибка сохранения';
+        }
+    });
+</script>
+</body>
+</html>

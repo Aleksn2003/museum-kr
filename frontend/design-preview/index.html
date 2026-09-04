@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кердемский музей (предпросмотр)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'PT Sans', sans-serif; }
+        .font-serif { font-family: 'PT Serif', serif; }
+    </style>
+</head>
+<body class="bg-[#FDF8F5] text-gray-800 antialiased">
+
+<!-- Шапка (классическая, с тенью и подчёркиванием) -->
+<header class="bg-white border-b-2 border-[#5D4037] shadow-md sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="/" class="flex items-center gap-3">
+            <div class="w-12 h-12 bg-[#5D4037] rounded-sm flex items-center justify-center text-white font-serif text-2xl font-bold">М</div>
+            <div>
+                <span class="font-serif text-xl font-bold text-[#3E2723] block">Кердемский музей</span>
+                <span class="text-xs text-[#8D6E63]">комплекс «Самыртай»</span>
+            </div>
+        </a>
+        <nav class="hidden lg:flex gap-6 items-center">
+            <a href="#" class="nav-link font-medium text-[#5D4037] hover:text-[#3E2723] pb-1 border-b-2 border-transparent hover:border-[#5D4037] transition">Главная</a>
+            <a href="#" class="nav-link font-medium text-[#5D4037] hover:text-[#3E2723] pb-1 border-b-2 border-transparent hover:border-[#5D4037] transition">О музее</a>
+            <a href="#" class="nav-link font-medium text-[#5D4037] hover:text-[#3E2723] pb-1 border-b-2 border-transparent hover:border-[#5D4037] transition">Коллекции</a>
+            <a href="#" class="nav-link font-medium text-[#5D4037] hover:text-[#3E2723] pb-1 border-b-2 border-transparent hover:border-[#5D4037] transition">Афиша</a>
+            <a href="#" class="nav-link font-medium text-[#5D4037] hover:text-[#3E2723] pb-1 border-b-2 border-transparent hover:border-[#5D4037] transition">Контакты</a>
+            <a href="#" class="bg-[#5D4037] text-white px-5 py-2 rounded font-medium hover:bg-[#3E2723] transition">Посетить</a>
+        </nav>
+        <button id="menu-toggle" class="lg:hidden p-2 text-[#5D4037]">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+    </div>
+    <div id="mobile-menu" class="hidden lg:hidden bg-white border-t px-4 py-3 space-y-2">
+        <a href="#" class="block py-1 text-[#5D4037] font-medium">Главная</a>
+        <a href="#" class="block py-1 text-[#5D4037] font-medium">О музее</a>
+        <a href="#" class="block py-1 text-[#5D4037] font-medium">Коллекции</a>
+        <a href="#" class="block py-1 text-[#5D4037] font-medium">Афиша</a>
+        <a href="#" class="block py-1 text-[#5D4037] font-medium">Контакты</a>
+        <a href="#" class="block py-1 text-[#5D4037] font-semibold">Посетить</a>
+    </div>
+</header>
+
+<section class="relative py-24 px-4 overflow-hidden text-white">
+    <!-- Фоновое изображение (только фото, без цветного градиента) -->
+    <img src="img/muzej-kompleks-samyrtaj.jpg" 
+         alt="Музейный комплекс Самыртай" 
+         class="absolute inset-0 w-full h-full object-cover z-0">
+    
+    <!-- Лёгкое равномерное затемнение для читаемости текста (без градиента) -->
+    <div class="absolute inset-0 bg-black/50 z-10"></div>
+    
+    <!-- Контент -->
+    <div class="container mx-auto max-w-5xl text-center relative z-20">
+        <h1 class="font-serif text-4xl lg:text-6xl font-bold mb-4 leading-tight">Кердемский музей.<br>Комплекс «Самыртай»</h1>
+        <p class="text-lg lg:text-xl text-gray-200 mb-8 max-w-2xl mx-auto">Этнографический музей под открытым небом. Памятники XIX века, быт и культура якутов.</p>
+        <div class="flex justify-center gap-4">
+            <a href="#" class="bg-white text-[#3E2723] px-8 py-3 rounded font-bold hover:bg-gray-200 transition">Смотреть экспонаты</a>
+            <a href="#" class="border-2 border-white text-white px-8 py-3 rounded font-bold hover:bg-white hover:text-[#3E2723] transition">Как добраться</a>
+        </div>
+    </div>
+</section>
+
+<!-- Быстрые карточки (как на старых сайтах – иконки и пояснения) -->
+<section class="py-12 bg-[#FDF8F5]">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
+            <div class="bg-white p-6 rounded shadow text-center border-t-4 border-[#5D4037]">
+                <div class="w-10 h-10 mx-auto mb-3 bg-[#5D4037] rounded-full flex items-center justify-center text-white font-bold">🕐</div>
+                <h3 class="font-serif font-bold text-lg mb-2">Часы работы</h3>
+                <p class="text-sm text-gray-600">Вт–Сб: 10:00–18:00<br>Вс, Пн: выходной</p>
+            </div>
+            <div class="bg-white p-6 rounded shadow text-center border-t-4 border-[#5D4037]">
+                <div class="w-10 h-10 mx-auto mb-3 bg-[#5D4037] rounded-full flex items-center justify-center text-white font-bold">📍</div>
+                <h3 class="font-serif font-bold text-lg mb-2">Адрес</h3>
+                <p class="text-sm text-gray-600">с. Кердем, ул. Ленина</p>
+            </div>
+            <div class="bg-white p-6 rounded shadow text-center border-t-4 border-[#5D4037]">
+                <div class="w-10 h-10 mx-auto mb-3 bg-[#5D4037] rounded-full flex items-center justify-center text-white font-bold">📞</div>
+                <h3 class="font-serif font-bold text-lg mb-2">Телефон</h3>
+                <p class="text-sm text-gray-600">+7 (41144) 24-3-17</p>
+            </div>
+            <div class="bg-white p-6 rounded shadow text-center border-t-4 border-[#5D4037]">
+                <div class="w-10 h-10 mx-auto mb-3 bg-[#5D4037] rounded-full flex items-center justify-center text-white font-bold">🏛️</div>
+                <h3 class="font-serif font-bold text-lg mb-2">Экскурсии</h3>
+                <p class="text-sm text-gray-600">По записи</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- О музее (текст + цветной блок вместо фото) -->
+<section class="py-16 bg-white">
+    <div class="container mx-auto px-4 max-w-6xl">
+        <div class="flex flex-col lg:flex-row gap-8 items-start">
+            <div class="flex-1">
+                <span class="text-[#8D6E63] uppercase tracking-widest text-sm font-bold">Основан в 1991 году</span>
+                <h2 class="font-serif text-4xl font-bold mt-2 mb-4 text-[#3E2723]">Музейный комплекс «Самыртай»</h2>
+                <p class="text-gray-700 leading-relaxed mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nec lacus velit. Donec pharetra, magna at tristique tincidunt, purus justo aliquet nisl, eget vehicula nunc nisl ut justo. Proin vitae sapien auctor, tempor risus at, faucibus magna.</p>
+                <p class="text-gray-700 leading-relaxed mb-4">Nullam dignissim, velit ut sodales fermentum, nibh ex malesuada nisl, id suscipit lorem elit vitae nisl. Mauris scelerisque eros id auctor tincidunt. Sed tempus turpis vel auctor condimentum.</p>
+                <p class="text-[#5D4037] font-semibold">С 2021 года филиал Хангаласского музея.</p>
+            </div>
+            <div class="lg:w-2/5 flex-shrink-0">
+                <div class="h-48 lg:h-56 w-full rounded-lg overflow-hidden border border-gray-300 shadow-sm">
+                    <img src="https://hangalas-museum.kultura14.ru/wp-content/uploads/sites/4/2024/04/veptq-1024x768.jpg"
+                         alt="Музейный комплекс"
+                         class="w-full h-full object-cover sepia-[0.25]">
+                </div>
+                <p class="text-xs text-gray-500 mt-1 text-center italic">Музейный комплекс «Самыртай»</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Экспонаты (цветные блоки вместо картинок) -->
+<section class="py-16 bg-[#FDF8F5]">
+    <div class="container mx-auto px-4 max-w-6xl">
+        <div class="flex justify-between items-end mb-8">
+            <div>
+                <span class="text-[#8D6E63] uppercase tracking-widest text-sm font-bold">Фонды музея</span>
+                <h2 class="font-serif text-4xl font-bold mt-2 text-[#3E2723]">Уникальные экспонаты</h2>
+                <div class="w-16 h-1 bg-[#5D4037] mt-2"></div>
+            </div>
+            <a href="#" class="text-[#5D4037] font-bold hover:underline">Все коллекции →</a>
+        </div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Карточка 1 -->
+    <div class="bg-white rounded shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition">
+        <img src="https://hangalas-museum.kultura14.ru/wp-content/uploads/sites/4/2024/04/img_9574-768x1024.jpeg" alt="Экспонат" class="h-48 w-full object-cover border-b-2 border-[#5D4037]">
+        <div class="p-4">
+            <span class="text-xs bg-[#5D4037] text-white px-2 py-1 rounded-full">XIX век</span>
+            <h3 class="font-serif text-xl font-bold mt-2 mb-1">Самовар тульский</h3>
+            <p class="text-gray-600 text-sm line-clamp-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <a href="#" class="inline-block mt-3 text-[#5D4037] font-semibold hover:underline">Подробнее</a>
+        </div>
+    </div>
+    <!-- Карточка 2 -->
+    <div class="bg-white rounded shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition">
+        <img src="https://hangalas-museum.kultura14.ru/wp-content/uploads/sites/4/2024/04/img_9570.jpeg" alt="Экспонат" class="h-48 w-full object-cover border-b-2 border-[#5D4037]">
+        <div class="p-4">
+            <span class="text-xs bg-[#5D4037] text-white px-2 py-1 rounded-full">XVIII век</span>
+            <h3 class="font-serif text-xl font-bold mt-2 mb-1">Прялка расписная</h3>
+            <p class="text-gray-600 text-sm line-clamp-2">Nullam dignissim, velit ut sodales fermentum, nibh ex malesuada nisl.</p>
+            <a href="#" class="inline-block mt-3 text-[#5D4037] font-semibold hover:underline">Подробнее</a>
+        </div>
+    </div>
+    <!-- Карточка 3 -->
+    <div class="bg-white rounded shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition">
+        <img src="https://hangalas-museum.kultura14.ru/wp-content/uploads/sites/4/2024/04/img_9603.jpeg" alt="Экспонат" class="h-48 w-full object-cover border-b-2 border-[#5D4037]">
+        <div class="p-4">
+            <span class="text-xs bg-[#5D4037] text-white px-2 py-1 rounded-full">До н.э.</span>
+            <h3 class="font-serif text-xl font-bold mt-2 mb-1">Амулет шамана</h3>
+            <p class="text-gray-600 text-sm line-clamp-2">Sed tempus turpis vel auctor condimentum. Mauris scelerisque eros.</p>
+            <a href="#" class="inline-block mt-3 text-[#5D4037] font-semibold hover:underline">Подробнее</a>
+        </div>
+    </div>
+</div>
+    </div>
+</section>
+
+
+<!-- Новости -->
+<section class="py-16 bg-white">
+    <div class="container mx-auto px-4 max-w-6xl">
+        <div class="mb-8">
+            <span class="text-[#8D6E63] uppercase tracking-widest text-sm font-bold">Новостной</span>
+            <h2 class="font-serif text-4xl font-bold mt-2 text-[#3E2723]">Свежие новости</h2>
+            <div class="w-16 h-1 bg-[#5D4037] mt-2"></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- карточки остаются те же -->
+            <div class="bg-white rounded shadow-md overflow-hidden border-l-4 border-[#5D4037] hover:shadow-lg transition">
+                <img src="https://picsum.photos/400/250?random=20" alt="Новость" class="h-36 w-full object-cover">
+                <div class="p-4">
+                    <span class="text-xs text-[#8D6E63] font-semibold">📅 28 апреля 2026</span>
+                    <h3 class="font-serif font-bold text-lg mb-1">Квиз-игра «История края»</h3>
+                    <p class="text-sm text-gray-600 line-clamp-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <a href="#" class="inline-block mt-2 text-[#5D4037] font-semibold hover:underline">Подробнее</a>
+                </div>
+            </div>
+            <div class="bg-white rounded shadow-md overflow-hidden border-l-4 border-[#5D4037] hover:shadow-lg transition">
+                <img src="https://picsum.photos/400/250?random=21" alt="Новость" class="h-36 w-full object-cover">
+                <div class="p-4">
+                    <span class="text-xs text-[#8D6E63] font-semibold">📅 12 мая 2026</span>
+                    <h3 class="font-serif font-bold text-lg mb-1">Выставка национальной одежды</h3>
+                    <p class="text-sm text-gray-600 line-clamp-2">Nullam dignissim, velit ut sodales fermentum.</p>
+                    <a href="#" class="inline-block mt-2 text-[#5D4037] font-semibold hover:underline">Подробнее</a>
+                </div>
+            </div>
+            <div class="bg-white rounded shadow-md overflow-hidden border-l-4 border-[#5D4037] hover:shadow-lg transition">
+                <img src="https://picsum.photos/400/250?random=22" alt="Новость" class="h-36 w-full object-cover">
+                <div class="p-4">
+                    <span class="text-xs text-[#8D6E63] font-semibold">📅 1 июня 2026</span>
+                    <h3 class="font-serif font-bold text-lg mb-1">Детский мастер-класс</h3>
+                    <p class="text-sm text-gray-600 line-clamp-2">Proin vitae sapien auctor, tempor risus at, faucibus magna.</p>
+                    <a href="#" class="inline-block mt-2 text-[#5D4037] font-semibold hover:underline">Подробнее</a>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-8">
+            <a href="#" class="inline-block bg-[#5D4037] text-white px-6 py-3 rounded font-bold hover:bg-[#3E2723] transition">Все новости</a>
+        </div>
+    </div>
+</section>
+
+
+<!-- Мероприятия -->
+<section class="py-16 bg-[#FDF8F5]">
+    <div class="container mx-auto px-4 max-w-6xl">
+        <div class="mb-8">
+            <span class="text-[#8D6E63] uppercase tracking-widest text-sm font-bold">Афиша</span>
+            <h2 class="font-serif text-4xl font-bold mt-2 text-[#3E2723]">Мероприятий и событий</h2>
+            <div class="w-16 h-1 bg-[#5D4037] mt-2"></div>
+        </div>
+        <div class="bg-white rounded shadow-md divide-y divide-gray-200 border border-gray-200">
+            <!-- список из трёх элементов с миниатюрами -->
+            <div class="p-4 hover:bg-gray-50 flex flex-col sm:flex-row sm:items-center gap-4">
+                <img src="https://picsum.photos/80/80?random=30" alt="Мероприятие" class="w-16 h-16 object-cover rounded-full flex-shrink-0">
+                <div>
+                    <span class="text-sm font-bold text-[#8D6E63]">28 апреля 2026</span>
+                    <h3 class="font-serif font-bold text-lg">Квиз-игра «История края»</h3>
+                    <p class="text-gray-600 text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <a href="#" class="text-[#5D4037] text-sm font-semibold hover:underline">Подробнее</a>
+                </div>
+            </div>
+            <div class="p-4 hover:bg-gray-50 flex flex-col sm:flex-row sm:items-center gap-4">
+                <img src="https://picsum.photos/80/80?random=31" alt="Мероприятие" class="w-16 h-16 object-cover rounded-full flex-shrink-0">
+                <div>
+                    <span class="text-sm font-bold text-[#8D6E63]">12 мая 2026</span>
+                    <h3 class="font-serif font-bold text-lg">Выставка национальной одежды</h3>
+                    <p class="text-gray-600 text-sm">Curabitur nec lacus velit. Donec pharetra magna at tristique.</p>
+                    <a href="#" class="text-[#5D4037] text-sm font-semibold hover:underline">Подробнее</a>
+                </div>
+            </div>
+            <div class="p-4 hover:bg-gray-50 flex flex-col sm:flex-row sm:items-center gap-4">
+                <img src="https://picsum.photos/80/80?random=32" alt="Мероприятие" class="w-16 h-16 object-cover rounded-full flex-shrink-0">
+                <div>
+                    <span class="text-sm font-bold text-[#8D6E63]">1 июня 2026</span>
+                    <h3 class="font-serif font-bold text-lg">Детский мастер-класс</h3>
+                    <p class="text-gray-600 text-sm">Nullam dignissim velit ut sodales fermentum nibh ex.</p>
+                    <a href="#" class="text-[#5D4037] text-sm font-semibold hover:underline">Подробнее</a>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-6">
+            <a href="#" class="inline-block bg-[#5D4037] text-white px-6 py-3 rounded font-bold hover:bg-[#3E2723] transition">Вся афиша</a>
+        </div>
+    </div>
+</section>
+
+<!-- Контакты и форма -->
+<section class="py-16 bg-white">
+    <div class="container mx-auto px-4 max-w-6xl">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div>
+                <h2 class="font-serif text-3xl font-bold mb-4 text-[#3E2723]">Контакты</h2>
+                <div class="space-y-4 text-gray-700">
+                    <div><strong>Адрес:</strong> Республика Саха (Якутия), Хангаласский улус, с. Кердем, ул. Ленина</div>
+                    <div><strong>Телефон:</strong> +7 (41144) 24-3-17</div>
+                    <div><strong>Email:</strong> samirtay@mail.ru</div>
+                    <div><strong>Часы работы:</strong> Вт–Сб: 10:00–18:00, Вс–Пн: выходной</div>
+                </div>
+                <!-- Карта 2ГИС (статичная) -->
+                <div class="mt-6 h-64 bg-[#D7CCC8] rounded shadow flex items-center justify-center text-xl font-serif border border-gray-300">
+                    🗺️ Схема проезда (2ГИС)
+                </div>
+            </div>
+            <div class="bg-[#FDF8F5] p-6 rounded shadow border border-gray-200">
+                <h3 class="font-serif text-2xl font-bold mb-4 text-[#3E2723]">Напишите нам</h3>
+                <form class="space-y-4">
+                    <input type="text" placeholder="Ваше имя" class="w-full border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-[#5D4037]">
+                    <input type="email" placeholder="Ваш email" class="w-full border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-[#5D4037]">
+                    <textarea rows="4" placeholder="Ваше сообщение" class="w-full border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-[#5D4037]"></textarea>
+                    <button type="submit" class="bg-[#5D4037] text-white px-6 py-3 rounded font-bold hover:bg-[#3E2723] transition w-full">Отправить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Соцсети -->
+<section class="py-8 bg-[#FDF8F5] border-t-2 border-[#5D4037]">
+    <div class="container mx-auto text-center">
+        <h3 class="font-serif text-xl font-bold mb-4 text-[#3E2723]">Мы в социальных сетях</h3>
+        <div class="flex justify-center gap-6">
+            <a href="#" class="text-[#5D4037] hover:text-[#8D6E63] transition font-bold">ВКонтакте</a>
+            <a href="#" class="text-[#5D4037] hover:text-[#8D6E63] transition font-bold">WhatsApp</a>
+            <a href="#" class="text-[#5D4037] hover:text-[#8D6E63] transition font-bold">Max</a>
+        </div>
+    </div>
+</section>
+
+<!-- Подвал -->
+<footer class="bg-[#3E2723] text-gray-300 py-12 border-t-4 border-[#5D4037]">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+                <h4 class="font-serif text-2xl text-white mb-3">Кердемский музей</h4>
+                <p class="text-sm">Сохраняем историю и культуру якутского народа.</p>
+            </div>
+            <div>
+                <h5 class="font-bold text-white mb-3">Посетителям</h5>
+                <ul class="space-y-1 text-sm">
+                    <li><a href="#" class="hover:text-white">Часы работы</a></li>
+                    <li><a href="#" class="hover:text-white">Билеты и цены</a></li>
+                    <li><a href="#" class="hover:text-white">Экскурсии</a></li>
+                </ul>
+            </div>
+            <div>
+                <h5 class="font-bold text-white mb-3">О музее</h5>
+                <ul class="space-y-1 text-sm">
+                    <li><a href="#" class="hover:text-white">История</a></li>
+                    <li><a href="#" class="hover:text-white">Коллекции</a></li>
+                    <li><a href="#" class="hover:text-white">Основатель</a></li>
+                </ul>
+            </div>
+            <div>
+                <h5 class="font-bold text-white mb-3">Контакты</h5>
+                <p class="text-sm">с. Кердем, ул. Ленина<br>+7 (41144) 24-3-17<br>samirtay@mail.ru</p>
+            </div>
+        </div>
+        <div class="border-t border-[#5D4037] mt-8 pt-4 text-sm text-center text-gray-400">
+            © 2026 Кердемский музей-комплекс «Самыртай» им. Р.К. Захарова. Филиал МБУК «Хангаласский улусный краеведческий музей им. Г.В. Ксенофонтова».
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Мобильное меню
+    document.getElementById('menu-toggle').addEventListener('click', function() {
+        document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+</script>
+
+</body>
+</html>

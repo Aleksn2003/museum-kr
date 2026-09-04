@@ -1,0 +1,52 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: museum-db
+    environment:
+      POSTGRES_USER: museum
+      POSTGRES_PASSWORD: museum123
+      POSTGRES_DB: museum_db
+    volumes:
+      # Подключаем переименованный внизу старый том
+      - pgdata_old:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+
+  api:
+    build:
+      context: ./backend
+      
+    container_name: museum-api
+    depends_on:
+      - db
+    volumes:
+      - ./backend:/var/www/html
+      - ./frontend/img/uploads:/var/www/html/uploads
+    ports:
+      - "3000:80"
+      
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: museum_db
+      DB_USER: museum
+      DB_PASSWORD: museum123
+      JWT_SECRET: super-secret
+
+  web:
+    image: nginx:alpine
+    container_name: museum-web
+    depends_on:
+      - api
+    ports:
+      - "8080:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+
+volumes:
+  # Направляем внутреннее имя pgdata_old на ваш реальный старый том на диске
+  pgdata_old:
+    external: true
+    name: museum_pgdata
