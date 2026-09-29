@@ -4,6 +4,7 @@ namespace App\Controllers;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use App\Support\Localization;
 
 class NewsController
 {
@@ -15,8 +16,8 @@ class NewsController
     public function latest(Request $request, Response $response): Response
     {
         $db = $this->container->get('database');
-        $stmt = $db->query('SELECT id, title, short_text, published_at, image_url FROM news WHERE is_deleted = false ORDER BY published_at DESC');
-        $data = $stmt->fetchAll();
+        $stmt = $db->query('SELECT id, title, title_en, short_text, short_text_en, published_at, image_url FROM news WHERE is_deleted = false ORDER BY published_at DESC');
+        $data = Localization::rows($stmt->fetchAll(), Localization::language($request), ['title', 'short_text']);
         $response->getBody()->write(json_encode($data));
         return $response->withHeader('Content-Type', 'application/json');
     }
@@ -32,6 +33,7 @@ class NewsController
             $response->getBody()->write(json_encode(['error' => 'Новость не найдена']));
             return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
         }
+        $news = Localization::row($news, Localization::language($request), ['title', 'short_text', 'content']);
         $response->getBody()->write(json_encode($news));
         return $response->withHeader('Content-Type', 'application/json');
     }
@@ -51,13 +53,16 @@ class NewsController
         }
     }
 
-    $stmt = $db->prepare('INSERT INTO news (title, short_text, content, image_url, published_at) VALUES (?, ?, ?, ?, ?) RETURNING id');
+    $stmt = $db->prepare('INSERT INTO news (title, short_text, content, image_url, published_at, title_en, short_text_en, content_en) VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id');
     $stmt->execute([
         $body['title'],
         $body['short_text'] ?? null,
         $body['content'] ?? null,
         $body['image_url'] ?? null,
-        $publishedAt ?? date('Y-m-d H:i:s')
+        $publishedAt ?? date('Y-m-d H:i:s'),
+        $body['title_en'] ?? null,
+        $body['short_text_en'] ?? null,
+        $body['content_en'] ?? null
     ]);
     $newId = $stmt->fetchColumn();
     $response->getBody()->write(json_encode(['id' => $newId]));
@@ -75,13 +80,16 @@ class NewsController
             $publishedAt = $date ? $date->format('Y-m-d H:i:s') : null;
         }
 
-        $stmt = $db->prepare('UPDATE news SET title = ?, short_text = ?, content = ?, image_url = ?, published_at = COALESCE(?, published_at) WHERE id = ? AND is_deleted = false');
+        $stmt = $db->prepare('UPDATE news SET title = COALESCE(?, title), short_text = COALESCE(?, short_text), content = COALESCE(?, content), image_url = COALESCE(?, image_url), published_at = COALESCE(?, published_at), title_en = COALESCE(?, title_en), short_text_en = COALESCE(?, short_text_en), content_en = COALESCE(?, content_en) WHERE id = ? AND is_deleted = false');
         $stmt->execute([
-            $body['title'] ?? '',
+            $body['title'] ?? null,
             $body['short_text'] ?? null,
             $body['content'] ?? null,
             $body['image_url'] ?? null,
             $publishedAt,
+            $body['title_en'] ?? null,
+            $body['short_text_en'] ?? null,
+            $body['content_en'] ?? null,
             $args['id'],
         ]);
         if ($stmt->rowCount() === 0) {
@@ -97,8 +105,8 @@ class NewsController
     public function listAll(Request $request, Response $response): Response
     {
     $db = $this->container->get('database');
-    $stmt = $db->query('SELECT id, title, short_text, published_at, image_url FROM news WHERE is_deleted = false ORDER BY published_at DESC');
-    $data = $stmt->fetchAll();
+    $stmt = $db->query('SELECT id, title, title_en, short_text, short_text_en, published_at, image_url FROM news WHERE is_deleted = false ORDER BY published_at DESC');
+    $data = Localization::rows($stmt->fetchAll(), Localization::language($request), ['title', 'short_text']);
     $response->getBody()->write(json_encode($data));
     return $response->withHeader('Content-Type', 'application/json');
     }

@@ -4,6 +4,7 @@ namespace App\Controllers;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use App\Support\Localization;
 
 class EventController
 {
@@ -18,8 +19,8 @@ class EventController
 public function listAll(Request $request, Response $response): Response
 {
     $db = $this->container->get('database');
-    $stmt = $db->query('SELECT id, title, short_text, start_date, end_date, image_url, location FROM events WHERE is_deleted = false ORDER BY created_at DESC');
-    $data = $stmt->fetchAll();
+    $stmt = $db->query('SELECT id, title, title_en, short_text, short_text_en, start_date, end_date, image_url, location, location_en FROM events WHERE is_deleted = false ORDER BY created_at DESC');
+    $data = Localization::rows($stmt->fetchAll(), Localization::language($request), ['title', 'short_text', 'location']);
     $response->getBody()->write(json_encode($data));
     return $response->withHeader('Content-Type', 'application/json');
 }
@@ -27,9 +28,9 @@ public function listAll(Request $request, Response $response): Response
 public function upcoming(Request $request, Response $response): Response
 {
     $db = $this->container->get('database');
-    $stmt = $db->prepare('SELECT id, title, short_text, start_date, image_url, location FROM events WHERE is_deleted = false ORDER BY created_at DESC LIMIT 3');
+    $stmt = $db->prepare('SELECT id, title, title_en, short_text, short_text_en, start_date, image_url, location, location_en FROM events WHERE is_deleted = false ORDER BY created_at DESC LIMIT 3');
     $stmt->execute();
-    $data = $stmt->fetchAll();
+    $data = Localization::rows($stmt->fetchAll(), Localization::language($request), ['title', 'short_text', 'location']);
     $response->getBody()->write(json_encode($data));
     return $response->withHeader('Content-Type', 'application/json');
 }
@@ -45,6 +46,7 @@ public function upcoming(Request $request, Response $response): Response
             $response->getBody()->write(json_encode(['error' => 'Мероприятие не найдено']));
             return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
         }
+        $event = Localization::row($event, Localization::language($request), ['title', 'short_text', 'description', 'location']);
         $response->getBody()->write(json_encode($event));
         return $response->withHeader('Content-Type', 'application/json');
     }
@@ -73,7 +75,7 @@ public function upcoming(Request $request, Response $response): Response
             $endDate = null;
         }
 
-        $stmt = $db->prepare('INSERT INTO events (title, short_text, description, start_date, end_date, image_url, location, is_featured) VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id');
+        $stmt = $db->prepare('INSERT INTO events (title, short_text, description, start_date, end_date, image_url, location, is_featured, title_en, short_text_en, description_en, location_en) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id');
         $stmt->execute([
             $body['title'],
             $body['short_text'] ?? null,
@@ -83,6 +85,10 @@ public function upcoming(Request $request, Response $response): Response
             $body['image_url'] ?? null,
             $body['location'] ?? null,
             filter_var($body['is_featured'] ?? false, FILTER_VALIDATE_BOOLEAN) ? 'true' : 'false',
+            $body['title_en'] ?? null,
+            $body['short_text_en'] ?? null,
+            $body['description_en'] ?? null,
+            $body['location_en'] ?? null,
         ]);
         $newId = $stmt->fetchColumn();
         $response->getBody()->write(json_encode(['id' => $newId]));
@@ -108,16 +114,20 @@ public function upcoming(Request $request, Response $response): Response
             $endDate = $d ? $d->format('Y-m-d H:i:s') : null;
         }
 
-        $stmt = $db->prepare('UPDATE events SET title=?, short_text=?, description=?, start_date=?, end_date=?, image_url=?, location=?, is_featured=? WHERE id=?');
+        $stmt = $db->prepare('UPDATE events SET title=COALESCE(?, title), short_text=COALESCE(?, short_text), description=COALESCE(?, description), start_date=COALESCE(?, start_date), end_date=COALESCE(?, end_date), image_url=COALESCE(?, image_url), location=COALESCE(?, location), is_featured=COALESCE(?, is_featured), title_en=COALESCE(?, title_en), short_text_en=COALESCE(?, short_text_en), description_en=COALESCE(?, description_en), location_en=COALESCE(?, location_en) WHERE id=?');
         $stmt->execute([
-            $body['title'],
+            $body['title'] ?? null,
             $body['short_text'] ?? null,
             $body['description'] ?? null,
             $startDate,
             $endDate,
             $body['image_url'] ?? null,
             $body['location'] ?? null,
-            filter_var($body['is_featured'] ?? false, FILTER_VALIDATE_BOOLEAN) ? 'true' : 'false',
+            isset($body['is_featured']) ? (filter_var($body['is_featured'], FILTER_VALIDATE_BOOLEAN) ? 'true' : 'false') : null,
+            $body['title_en'] ?? null,
+            $body['short_text_en'] ?? null,
+            $body['description_en'] ?? null,
+            $body['location_en'] ?? null,
             $args['id']
         ]);
         $response->getBody()->write(json_encode(['success' => true]));

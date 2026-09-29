@@ -4,6 +4,7 @@ namespace App\Controllers;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use App\Support\Localization;
 
 class FunFactController
 {
@@ -25,7 +26,7 @@ class FunFactController
         // $currentDay = date('Y-m-d'); // меняется раз в сутки (продакшен)
         
         // Выбираем факт на основе хеша от даты и количества фактов
-        $stmt = $db->query("SELECT id, text FROM fun_facts WHERE is_active = true ORDER BY id");
+        $stmt = $db->query("SELECT id, text, text_en FROM fun_facts WHERE is_active = true ORDER BY id");
         $facts = $stmt->fetchAll();
         
         if (empty($facts)) {
@@ -38,7 +39,8 @@ class FunFactController
         // $hash = crc32($currentDay); // для суток
         $index = abs($hash) % count($facts);
         
-        $response->getBody()->write(json_encode($facts[$index]));
+        $fact = Localization::row($facts[$index], Localization::language($request), ['text']);
+        $response->getBody()->write(json_encode($fact));
         return $response->withHeader('Content-Type', 'application/json');
     }
 }

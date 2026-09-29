@@ -24,7 +24,9 @@ class PageBlocksController
         }
 
         $db = $this->container->get('database');
-        $stmt = $db->prepare('SELECT block_id, content FROM page_blocks WHERE page_url = ?');
+        $language = ($request->getQueryParams()['lang'] ?? '') === 'en' ? 'en' : 'ru';
+        $contentColumn = $language === 'en' ? 'COALESCE(NULLIF(content_en, \'\'), content)' : 'content';
+        $stmt = $db->prepare("SELECT block_id, {$contentColumn} AS content FROM page_blocks WHERE page_url = ?");
         $stmt->execute([$url]);
         $blocks = $stmt->fetchAll();
 
@@ -43,6 +45,7 @@ class PageBlocksController
         $body = $request->getParsedBody();
         $url = $body['page_url'] ?? '';
         $blocks = $body['blocks'] ?? [];
+        $language = ($body['lang'] ?? '') === 'en' ? 'en' : 'ru';
 
         if (empty($url)) {
             $response->getBody()->write(json_encode(['error' => 'URL не указан']));
@@ -50,7 +53,9 @@ class PageBlocksController
         }
 
         $db = $this->container->get('database');
-        $stmt = $db->prepare('INSERT INTO page_blocks (page_url, block_id, content, updated_at) VALUES (?, ?, ?, NOW()) ON CONFLICT (page_url, block_id) DO UPDATE SET content = EXCLUDED.content, updated_at = NOW()');
+        $stmt = $language === 'en'
+            ? $db->prepare("INSERT INTO page_blocks (page_url, block_id, content, content_en, updated_at) VALUES (?, ?, '', ?, NOW()) ON CONFLICT (page_url, block_id) DO UPDATE SET content_en = EXCLUDED.content_en, updated_at = NOW()")
+            : $db->prepare('INSERT INTO page_blocks (page_url, block_id, content, updated_at) VALUES (?, ?, ?, NOW()) ON CONFLICT (page_url, block_id) DO UPDATE SET content = EXCLUDED.content, updated_at = NOW()');
 
         foreach ($blocks as $blockId => $content) {
             $stmt->execute([$url, $blockId, $content]);

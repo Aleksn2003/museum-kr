@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    <script src="/js/language.js?v=8"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="page-title">Новость — Кердемский музей-комплекс «Самыртай»</title>
@@ -433,7 +434,7 @@
                 titleEl.textContent = `${news.title || 'Новость'} — Кердемский музей`;
 
                 const pubDate = new Date(news.published_at);
-                const dateString = pubDate.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+                const dateString = pubDate.toLocaleDateString(document.documentElement.lang === 'en' ? 'en-GB' : 'ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
 
                 let html = `
                     <div class="mb-8">
@@ -484,5 +485,6 @@ if (mobileExpoToggle && mobileExpoSubmenu && mobileExpoArrow) {
 }
 </script>
 <script src="js/breadcrumbs.js"></script>
+
 </body>
 </html>

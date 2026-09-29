@@ -30,6 +30,7 @@
         $app->get('/api/events/upcoming', [EventController::class, 'upcoming']);
         $app->get('/api/events/{id}', [EventController::class, 'getOne']);
         $app->get('/api/categories', [CategoryController::class, 'listAll']);
+        $app->get('/api/categories/{id}', [CategoryController::class, 'getOne']);
         $app->get('/api/page-blocks', [\App\Controllers\PageBlocksController::class, 'getBlocks']);
        
 // Маршрут для синхронизации VK (финальный)
@@ -197,17 +198,21 @@ $app->get('/api/search', function (Request $request, Response $response) {
     $like = '%' . $escapedQuery . '%';
     $db = $this->get('database');
     $results = [];
+    $english = ($request->getQueryParams()['lang'] ?? '') === 'en';
+    $localizedField = static fn (string $field): string => $english
+        ? "COALESCE(NULLIF({$field}_en, ''), {$field})"
+        : $field;
     $searchGroups = [
         [
-            'sql' => "SELECT id, title, short_description AS excerpt, image_url FROM exhibits WHERE title ILIKE ? ESCAPE '!' OR short_description ILIKE ? ESCAPE '!' OR description ILIKE ? ESCAPE '!' ORDER BY CASE WHEN title ILIKE ? ESCAPE '!' THEN 0 ELSE 1 END, title LIMIT 10",
+            'sql' => "SELECT id, {$localizedField('title')} AS title, {$localizedField('short_description')} AS excerpt, image_url FROM exhibits WHERE {$localizedField('title')} ILIKE ? ESCAPE '!' OR {$localizedField('short_description')} ILIKE ? ESCAPE '!' OR {$localizedField('description')} ILIKE ? ESCAPE '!' ORDER BY CASE WHEN {$localizedField('title')} ILIKE ? ESCAPE '!' THEN 0 ELSE 1 END, title LIMIT 10",
             'type' => 'exhibit', 'url' => '/exhibit.html?id=',
         ],
         [
-            'sql' => "SELECT id, title, short_text AS excerpt, image_url FROM news WHERE is_deleted = false AND (title ILIKE ? ESCAPE '!' OR short_text ILIKE ? ESCAPE '!' OR content ILIKE ? ESCAPE '!') ORDER BY CASE WHEN title ILIKE ? ESCAPE '!' THEN 0 ELSE 1 END, published_at DESC LIMIT 10",
+            'sql' => "SELECT id, {$localizedField('title')} AS title, {$localizedField('short_text')} AS excerpt, image_url FROM news WHERE is_deleted = false AND ({$localizedField('title')} ILIKE ? ESCAPE '!' OR {$localizedField('short_text')} ILIKE ? ESCAPE '!' OR {$localizedField('content')} ILIKE ? ESCAPE '!') ORDER BY CASE WHEN {$localizedField('title')} ILIKE ? ESCAPE '!' THEN 0 ELSE 1 END, published_at DESC LIMIT 10",
             'type' => 'news', 'url' => '/news-single.html?id=',
         ],
         [
-            'sql' => "SELECT id, title, short_text AS excerpt, image_url FROM events WHERE is_deleted = false AND (title ILIKE ? ESCAPE '!' OR short_text ILIKE ? ESCAPE '!' OR description ILIKE ? ESCAPE '!') ORDER BY CASE WHEN title ILIKE ? ESCAPE '!' THEN 0 ELSE 1 END, start_date DESC LIMIT 10",
+            'sql' => "SELECT id, {$localizedField('title')} AS title, {$localizedField('short_text')} AS excerpt, image_url FROM events WHERE is_deleted = false AND ({$localizedField('title')} ILIKE ? ESCAPE '!' OR {$localizedField('short_text')} ILIKE ? ESCAPE '!' OR {$localizedField('description')} ILIKE ? ESCAPE '!') ORDER BY CASE WHEN {$localizedField('title')} ILIKE ? ESCAPE '!' THEN 0 ELSE 1 END, start_date DESC LIMIT 10",
             'type' => 'event', 'url' => '/event.html?id=',
         ],
     ];
@@ -225,15 +230,15 @@ $app->get('/api/search', function (Request $request, Response $response) {
 
     // Search visible text in the real static pages; ignore repeated navigation and scripts.
     $pages = [
-        ['file' => 'index.html', 'title' => 'Главная', 'url' => '/'],
-        ['file' => 'about.html', 'title' => 'О музее', 'url' => '/about.html'],
-        ['file' => 'events.html', 'title' => 'Афиша', 'url' => '/events.html'],
-        ['file' => 'collections.html', 'title' => 'Коллекции', 'url' => '/collections.html'],
-        ['file' => 'news.html', 'title' => 'Новости', 'url' => '/news.html'],
-        ['file' => 'history.html', 'title' => 'История', 'url' => '/history.html'],
-        ['file' => 'explore.html', 'title' => 'Экспозиция', 'url' => '/explore.html'],
-        ['file' => 'architecture.html', 'title' => 'Архитектура и наследие', 'url' => '/architecture.html'],
-        ['file' => 'visit.html', 'title' => 'Посетителям', 'url' => '/visit.html'],
+        ['file' => 'index.html', 'title' => $english ? 'Home' : 'Главная', 'url' => '/'],
+        ['file' => 'about.html', 'title' => $english ? 'About the Museum' : 'О музее', 'url' => '/about.html'],
+        ['file' => 'events.html', 'title' => $english ? 'Events' : 'Афиша', 'url' => '/events.html'],
+        ['file' => 'collections.html', 'title' => $english ? 'Collections' : 'Коллекции', 'url' => '/collections.html'],
+        ['file' => 'news.html', 'title' => $english ? 'News' : 'Новости', 'url' => '/news.html'],
+        ['file' => 'history.html', 'title' => $english ? 'History' : 'История', 'url' => '/history.html'],
+        ['file' => 'explore.html', 'title' => $english ? 'Explore the Complex' : 'Экспозиция', 'url' => '/explore.html'],
+        ['file' => 'architecture.html', 'title' => $english ? 'Architecture and Heritage' : 'Архитектура и наследие', 'url' => '/architecture.html'],
+        ['file' => 'visit.html', 'title' => $english ? 'Visitor Information' : 'Посетителям', 'url' => '/visit.html'],
     ];
     $frontendDir = dirname(__DIR__) . '/frontend/';
     foreach ($pages as $page) {

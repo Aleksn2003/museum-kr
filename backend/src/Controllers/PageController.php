@@ -24,13 +24,15 @@ class PageController
         }
 
         $db = $this->container->get('database');
-        $stmt = $db->prepare('SELECT content FROM page_content WHERE page_url = ?');
+        $stmt = $db->prepare('SELECT content, content_en FROM page_content WHERE page_url = ?');
         $stmt->execute([$url]);
         $row = $stmt->fetch();
 
-        $response->getBody()->write(json_encode([
-            'content' => $row ? $row['content'] : null
-        ]));
+        $content = $row ? $row['content'] : null;
+        if (($request->getQueryParams()['lang'] ?? '') === 'en' && !empty($row['content_en'])) {
+            $content = $row['content_en'];
+        }
+        $response->getBody()->write(json_encode(['content' => $content]));
         return $response->withHeader('Content-Type', 'application/json');
     }
 
@@ -40,6 +42,7 @@ class PageController
         $body = $request->getParsedBody();
         $url = $body['page_url'] ?? '';
         $content = $body['content'] ?? '';
+        $language = ($body['lang'] ?? '') === 'en' ? 'en' : 'ru';
 
         if (empty($url)) {
             $response->getBody()->write(json_encode(['error' => 'URL не указан']));
@@ -47,8 +50,10 @@ class PageController
         }
 
         $db = $this->container->get('database');
-        $stmt = $db->prepare('INSERT INTO page_content (page_url, content, updated_at) VALUES (?, ?, NOW()) ON CONFLICT (page_url) DO UPDATE SET content = EXCLUDED.content, updated_at = NOW()');
-        $stmt->execute([$url, $content]);
+        $stmt = $language === 'en'
+            ? $db->prepare('INSERT INTO page_content (page_url, content, content_en, updated_at) VALUES (?, NULL, ?, NOW()) ON CONFLICT (page_url) DO UPDATE SET content_en = EXCLUDED.content_en, updated_at = NOW()')
+            : $db->prepare('INSERT INTO page_content (page_url, content, updated_at) VALUES (?, ?, NOW()) ON CONFLICT (page_url) DO UPDATE SET content = EXCLUDED.content, updated_at = NOW()');
+        $stmt->execute($language === 'en' ? [$url, $content] : [$url, $content]);
 
         $response->getBody()->write(json_encode(['success' => true]));
         return $response->withHeader('Content-Type', 'application/json');

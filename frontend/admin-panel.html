@@ -38,15 +38,23 @@
             <h2>Добавить экспонат</h2>
             <form id="exhibit-add-form">
     <div class="form-group"><input type="text" id="ex-title" placeholder="Название" required></div>
+    <div class="form-group"><input type="text" id="ex-title-en" placeholder="Title (English)"></div>
     <div class="form-group"><textarea id="ex-short" placeholder="Краткое описание"></textarea></div>
+    <div class="form-group"><textarea id="ex-short-en" placeholder="Short description (English)"></textarea></div>
     <div class="form-group"><textarea id="ex-desc" placeholder="Полное описание"></textarea></div>
+    <div class="form-group"><textarea id="ex-desc-en" placeholder="Full description (English)"></textarea></div>
     <div class="form-group"><input type="text" id="ex-date" placeholder="Эпоха / дата"></div>
     <div class="form-group"><input type="text" id="ex-material" placeholder="Материал (например, Лиственница)"></div>
+    <div class="form-group"><input type="text" id="ex-material-en" placeholder="Material (English)"></div>
     <div class="form-group"><input type="text" id="ex-dimensions" placeholder="Размеры (например, 45×30×20 см)"></div>
+    <div class="form-group"><input type="text" id="ex-dimensions-en" placeholder="Dimensions (English)"></div>
     <div class="form-group"><input type="text" id="ex-origin" placeholder="Происхождение (например, с. Тит‑Эбэ)"></div>
+    <div class="form-group"><input type="text" id="ex-origin-en" placeholder="Origin (English)"></div>
     <div class="form-group"><input type="text" id="ex-audio-url" placeholder="Ссылка на аудиофайл (mp3)"></div>
     <div class="form-group"><input type="text" id="ex-quote" placeholder="Цитата или легенда"></div>
+    <div class="form-group"><input type="text" id="ex-quote-en" placeholder="Quote or story (English)"></div>
     <div class="form-group"><input type="text" id="ex-quote-author" placeholder="Автор цитаты"></div>
+    <div class="form-group"><input type="text" id="ex-quote-author-en" placeholder="Quote author (English)"></div>
     <!-- Категория -->
     <div class="form-group">
         <select id="ex-category" class="w-full border p-2 rounded">
@@ -76,8 +84,11 @@
             <h2>Добавить новость</h2>
             <form id="news-add-form">
                 <div class="form-group"><input type="text" id="news-title" placeholder="Заголовок" required></div>
+                <div class="form-group"><input type="text" id="news-title-en" placeholder="Title (English)"></div>
                 <div class="form-group"><textarea id="news-short" placeholder="Краткий анонс"></textarea></div>
+                <div class="form-group"><textarea id="news-short-en" placeholder="Short summary (English)"></textarea></div>
                 <div class="form-group"><textarea id="news-full" placeholder="Полный текст"></textarea></div>
+                <div class="form-group"><textarea id="news-full-en" placeholder="Full text (English)"></textarea></div>
                 <div class="form-group"><input type="datetime-local" id="news-date" placeholder="Дата публикации"></div>
                 <div class="form-group">
                     <input type="file" id="news-image-file" accept="image/*">
@@ -95,11 +106,15 @@
             <h2>Добавить мероприятие</h2>
             <form id="event-add-form">
                 <div class="form-group"><input type="text" id="event-title" placeholder="Название" required></div>
+                <div class="form-group"><input type="text" id="event-title-en" placeholder="Title (English)"></div>
                 <div class="form-group"><textarea id="event-short" placeholder="Краткое описание"></textarea></div>
+                <div class="form-group"><textarea id="event-short-en" placeholder="Short description (English)"></textarea></div>
                 <div class="form-group"><textarea id="event-desc" placeholder="Полное описание"></textarea></div>
+                <div class="form-group"><textarea id="event-desc-en" placeholder="Full description (English)"></textarea></div>
                 <div class="form-group"><input type="datetime-local" id="event-start" required></div>
                 <div class="form-group"><input type="datetime-local" id="event-end"></div>
                 <div class="form-group"><input type="text" id="event-location" placeholder="Место"></div>
+                <div class="form-group"><input type="text" id="event-location-en" placeholder="Location (English)"></div>
                 <div class="form-group">
                     <input type="file" id="event-image-file" accept="image/*">
                     <small style="color:#888">Загрузить афишу</small>
@@ -117,8 +132,10 @@
             <h2>Добавить категорию</h2>
             <form id="category-add-form">
                 <div class="form-group"><input type="text" id="cat-name" placeholder="Название" required></div>
+            <div class="form-group"><input type="text" id="cat-name-en" placeholder="Name (English)"></div>
                 <div class="form-group"><input type="text" id="cat-slug" placeholder="Slug (url-имя)" required></div>
                 <div class="form-group"><textarea id="cat-desc" placeholder="Описание"></textarea></div>
+            <div class="form-group"><textarea id="cat-desc-en" placeholder="Description (English)"></textarea></div>
                 <div class="form-group"><input type="number" id="cat-order" placeholder="Порядок"></div>
                 <button type="submit">Добавить</button>
             </form>
@@ -139,6 +156,11 @@
             <option value="/history.html">История</option>
             <option value="/architecture.html">Архитектура</option>
         </select>
+    </div>
+
+    <div class="form-group">
+        <label for="page-language">Язык редактирования:</label>
+        <select id="page-language"><option value="ru">Русский</option><option value="en">English</option></select>
     </div>
 
     <div id="editor-container" style="display:none;">
@@ -190,7 +212,7 @@
             let html = '<table><tr><th>Название</th><th>Дата</th><th></th></tr>';
             items.forEach(item => {
                 html += `<tr><td>${item.title}</td><td>${item.creation_date || ''}</td>
-                <td><button class="delete-btn" onclick="deleteItem('exhibits','${item.id}')">Удалить</button></td></tr>`;
+                <td><button type="button" onclick="editEnglish('exhibits','${item.id}')">EN</button> <button class="delete-btn" onclick="deleteItem('exhibits','${item.id}')">Удалить</button></td></tr>`;
             });
             html += '</table>';
             document.getElementById('exhibits-list').innerHTML = html || '<p>Нет экспонатов</p>';
@@ -202,7 +224,7 @@
             let html = '<table><tr><th>Заголовок</th><th>Дата</th><th></th></tr>';
             data.forEach(item => {
                 html += `<tr><td>${item.title}</td><td>${item.published_at ? new Date(item.published_at).toLocaleDateString('ru-RU') : ''}</td>
-                <td><button class="delete-btn" onclick="deleteItem('news','${item.id}')">Удалить</button></td></tr>`;
+                <td><button type="button" onclick="editEnglish('news','${item.id}')">EN</button> <button class="delete-btn" onclick="deleteItem('news','${item.id}')">Удалить</button></td></tr>`;
             });
             html += '</table>';
             document.getElementById('news-list').innerHTML = html || '<p>Нет новостей</p>';
@@ -214,7 +236,7 @@
             let html = '<table><tr><th>Название</th><th>Начало</th><th></th></tr>';
             data.forEach(item => {
                 html += `<tr><td>${item.title}</td><td>${new Date(item.start_date).toLocaleString('ru-RU')}</td>
-                <td><button class="delete-btn" onclick="deleteItem('events','${item.id}')">Удалить</button></td></tr>`;
+                <td><button type="button" onclick="editEnglish('events','${item.id}')">EN</button> <button class="delete-btn" onclick="deleteItem('events','${item.id}')">Удалить</button></td></tr>`;
             });
             html += '</table>';
             document.getElementById('events-list').innerHTML = html || '<p>Нет мероприятий</p>';
@@ -226,7 +248,7 @@
             let html = '<table><tr><th>Название</th><th>Slug</th><th></th></tr>';
             data.forEach(item => {
                 html += `<tr><td>${item.name}</td><td>${item.slug}</td>
-                <td><button class="delete-btn" onclick="deleteItem('categories','${item.id}')">Удалить</button></td></tr>`;
+                <td><button type="button" onclick="editEnglish('categories','${item.id}')">EN</button> <button class="delete-btn" onclick="deleteItem('categories','${item.id}')">Удалить</button></td></tr>`;
             });
             html += '</table>';
             document.getElementById('categories-list').innerHTML = html || '<p>Нет категорий</p>';
@@ -242,6 +264,100 @@
                 loadCategoriesList();
                 loadCategoryOptions(); // обновить select при добавлении экспоната
             }
+        };
+
+        window.editEnglish = async (type, id) => {
+            const fields = {
+                exhibits: [
+                    ['title_en', 'Title', 'title'],
+                    ['short_description_en', 'Short description', 'short_description', true],
+                    ['description_en', 'Full description', 'description', true],
+                    ['material_en', 'Material', 'material'],
+                    ['dimensions_en', 'Dimensions', 'dimensions'],
+                    ['origin_en', 'Origin', 'origin'],
+                    ['quote_en', 'Quote or story', 'quote'],
+                    ['quote_author_en', 'Quote author', 'quote_author']
+                ],
+                news: [
+                    ['title_en', 'Title', 'title'],
+                    ['short_text_en', 'Short summary', 'short_text', true],
+                    ['content_en', 'Full text', 'content', true]
+                ],
+                events: [
+                    ['title_en', 'Title', 'title'],
+                    ['short_text_en', 'Short description', 'short_text', true],
+                    ['description_en', 'Full description', 'description', true],
+                    ['location_en', 'Location', 'location']
+                ],
+                categories: [
+                    ['name_en', 'Name', 'name'],
+                    ['description_en', 'Description', 'description', true]
+                ]
+            }[type];
+            if (!fields) return;
+
+            const response = await fetch(`/api/${type}/${id}`);
+            const record = await response.json();
+            if (!response.ok || record.error) {
+                alert(record.error || 'Could not load this item.');
+                return;
+            }
+
+            const dialog = document.createElement('dialog');
+            dialog.style.cssText = 'width:min(720px,94vw);max-height:90vh;overflow:auto;border:1px solid #aaa;border-radius:8px;padding:1.25rem';
+            const form = document.createElement('form');
+            const heading = document.createElement('h2');
+            heading.textContent = 'English translation';
+            form.append(heading);
+
+            fields.forEach(([key, label, sourceKey, multiline]) => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'form-group';
+                const caption = document.createElement('label');
+                caption.textContent = `${label} (Russian: ${record[sourceKey] || '—'})`;
+                const input = document.createElement(multiline ? 'textarea' : 'input');
+                input.name = key;
+                input.value = record[key] || '';
+                if (multiline) input.rows = key.includes('content') || key.includes('description') ? 5 : 3;
+                wrapper.append(caption, input);
+                form.append(wrapper);
+            });
+
+            const actions = document.createElement('div');
+            actions.style.cssText = 'display:flex;justify-content:flex-end;gap:8px;margin-top:1rem';
+            const cancel = document.createElement('button');
+            cancel.type = 'button';
+            cancel.textContent = 'Cancel';
+            cancel.addEventListener('click', () => dialog.close());
+            const save = document.createElement('button');
+            save.type = 'submit';
+            save.textContent = 'Save English translation';
+            actions.append(cancel, save);
+            form.append(actions);
+            dialog.append(form);
+            document.body.append(dialog);
+
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                save.disabled = true;
+                const body = Object.fromEntries(new FormData(form).entries());
+                try {
+                    const result = await fetch(`/api/${type}/${id}`, {
+                        method: 'PUT',
+                        headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN},
+                        body: JSON.stringify(body)
+                    });
+                    const resultData = await result.json();
+                    if (!result.ok || resultData.error) throw new Error(resultData.error || 'Could not save translation.');
+                    dialog.close();
+                    alert('English translation saved.');
+                } catch (error) {
+                    alert(error.message);
+                    save.disabled = false;
+                }
+            });
+            dialog.addEventListener('close', () => dialog.remove(), { once: true });
+            dialog.showModal();
         };
 
         // Инициализация
@@ -293,15 +409,23 @@
 
                 const body = {
                     title: document.getElementById('ex-title').value,
+                    title_en: document.getElementById('ex-title-en').value,
                     short_description: document.getElementById('ex-short').value,
+                    short_description_en: document.getElementById('ex-short-en').value,
                     description: document.getElementById('ex-desc').value,
+                    description_en: document.getElementById('ex-desc-en').value,
                     creation_date: document.getElementById('ex-date').value,
                     material: document.getElementById('ex-material').value,
+                    material_en: document.getElementById('ex-material-en').value,
                     dimensions: document.getElementById('ex-dimensions').value,
+                    dimensions_en: document.getElementById('ex-dimensions-en').value,
                     origin: document.getElementById('ex-origin').value,
+                    origin_en: document.getElementById('ex-origin-en').value,
                     audio_url: document.getElementById('ex-audio-url').value,
                     quote: document.getElementById('ex-quote').value,
+                    quote_en: document.getElementById('ex-quote-en').value,
                     quote_author: document.getElementById('ex-quote-author').value,
+                    quote_author_en: document.getElementById('ex-quote-author-en').value,
                     image_url: mainImageUrl,
                     images: galleryUrls,
                     category_id: document.getElementById('ex-category').value || null,
@@ -338,8 +462,11 @@
                 const imageUrl = await uploadImage(document.getElementById('news-image-file'));
                 const body = {
                     title: document.getElementById('news-title').value,
+                    title_en: document.getElementById('news-title-en').value,
                     short_text: document.getElementById('news-short').value,
+                    short_text_en: document.getElementById('news-short-en').value,
                     content: document.getElementById('news-full').value,
+                    content_en: document.getElementById('news-full-en').value,
                     image_url: imageUrl,
                     published_at: document.getElementById('news-date').value || undefined
                 };
@@ -368,11 +495,15 @@
                 const imageUrl = await uploadImage(document.getElementById('event-image-file'));
                 const body = {
                     title: document.getElementById('event-title').value,
+                    title_en: document.getElementById('event-title-en').value,
                     short_text: document.getElementById('event-short').value,
+                    short_text_en: document.getElementById('event-short-en').value,
                     description: document.getElementById('event-desc').value,
+                    description_en: document.getElementById('event-desc-en').value,
                     start_date: document.getElementById('event-start').value,
                     end_date: document.getElementById('event-end').value || null,
                     location: document.getElementById('event-location').value,
+                    location_en: document.getElementById('event-location-en').value,
                     image_url: imageUrl,
                     is_featured: document.getElementById('event-featured').checked
                 };
@@ -400,8 +531,10 @@
             try {
                 const body = {
                     name: document.getElementById('cat-name').value,
+                    name_en: document.getElementById('cat-name-en').value,
                     slug: document.getElementById('cat-slug').value,
                     description: document.getElementById('cat-desc').value,
+                    description_en: document.getElementById('cat-desc-en').value,
                     order_index: document.getElementById('cat-order').value || 0
                 };
                 const res = await fetch('/api/categories', {
@@ -448,8 +581,8 @@
     }
 
     // Загрузка контента страницы
-    document.getElementById('page-select').addEventListener('change', async function() {
-        const url = this.value;
+    async function loadPageContent() {
+        const url = document.getElementById('page-select').value;
         if (!url) {
             document.getElementById('editor-container').style.display = 'none';
             return;
@@ -458,18 +591,23 @@
         document.getElementById('editor-container').style.display = 'block';
         initEditor();
 
-        const res = await fetch('/api/page?url=' + encodeURIComponent(url));
+        const language = document.getElementById('page-language').value;
+        const res = await fetch('/api/page?url=' + encodeURIComponent(url) + '&lang=' + language);
         const data = await res.json();
         if (data.content) {
             quill.root.innerHTML = data.content;
         } else {
-            quill.root.innerHTML = '<p>Новый контент страницы...</p>';
+            quill.root.innerHTML = language === 'en' ? '<p>Enter the English page content here...</p>' : '<p>Новый контент страницы...</p>';
         }
-    });
+    }
+
+    document.getElementById('page-select').addEventListener('change', loadPageContent);
+    document.getElementById('page-language').addEventListener('change', loadPageContent);
 
     // Сохранение контента
     document.getElementById('save-page-btn').addEventListener('click', async function() {
         const url = document.getElementById('page-select').value;
+        const language = document.getElementById('page-language').value;
         const content = quill.root.innerHTML;
         const msg = document.getElementById('page-msg');
 
@@ -479,7 +617,7 @@
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + TOKEN
             },
-            body: JSON.stringify({ page_url: url, content: content })
+            body: JSON.stringify({ page_url: url, content: content, lang: language })
         });
 
         const data = await res.json();

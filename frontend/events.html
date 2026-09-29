@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    <script src="/js/language.js?v=8"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Афиша — Кердемский музей-комплекс «Самыртай»</title>
@@ -445,7 +446,7 @@
                     <a href="/event.html?id=${item.id}" class="block bg-white rounded shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition">
                         ${item.image_url ? `<img src="${item.image_url}" alt="${item.title}" class="h-40 w-full object-cover">` : ''}
                         <div class="p-4">
-                            <time class="text-sm text-[#8D6E63] font-semibold">${new Date(item.start_date).toLocaleString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</time>
+                            <time class="text-sm text-[#8D6E63] font-semibold">${new Date(item.start_date).toLocaleString(document.documentElement.lang === 'en' ? 'en-GB' : 'ru-RU', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</time>
                             <h3 class="font-serif text-xl font-bold mt-2 mb-1">${item.title}</h3>
                             <p class="text-gray-600 text-sm line-clamp-2">${item.short_text || ''}</p>
                         </div>
@@ -487,5 +488,6 @@ if (mobileExpoToggle && mobileExpoSubmenu && mobileExpoArrow) {
 </script>
 <script src="js/search.js?v=7"></script>
 <script src="js/breadcrumbs.js"></script>
+
 </body>
 </html>

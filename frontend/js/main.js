@@ -121,7 +121,7 @@ async function loadNews() {
         let dateStr = raw;
         if (year && month && day) {
           const d = new Date(year, month - 1, day);
-          dateStr = d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+          dateStr = d.toLocaleDateString(document.documentElement.lang === 'en' ? 'en-GB' : 'ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
           if (time) dateStr += ', ' + time;
         }
         return `
@@ -172,7 +172,7 @@ async function loadEventsList() {
         <a href="/event.html?id=${item.id}" class="event-list-item no-underline hover:shadow-md transition-shadow duration-200">
           <img src="${item.image_url || 'https://picsum.photos/80/80?random=' + Math.random()}" alt="${item.title}" class="event-avatar">
           <div>
-            <div class="event-date">${new Date(item.start_date).toLocaleString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
+            <div class="event-date">${new Date(item.start_date).toLocaleString(document.documentElement.lang === 'en' ? 'en-GB' : 'ru-RU', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
             <h3>${item.title}</h3>
             <p class="text-sm text-gray-600 line-clamp-1">${item.short_text || ''}</p>
           </div>
@@ -311,7 +311,7 @@ async function loadUpcomingEventSidebar() {
       const event = data[0];
       titleEl.textContent = event.title;
       const date = new Date(event.start_date);
-      dateEl.textContent = date.toLocaleString('ru-RU', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
+      dateEl.textContent = date.toLocaleString(document.documentElement.lang === 'en' ? 'en-GB' : 'ru-RU', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
       linkEl.href = '/event.html?id=' + event.id;
       linkEl.classList.remove('hidden');
 

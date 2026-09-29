@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    <script src="/js/language.js?v=8"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Мероприятие — Кердемский музей-комплекс «Самыртай»</title>
@@ -302,8 +303,9 @@
                     container.innerHTML = '<p class="text-red-500">Мероприятие не найдено.</p>';
                     return;
                 }
-                const start = new Date(event.start_date).toLocaleString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-                const end = event.end_date ? new Date(event.end_date).toLocaleString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : null;
+                const locale = document.documentElement.lang === 'en' ? 'en-GB' : 'ru-RU';
+                const start = new Date(event.start_date).toLocaleString(locale, { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+                const end = event.end_date ? new Date(event.end_date).toLocaleString(locale, { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : null;
                 const isPast = new Date(event.start_date) < new Date();
                 const pastBadge = isPast ? '<span class="inline-block bg-gray-400 text-white text-xs px-2 py-1 rounded ml-2 align-middle">Мероприятие прошло</span>' : '';
                 container.innerHTML = `
@@ -361,5 +363,6 @@ if (mobileExpoToggle && mobileExpoSubmenu && mobileExpoArrow) {
 }
 </script>
 <script src="js/breadcrumbs.js"></script>
+
 </body>
 </html>
