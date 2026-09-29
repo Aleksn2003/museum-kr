@@ -58,7 +58,7 @@ This repository does not include an open-source license (`LICENSE`). This notice
 
 ### Панель администратора
 
-Откройте [http://localhost:8080/admin.html](http://localhost:8080/admin.html). Логин — `admin`, пароль — значение `ADMIN_PASSWORD` из локального файла `.env`.
+Откройте [http://localhost:8080/admin.html](http://localhost:8080/admin.html). Логин — `admin`, пароль — значение `ADMIN_PASSWORD` из локального файла `.env`. При запуске API пароль администратора синхронизируется с этим значением; после изменения пароля в `.env` перезапустите API.
 
 При первой инициализации базы `init.sql` создаёт структуру таблиц и начальные факты о музее. Затем `seed-demo.sql` добавляет три демонстрационные новости и два демонстрационных мероприятия с изображениями из репозитория. Даты мероприятий вычисляются относительно даты инициализации базы. Эти записи нужны для демонстрации сайта и не являются реальными объявлениями музея.
 
@@ -124,7 +124,7 @@ Check container status with `docker compose ps`. Stop the application with `dock
 
 ### Admin panel
 
-Open [http://localhost:8080/admin.html](http://localhost:8080/admin.html). The username is `admin`; use the password set as `ADMIN_PASSWORD` in your local `.env` file.
+Open [http://localhost:8080/admin.html](http://localhost:8080/admin.html). The username is `admin`; use the password set as `ADMIN_PASSWORD` in your local `.env` file. When the API starts, the admin password is synchronized with this value; restart the API after changing it in `.env`.
 
 On first database initialization, `init.sql` creates the schema and initial museum facts. `seed-demo.sql` adds three sample news posts and two sample events with repository images. Event dates are calculated relative to the database initialization date. These records are for demonstrating the site and are not real museum announcements.
 

@@ -28,13 +28,12 @@ $db->exec('CREATE TABLE IF NOT EXISTS page_blocks (
 )');
 
 $existing = $db->query("SELECT password FROM admins WHERE username = 'admin'")->fetchColumn();
-$knownDefaultHash = '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi';
 $hash = password_hash($password, PASSWORD_DEFAULT);
 
 if ($existing === false) {
     $stmt = $db->prepare('INSERT INTO admins (username, password) VALUES (?, ?)');
     $stmt->execute(['admin', $hash]);
-} elseif ($existing === $knownDefaultHash) {
+} elseif (!password_verify($password, $existing)) {
     $stmt = $db->prepare('UPDATE admins SET password = ? WHERE username = ?');
     $stmt->execute([$hash, 'admin']);
 }
