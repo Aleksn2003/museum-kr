@@ -1,4 +1,4 @@
-    <?php
+<?php
     use Slim\App;
     use App\Controllers\AuthController;
     use App\Controllers\ExhibitController;
@@ -34,29 +34,41 @@
        
 // Маршрут для синхронизации VK (финальный)
 $app->get('/api/sync/vk', function (Request $request, Response $response) {
-    $params = $request->getQueryParams();
-    $token = $params['token'] ?? '';
+    $syncKey = $_ENV['VK_SYNC_KEY'] ?? '';
+    $accessToken = $_ENV['VK_ACCESS_TOKEN'] ?? '';
+    $token = $request->getHeaderLine('X-Sync-Key');
 
-    if ($token !== 'keymuseum1991') {
+    if ($syncKey === '' || $accessToken === '' || !hash_equals($syncKey, $token)) {
         $response->getBody()->write(json_encode(['error' => 'Unauthorized']));
         return $response->withStatus(403)->withHeader('Content-Type', 'application/json');
     }
 
     $db = $this->get('database');
-    $accessToken = '5177fe8f5177fe8f5177fe8fc452371478551775177fe8f3b77c4c5c38cd62507fffb7c'; // ваш ключ
-    $groupId = 238549299;
+    $groupId = (int) ($_ENV['VK_GROUP_ID'] ?? 238549299);
     $ownerId = -$groupId;
 
     $result = ['news' => 0, 'events' => 0];
 
     // 1. Получить посты из VK API
-    $vkUrl = "https://api.vk.com/method/wall.get?owner_id={$ownerId}&count=20&v=5.131&access_token={$accessToken}";
+    $vkUrl = 'https://api.vk.com/method/wall.get?' . http_build_query([
+        'owner_id' => $ownerId,
+        'count' => 20,
+        'v' => '5.131',
+        'access_token' => $accessToken,
+    ]);
     $vkResponse = @file_get_contents($vkUrl);
     if (!$vkResponse) {
         $response->getBody()->write(json_encode(['error' => 'VK API request failed']));
         return $response->withStatus(502)->withHeader('Content-Type', 'application/json');
     }
     $vkData = json_decode($vkResponse, true);
+    if (!is_array($vkData) || isset($vkData['error'])) {
+        $response->getBody()->write(json_encode([
+            'error' => 'VK API error',
+            'code' => $vkData['error']['error_code'] ?? null,
+        ]));
+        return $response->withStatus(502)->withHeader('Content-Type', 'application/json');
+    }
     $posts = $vkData['response']['items'] ?? [];
 
     foreach ($posts as $post) {
@@ -66,8 +78,8 @@ $app->get('/api/sync/vk', function (Request $request, Response $response) {
 
         // 3. Определить тип: новость или мероприятие
         $type = null;
-        $newsTags = ['новость', 'news'];
-        $eventTags = ['мероприятие', 'афиша', 'событие', 'event'];
+        $newsTags = ['новость', 'новости', 'news'];
+        $eventTags = ['мероприятие', 'мероприятия', 'афиша', 'событие', 'события', 'event'];
         foreach ($hashtags as $tag) {
             $lower = mb_strtolower($tag);
             if (in_array($lower, $newsTags)) { $type = 'news'; break; }
@@ -376,5 +388,5 @@ $group->delete('/categories/{id}', [CategoryController::class, 'delete']);
     $response->getBody()->write(json_encode(['url' => $url]));
     return $response->withHeader('Content-Type', 'application/json');
 });
-        })->add(new AuthMiddleware($_ENV['JWT_SECRET'] ?? 'your-secret-key'));
+        })->add(new AuthMiddleware($_ENV['JWT_SECRET'] ?? ''));
     };

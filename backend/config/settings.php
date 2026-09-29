@@ -8,11 +8,11 @@ return [
         'port' => $_ENV['DB_PORT'] ?? '5432',
         'dbname' => $_ENV['DB_NAME'] ?? 'museum_db',
         'user' => $_ENV['DB_USER'] ?? 'museum',
-        'password' => $_ENV['DB_PASSWORD'] ?? 'museum123',
+        'password' => $_ENV['DB_PASSWORD'] ?? '',
     ],
 
     'jwt' => [
-        'secret' => $_ENV['JWT_SECRET'] ?? 'your-secret-key',       
+        'secret' => $_ENV['JWT_SECRET'] ?? '',
         'expires' => 3600 * 8,
     ],
 

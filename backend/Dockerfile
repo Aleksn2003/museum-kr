@@ -1,26 +1,15 @@
-FROM php:8.2-fpm-alpine
+FROM php:8.2-cli-alpine
 
-# Установка зависимостей: postgresql-dev для pdo_pgsql, curl для cron-запросов
 RUN apk add --no-cache postgresql-dev curl \
     && docker-php-ext-install pdo_pgsql
 
-# Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
 WORKDIR /var/www/html
-
-# Копируем файлы composer и устанавливаем зависимости
-COPY composer.json composer.lock* ./
-RUN composer install --no-dev --optimize-autoloader --no-interaction
-
-# Копируем остальные файлы приложения
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
 COPY . .
-
-# Настройка cron
-COPY crontab /etc/crontabs/root
-RUN chmod 644 /etc/crontabs/root
-
+RUN chmod +x /var/www/html/bin/start.sh /var/www/html/bin/sync-vk.sh
+RUN cp /var/www/html/crontab /etc/crontabs/root && chmod 600 /etc/crontabs/root
 COPY php.ini /usr/local/etc/php/conf.d/uploads.ini
-
 EXPOSE 80
-CMD ["sh", "-c", "crond && php -S 0.0.0.0:80 -t public"]
+CMD ["/var/www/html/bin/start.sh"]

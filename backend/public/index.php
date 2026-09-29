@@ -9,7 +9,7 @@ use Dotenv\Dotenv;
 
 // Загрузка .env
 $dotenv = Dotenv::createImmutable(__DIR__ . '/..');
-$dotenv->load();
+$dotenv->safeLoad();
 
 // Контейнер PHP-DI
 $containerBuilder = new ContainerBuilder();
@@ -22,7 +22,7 @@ $app = AppFactory::create();
 // Middleware (CORS, JSON)
 $app->addBodyParsingMiddleware();
 $app->addRoutingMiddleware();
-$app->addErrorMiddleware(true, true, true);
+$app->addErrorMiddleware(filter_var($_ENV['APP_DEBUG'] ?? 'false', FILTER_VALIDATE_BOOLEAN), true, true);
 
 // Подключение маршрутов
 (require __DIR__ . '/../src/routes.php')($app);

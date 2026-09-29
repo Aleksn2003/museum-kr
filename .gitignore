@@ -25,7 +25,10 @@ desktop.ini
 *.swp
 *.swo
 
-# ===== Загруженные пользователями изображения =====
-# Раскомментируйте строки ниже, если НЕ хотите хранить загруженные картинки в Git
-# frontend/img/uploads/
-# backend/uploads/
+# ===== Новые загрузки пользователей =====
+# Уже отслеживаемые демонстрационные изображения останутся в Git.
+frontend/img/uploads/
+backend/uploads/
+
+# Local database backups
+backups/

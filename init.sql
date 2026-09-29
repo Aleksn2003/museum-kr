@@ -25,6 +25,14 @@ CREATE TABLE exhibits (
     images JSONB DEFAULT '[]'::jsonb,
     is_featured BOOLEAN DEFAULT false,
     collection_id UUID,
+    category_id UUID REFERENCES categories(id) ON DELETE SET NULL,
+    material TEXT,
+    dimensions TEXT,
+    origin TEXT,
+    audio_url TEXT,
+    quote TEXT,
+    quote_author TEXT,
+    is_exhibit_of_day BOOLEAN DEFAULT false,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -38,7 +46,41 @@ CREATE TABLE news (
     event_date DATE,
     is_pinned BOOLEAN DEFAULT false,
     published_at TIMESTAMPTZ DEFAULT NOW(),
-    created_at TIMESTAMPTZ DEFAULT NOW()
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    vk_post_id BIGINT UNIQUE,
+    is_deleted BOOLEAN NOT NULL DEFAULT false
+);
+
+CREATE TABLE events (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    title VARCHAR(255) NOT NULL,
+    short_text TEXT,
+    description TEXT,
+    start_date TIMESTAMPTZ NOT NULL,
+    end_date TIMESTAMPTZ,
+    image_url TEXT,
+    location TEXT,
+    is_featured BOOLEAN DEFAULT false,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW(),
+    vk_post_id BIGINT UNIQUE,
+    is_deleted BOOLEAN NOT NULL DEFAULT false
+);
+
+CREATE TABLE page_content (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    page_url TEXT NOT NULL UNIQUE,
+    content TEXT,
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE page_blocks (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    page_url TEXT NOT NULL,
+    block_id TEXT NOT NULL,
+    content TEXT,
+    updated_at TIMESTAMPTZ DEFAULT NOW(),
+    UNIQUE (page_url, block_id)
 );
 
 CREATE TABLE fun_facts (
@@ -48,7 +90,6 @@ CREATE TABLE fun_facts (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Несколько стартовых фактов
 INSERT INTO fun_facts (text) VALUES
 ('В музее собрано более 900 экспонатов, рассказывающих о быте и культуре якутов.'),
 ('Качикатская Николаевская церковь (1896 г.) — единственный сохранившийся в улусе образец русского деревянного зодчества.'),
@@ -57,9 +98,4 @@ INSERT INTO fun_facts (text) VALUES
 ('На территории комплекса находится двухуровневый амбар богача Кирилла Скрябина из села Тит-Эбэ.'),
 ('С 2021 года музей является филиалом Хангаласского улусного краеведческого музея им. Г.В. Ксенофонтова.'),
 ('В музее проводятся самобытные праздники: ысыах, куйур, соревнования по национальным видам спорта.'),
-('Зерносушилка мецената С.П. Барашкова — один из экспонатов, демонстрирующих хозяйственный быт XIX века.');
-
--- Создаём первого администратора (пароль: admin, хеш bcrypt)
-INSERT INTO admins (username, password) VALUES
-('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi');
--- это хеш для "password" (не забудьте сменить!)
+('Зерносушилка мецената С.П. Барашкова — один из экспонатов, демонстрирующий хозяйственный быт XIX века.');
