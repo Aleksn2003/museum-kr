@@ -1,28 +1,70 @@
-# Музейный комплекс «Самыртай»
+# Samyrtay Museum Complex
 
-Сайт филиала музея: страницы о музее, коллекции, новости, мероприятия и панель администратора. Интерфейс находится в `frontend/`, API написан на PHP (Slim), данные хранятся в PostgreSQL. Nginx отдаёт страницы и передаёт запросы `/api/` в PHP.
+Website for the Samyrtay Museum Complex, a branch of the Khangalassky District Museum of Local Lore. The site presents the museum, its collections, news, events, and visitor information, with a small admin panel for managing content.
 
-## Локальный запуск
+## Features
 
-Нужны Docker Desktop и Docker Compose.
+- Museum pages, collections, exhibits, news, and event listings
+- Search and featured content
+- Admin panel for editing museum content and uploading images
+- Optional scheduled import of posts from a VK community by hashtag
+- PostgreSQL database, PHP API, and Nginx web server
+- Three sample news posts and two sample events included for a fresh installation
 
-1. Скопируйте `.env.example` в `.env`.
-2. Замените `CHANGE_ME` в `DB_PASSWORD`, `JWT_SECRET` и `ADMIN_PASSWORD` на три **разных** длинных случайных значения (не менее 16 символов для пароля администратора). Файл `.env` не публикуется в Git.
-3. Запустите `docker compose up -d --build`.
-4. Откройте [http://localhost:8080](http://localhost:8080). Админка: [http://localhost:8080/admin.html](http://localhost:8080/admin.html), логин `admin`, пароль из `ADMIN_PASSWORD`.
+## Tech stack
 
-Проверка контейнеров: `docker compose ps`. Остановка: `docker compose down`. Данные PostgreSQL сохраняются в томе `museum_pgdata` при обычной остановке. Команда `docker compose down -v` удаляет данные и для рабочего проекта не нужна.
+- Frontend: HTML, CSS, and JavaScript
+- API: PHP 8.2 and Slim 4
+- Database: PostgreSQL 15
+- Web server: Nginx
+- Local environment: Docker Compose
 
-При первом запуске создаются таблицы из `init.sql`, начальные факты и администратор. Затем `seed-demo.sql` добавляет три демонстрационные новости и два демонстрационных мероприятия с изображениями из репозитория. Эти записи помечены как примеры и не являются реальными объявлениями музея. На уже существующей базе файлы инициализации повторно не применяются. Если администратор всё ещё использует опубликованный ранее тестовый хеш, его пароль заменится на значение `ADMIN_PASSWORD` при запуске API. Другие пароли администраторов сохраняются.
+## Run locally
 
-## Данные и изображения
+Requirements: Docker Desktop with Docker Compose.
 
-Загруженные через админку изображения находятся в `frontend/img/uploads/`. Сделайте резервную копию этой папки вместе с базой данных перед переносом проекта. Демонстрационные записи используют изображения из `frontend/img/`, поэтому они видны после нового клонирования. Некоторые исторические изображения уже отслеживаются в Git для существующих записей. Новые загрузки исключены из Git. Запуск `seed-demo.sql` вручную на существующей базе скрывает прежние новости и мероприятия из публичных списков; перед этим сделайте резервную копию базы.
+1. Copy `.env.example` to `.env`.
+2. Replace `CHANGE_ME` in `DB_PASSWORD`, `JWT_SECRET`, and `ADMIN_PASSWORD` with different random values. Use at least 16 characters for `ADMIN_PASSWORD`. Keep `.env` private; it is ignored by Git.
+3. Start the application:
 
-## Синхронизация с VK
+   ```sh
+   docker compose up -d --build
+   ```
 
-Для импорта заполните `VK_ACCESS_TOKEN` новым токеном VK и `VK_SYNC_KEY` отдельным случайным ключом в `.env`. Без токена импорт отключён. Cron запускает импорт каждую минуту. Ранее опубликованный токен необходимо отозвать в VK; удаление его из текущего кода не удаляет историю Git.
+4. Open [http://localhost:8080](http://localhost:8080).
 
-## Настройки Docker
+Check container status with `docker compose ps`. Stop the application with `docker compose down`. PostgreSQL data is kept in the `museum_pgdata` Docker volume. Avoid `docker compose down -v` if you need to keep that data.
 
-Снаружи открыт только веб-сайт на порту `WEB_PORT` (по умолчанию 8080). База и API доступны контейнерам внутри сети Compose. Для переноса старой установки укажите имя существующего тома в `DB_VOLUME_NAME` и сохраните соответствующий пароль БД либо измените пароль роли PostgreSQL до перезапуска. Эта конфигурация использует встроенный PHP-сервер и предназначена для локальной разработки и демонстрации; для публичного сервера понадобится отдельная конфигурация с PHP-FPM, HTTPS и резервным копированием.
+## Admin panel
+
+Open [http://localhost:8080/admin.html](http://localhost:8080/admin.html). The username is `admin`; use the password configured in `ADMIN_PASSWORD` in your local `.env` file.
+
+On the first database initialization, `init.sql` creates the schema and initial museum facts. `seed-demo.sql` adds clearly marked sample news and events with images included in the repository. Their event dates are generated relative to the database initialization date. They are examples for demonstrating the site, not real museum announcements.
+
+PostgreSQL initialization scripts run only when the database volume is empty. To load demo content manually into an existing database, back it up first: `seed-demo.sql` hides currently visible news and events before adding the samples.
+
+## VK import
+
+VK import is optional and disabled until credentials are configured. To import posts from a VK community, set these values in your private `.env` file:
+
+- `VK_ACCESS_TOKEN`: a valid VK API access token with permission to read the community wall
+- `VK_GROUP_ID`: the numeric ID of the community, without a minus sign
+- `VK_SYNC_KEY`: a separate, random secret used to authorize the importer
+
+The importer checks the latest 20 wall posts every minute. Posts tagged `#новость`, `#новости`, or `#news` are imported as news. Posts tagged `#мероприятие`, `#мероприятия`, `#афиша`, `#событие`, `#события`, or `#event` are imported as events. If a post has multiple recognized tags, the first recognized tag determines its type. Import runs only for the community configured by `VK_GROUP_ID`; each user must provide their own token and community ID. Never commit VK credentials to the repository.
+
+## Images and data
+
+Sample content uses images stored under `frontend/img/`, so it is available after cloning the repository. Images uploaded through the admin panel are stored in `frontend/img/uploads/` and are excluded from new Git commits. Back up uploaded images together with the PostgreSQL database before moving the project. Some existing uploaded images are already tracked in Git from earlier versions.
+
+## Docker notes
+
+Only the Nginx website port is published to the host (`WEB_PORT`, default `8080`). The API and PostgreSQL are available to other services on the private Compose network. The included PHP built-in server is intended for local development and demonstrations. A public production deployment should use a production PHP server setup, HTTPS, managed secrets, and regular database and upload backups.
+
+## Authorship and use
+
+Project author: [Aleksn2003](https://github.com/Aleksn2003). All rights to the original source code, structure, and design created by the author remain with the author. Use, copying, modification, or distribution of the author's work beyond the functionality provided by GitHub requires the author's prior permission. The public repository may be viewed and forked on GitHub under the [GitHub Terms of Service](https://docs.github.com/en/site-policy/github-terms/github-terms-of-service); this does not grant an open license to reuse the author's work.
+
+This notice applies only to original work by the project author. Museum names, photographs, historical materials, logos, and other third-party content may belong to the museum or their respective rights holders and are not claimed by this notice.
+
+This repository does not include an open-source license (`LICENSE`). This notice records the author's intent but is not legal advice and does not replace a separate license.
