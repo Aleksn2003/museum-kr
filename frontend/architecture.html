@@ -184,7 +184,7 @@
         <!-- Горизонтальная разделительная линия -->
     <hr class="divider-line" />
     <div class="main-flex"> 
-<div class="main-content">
+<div class="main-content" id="page-content">
 
     <div class="container mx-auto px-4 max-w-6xl">
         <!-- Заголовок -->
@@ -645,50 +645,47 @@
 </style>
 
 <script>
-(function() {
-    const container = document.querySelector('.compare-container');
-    if (!container) return;
+window.initMuseumCompareSliders = function(root = document) {
+    root.querySelectorAll('.compare-container:not([data-compare-initialized])').forEach((container) => {
+        const after = container.querySelector('.compare-after');
+        const slider = container.querySelector('.compare-slider');
+        const handle = slider?.querySelector('.compare-slider-handle');
+        if (!after || !slider || !handle) return;
 
-    const after = container.querySelector('.compare-after');
-    const slider = container.querySelector('.compare-slider');
-    let dragging = false;
+        container.dataset.compareInitialized = 'true';
+        let dragging = false;
+        function updatePosition(clientX) {
+            const rect = container.getBoundingClientRect();
+            const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
+            const percent = rect.width ? (x / rect.width) * 100 : 50;
+            after.style.width = (100 - percent) + '%';
+            slider.style.left = percent + '%';
+        }
+        function startDrag(event) {
+            event.preventDefault();
+            dragging = true;
+            container.classList.add('dragging');
+        }
+        function stopDrag() {
+            dragging = false;
+            container.classList.remove('dragging');
+        }
+        function onMove(event) {
+            if (!dragging) return;
+            updatePosition(event.touches ? event.touches[0].clientX : event.clientX);
+        }
 
-    function updatePosition(clientX) {
+        handle.addEventListener('mousedown', startDrag);
+        window.addEventListener('mousemove', onMove);
+        window.addEventListener('mouseup', stopDrag);
+        handle.addEventListener('touchstart', startDrag, { passive: false });
+        window.addEventListener('touchmove', onMove, { passive: true });
+        window.addEventListener('touchend', stopDrag);
         const rect = container.getBoundingClientRect();
-        let x = clientX - rect.left;
-        x = Math.max(0, Math.min(x, rect.width));
-        const percent = (x / rect.width) * 100;
-        after.style.width = (100 - percent) + '%';
-        slider.style.left = percent + '%';
-    }
-
-    function startDrag(e) {
-        e.preventDefault();
-        dragging = true;
-        container.classList.add('dragging');
-    }
-
-    function stopDrag() {
-        dragging = false;
-        container.classList.remove('dragging');
-    }
-
-    function onMove(e) {
-        if (!dragging) return;
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        updatePosition(clientX);
-    }
-
-    slider.querySelector('.compare-slider-handle').addEventListener('mousedown', startDrag);
-    window.addEventListener('mousemove', onMove);
-    window.addEventListener('mouseup', stopDrag);
-
-    slider.querySelector('.compare-slider-handle').addEventListener('touchstart', startDrag);
-    window.addEventListener('touchmove', onMove);
-    window.addEventListener('touchend', stopDrag);
-
-    updatePosition(container.getBoundingClientRect().left + container.getBoundingClientRect().width / 2);
-})();
+        updatePosition(rect.left + rect.width / 2);
+    });
+};
+window.initMuseumCompareSliders();
 </script>
 <script>
 // Открытие фото в модальном окне

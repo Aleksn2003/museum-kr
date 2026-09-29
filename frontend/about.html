@@ -606,24 +606,6 @@ if (mobileExpoToggle && mobileExpoSubmenu && mobileExpoArrow) {
     });
 }
 </script>
-<script>
-    // Загрузка сохранённого контента из API
-    (async function() {
-        const container = document.getElementById('page-content');
-        if (!container) return;
-
-        const currentUrl = window.location.pathname;
-        try {
-            const res = await fetch('/api/page?url=' + encodeURIComponent(currentUrl));
-            const data = await res.json();
-            if (data.content) {
-                container.innerHTML = data.content;
-            }
-        } catch (err) {
-            // Оставляем статический контент, если API недоступен
-        }
-    })();
-</script>
 <script src="js/main.js"></script>
 <script src="js/search.js?v=7"></script>
 <script src="js/breadcrumbs.js"></script>

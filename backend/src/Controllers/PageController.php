@@ -7,6 +7,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class PageController
 {
+    private const EDITABLE_PAGES = ['/about.html', '/visit.html', '/history.html', '/architecture.html'];
     private ContainerInterface $container;
 
     public function __construct(ContainerInterface $container)
@@ -18,7 +19,7 @@ class PageController
     public function getContent(Request $request, Response $response): Response
     {
         $url = $request->getQueryParams()['url'] ?? '';
-        if (empty($url)) {
+        if (!in_array($url, self::EDITABLE_PAGES, true)) {
             $response->getBody()->write(json_encode(['error' => 'URL не указан']));
             return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
         }
@@ -28,12 +29,14 @@ class PageController
         $stmt->execute([$url]);
         $row = $stmt->fetch();
 
+        $language = ($request->getQueryParams()['lang'] ?? '') === 'en' ? 'en' : 'ru';
+        $hasTranslation = $language !== 'en' || !empty($row['content_en']);
         $content = $row ? $row['content'] : null;
-        if (($request->getQueryParams()['lang'] ?? '') === 'en' && !empty($row['content_en'])) {
+        if ($language === 'en' && !empty($row['content_en'])) {
             $content = $row['content_en'];
         }
-        $response->getBody()->write(json_encode(['content' => $content]));
-        return $response->withHeader('Content-Type', 'application/json');
+        $response->getBody()->write(json_encode(['content' => $content, 'has_translation' => $hasTranslation]));
+        return $response->withHeader('Content-Type', 'application/json')->withHeader('Cache-Control', 'no-store');
     }
 
     // POST /api/page — сохранить контент страницы (требуется JWT)
@@ -44,7 +47,7 @@ class PageController
         $content = $body['content'] ?? '';
         $language = ($body['lang'] ?? '') === 'en' ? 'en' : 'ru';
 
-        if (empty($url)) {
+        if (!in_array($url, self::EDITABLE_PAGES, true)) {
             $response->getBody()->write(json_encode(['error' => 'URL не указан']));
             return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
         }

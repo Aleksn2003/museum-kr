@@ -30,6 +30,7 @@ services:
       JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Set ADMIN_PASSWORD in .env}
       APP_DEBUG: ${APP_DEBUG:-false}
+      APP_TIMEZONE: ${APP_TIMEZONE:-Asia/Yakutsk}
       VK_SYNC_KEY: ${VK_SYNC_KEY:-}
       VK_ACCESS_TOKEN: ${VK_ACCESS_TOKEN:-}
       VK_GROUP_ID: ${VK_GROUP_ID:-238549299}

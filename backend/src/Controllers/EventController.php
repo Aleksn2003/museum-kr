@@ -5,6 +5,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Support\Localization;
+use App\Support\AdminDateTime;
 
 class EventController
 {
@@ -57,22 +58,13 @@ public function upcoming(Request $request, Response $response): Response
         $body = $request->getParsedBody();
         $db = $this->container->get('database');
 
-        $startDate = $body['start_date'] ?? null;
-        $endDate = $body['end_date'] ?? null;
-
-        // Преобразование из datetime-local (Y-m-d\TH:i) в формат БД
-        if ($startDate) {
-            $d = \DateTime::createFromFormat('Y-m-d\TH:i', $startDate);
-            $startDate = $d ? $d->format('Y-m-d H:i:s') : date('Y-m-d H:i:s');
-        } else {
-            $startDate = date('Y-m-d H:i:s');
-        }
-
-        if ($endDate) {
-            $d = \DateTime::createFromFormat('Y-m-d\TH:i', $endDate);
-            $endDate = $d ? $d->format('Y-m-d H:i:s') : null;
-        } else {
-            $endDate = null;
+        try {
+            $startDate = AdminDateTime::parse($body['start_date'] ?? null);
+            if ($startDate === null) throw new \InvalidArgumentException('Укажите дату и время начала мероприятия.');
+            $endDate = AdminDateTime::parse($body['end_date'] ?? null);
+        } catch (\InvalidArgumentException $error) {
+            $response->getBody()->write(json_encode(['error' => $error->getMessage()], JSON_UNESCAPED_UNICODE));
+            return $response->withStatus(422)->withHeader('Content-Type', 'application/json; charset=utf-8');
         }
 
         $stmt = $db->prepare('INSERT INTO events (title, short_text, description, start_date, end_date, image_url, location, is_featured, title_en, short_text_en, description_en, location_en) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id');
@@ -101,25 +93,21 @@ public function upcoming(Request $request, Response $response): Response
         $body = $request->getParsedBody();
         $db = $this->container->get('database');
 
-        $startDate = $body['start_date'] ?? null;
-        $endDate = $body['end_date'] ?? null;
-
-        if ($startDate) {
-            $d = \DateTime::createFromFormat('Y-m-d\TH:i', $startDate);
-            $startDate = $d ? $d->format('Y-m-d H:i:s') : null;
+        try {
+            $startDate = array_key_exists('start_date', $body) ? AdminDateTime::parse($body['start_date']) : null;
+            $endDate = array_key_exists('end_date', $body) ? AdminDateTime::parse($body['end_date']) : null;
+        } catch (\InvalidArgumentException $error) {
+            $response->getBody()->write(json_encode(['error' => $error->getMessage()], JSON_UNESCAPED_UNICODE));
+            return $response->withStatus(422)->withHeader('Content-Type', 'application/json; charset=utf-8');
         }
 
-        if ($endDate) {
-            $d = \DateTime::createFromFormat('Y-m-d\TH:i', $endDate);
-            $endDate = $d ? $d->format('Y-m-d H:i:s') : null;
-        }
-
-        $stmt = $db->prepare('UPDATE events SET title=COALESCE(?, title), short_text=COALESCE(?, short_text), description=COALESCE(?, description), start_date=COALESCE(?, start_date), end_date=COALESCE(?, end_date), image_url=COALESCE(?, image_url), location=COALESCE(?, location), is_featured=COALESCE(?, is_featured), title_en=COALESCE(?, title_en), short_text_en=COALESCE(?, short_text_en), description_en=COALESCE(?, description_en), location_en=COALESCE(?, location_en) WHERE id=?');
+        $stmt = $db->prepare('UPDATE events SET title=COALESCE(?, title), short_text=COALESCE(?, short_text), description=COALESCE(?, description), start_date=COALESCE(?, start_date), end_date=CASE WHEN ? THEN ?::timestamptz ELSE end_date END, image_url=COALESCE(?, image_url), location=COALESCE(?, location), is_featured=COALESCE(?, is_featured), title_en=COALESCE(?, title_en), short_text_en=COALESCE(?, short_text_en), description_en=COALESCE(?, description_en), location_en=COALESCE(?, location_en) WHERE id=?');
         $stmt->execute([
             $body['title'] ?? null,
             $body['short_text'] ?? null,
             $body['description'] ?? null,
             $startDate,
+            array_key_exists('end_date', $body),
             $endDate,
             $body['image_url'] ?? null,
             $body['location'] ?? null,

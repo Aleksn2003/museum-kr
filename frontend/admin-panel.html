@@ -2,39 +2,127 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Админ‑панель</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#29473d">
+    <title>Админ‑панель — музей Самыртай</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { font-family: sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
-        .hidden { display: none; }
-        .tabs { margin-bottom: 1rem; }
-        .tab-btn { padding: 0.5rem 1rem; margin-right: 0.5rem; cursor: pointer; background: #eee; border: 1px solid #aaa; border-radius: 4px; }
-        .tab-btn.active { background: #5D4037; color: white; border-color: #5D4037; }
-        .form-group { margin-bottom: 0.8rem; }
-        label { display: block; margin-bottom: 0.2rem; font-weight: bold; }
-        input, textarea, select { width: 100%; padding: 0.4rem; box-sizing: border-box; }
-        button { padding: 0.4rem 1rem; background: #5D4037; color: white; border: none; border-radius: 4px; cursor: pointer; }
-        button.delete-btn { background: #c0392b; padding: 0.2rem 0.5rem; font-size: 0.85rem; }
-        table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-        th, td { border: 1px solid #ddd; padding: 0.5rem; text-align: left; }
-        th { background: #f5f5f5; }
-        .msg { margin: 0.5rem 0; padding: 0.5rem; border-radius: 4px; }
-        .msg.success { background: #d4edda; color: #155724; }
-        .msg.error { background: #f8d7da; color: #721c24; }
+        :root { color-scheme: light; --ink:#25352f; --muted:#78817b; --forest:#29473d; --forest-dark:#1e382f; --clay:#a65f46; --paper:#f4f2ed; --line:#e8e7e1; --white:#fff; --soft:#f8f8f5; }
+        * { box-sizing:border-box; }
+        body { margin:0; min-height:100vh; padding:24px; background:radial-gradient(ellipse at 92% 0%,#e4ece5 0,transparent 36%),var(--paper); color:var(--ink); font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif; }
+        .hidden { display:none !important; }
+        #admin-panel { display:grid; grid-template-columns:248px minmax(0,1fr); grid-template-rows:auto auto 1fr; gap:16px 22px; max-width:1440px; min-height:calc(100vh - 48px); margin:0 auto; }
+        .admin-header { grid-column:2; grid-row:1; display:flex; justify-content:space-between; align-items:center; gap:24px; padding:8px 4px; }
+        .admin-title small { display:block; margin-bottom:3px; color:var(--clay); font-size:11px; font-weight:800; letter-spacing:.15em; text-transform:uppercase; }
+        .admin-header h1 { margin:0; font-family:Georgia,"Times New Roman",serif; font-size:clamp(26px,3vw,36px); font-weight:500; letter-spacing:-.035em; }
+        .admin-subtitle { margin:5px 0 0; color:var(--muted); font-size:13px; }
+        .admin-actions { display:flex; align-items:center; gap:10px; flex-shrink:0; }
+        .admin-actions a { color:var(--forest); font-size:13px; font-weight:700; text-decoration:none; }
+        .admin-actions a:hover { text-decoration:underline; }
+        .admin-actions .admin-site-link { display:inline-flex; align-items:center; gap:6px; min-height:36px; padding:8px 12px; border:1px solid #dce3dd; border-radius:9px; background:#fff; }
+        .admin-actions .admin-site-link:hover { background:#f2f6f2; text-decoration:none; }
+        .tabs { grid-column:1; grid-row:1 / span 3; align-self:start; position:sticky; top:24px; display:flex; flex-direction:column; gap:6px; min-height:calc(100vh - 48px); padding:18px 12px; border:1px solid #e8e9e1; border-radius:18px; background:rgba(255,255,255,.92); box-shadow:0 12px 34px #26372e0b; }
+        .brand { display:flex; align-items:center; gap:11px; padding:6px 8px 20px; margin-bottom:11px; border-bottom:1px solid var(--line); }
+        .brand-mark { display:grid; width:39px; height:39px; place-items:center; border-radius:13px; background:var(--forest); color:white; font-family:Georgia,serif; font-size:23px; }
+        .brand-name { font-family:Georgia,serif; font-size:17px; line-height:1.15; }
+        .brand-caption { margin-top:4px; color:var(--muted); font-size:10px; letter-spacing:.07em; text-transform:uppercase; }
+        .nav-label { padding:6px 10px 4px; color:#99a09b; font-size:10px; font-weight:800; letter-spacing:.13em; text-transform:uppercase; }
+        .tab-btn { display:flex; align-items:center; gap:11px; width:100%; padding:11px 12px; border:0; border-radius:10px; background:transparent; color:#59645e; cursor:pointer; font:inherit; font-size:13px; font-weight:600; line-height:1.2; text-align:left; transition:background .18s,color .18s,transform .18s; }
+        .tab-btn:hover { background:#f3f5f1; color:var(--forest); }
+        .tab-btn.active { background:var(--forest); color:white; box-shadow:0 5px 12px #29473d25; }
+        .nav-icon { display:grid; width:22px; height:22px; place-items:center; color:inherit; font-size:16px; }
+        .tab-btn>span:last-child { display:flex; flex:1; align-items:center; }
+        .nav-count { margin-left:auto; color:inherit; font-size:11px; opacity:.7; }
+        .sidebar-foot { margin-top:auto; padding:14px 10px 3px; border-top:1px solid var(--line); color:var(--muted); font-size:11px; }
+        .notice { grid-column:2; grid-row:2; display:flex; align-items:flex-start; gap:10px; padding:12px 15px; margin:0; border:1px solid #e7e3d8; border-radius:12px; background:#fcfaf4; color:#6e6757; font-size:12px; }
+        .notice::before { content:"ℹ"; display:grid; width:19px; height:19px; flex:none; place-items:center; border-radius:50%; background:#efe8d8; color:#866e3f; font-weight:800; }
+        .tab-content { grid-column:2; grid-row:3; align-self:start; padding:26px clamp(18px,3vw,34px) 34px; border:1px solid #e8e9e1; border-radius:18px; background:var(--white); box-shadow:0 12px 34px #26372e0b; }
+        .tab-content h2 { margin:0 0 5px; font-family:Georgia,"Times New Roman",serif; font-size:25px; font-weight:500; letter-spacing:-.025em; }
+        .tab-content h3 { display:flex; align-items:center; gap:10px; margin:30px 0 12px; font-size:15px; font-weight:750; }
+        .tab-content h3::before { content:""; width:4px; height:17px; border-radius:2px; background:var(--clay); }
+        form { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 16px; padding-top:18px; }
+        .form-group { min-width:0; margin:0 0 14px; }
+        .form-group:has(textarea),.form-group:has(input[type=file]),.form-group:has(select),.form-group:has(input[type=checkbox]) { grid-column:1 / -1; }
+        label { display:block; margin-bottom:6px; color:#536059; font-size:11px; font-weight:750; letter-spacing:.025em; }
+        input:not([type=checkbox]):not([type=file]),textarea,select { display:block; width:100%; min-height:43px; padding:10px 12px; border:1px solid #dfe3dc; border-radius:9px; outline:none; background:#fff; color:var(--ink); font:inherit; font-size:13px; transition:border-color .15s,box-shadow .15s; }
+        textarea { min-height:92px; resize:vertical; }
+        input:focus,textarea:focus,select:focus { border-color:#769284; box-shadow:0 0 0 3px #52776218; }
+        input::placeholder,textarea::placeholder { color:#a0a7a1; }
+        input[type=file] { width:100%; padding:11px; border:1px dashed #cbd2ca; border-radius:9px; background:var(--soft); color:#68736c; font-size:12px; }
+        input[type=checkbox] { width:17px; height:17px; margin:0 7px 0 0; accent-color:var(--forest); vertical-align:middle; }
+        .form-group:has(input[type=checkbox]) label { display:flex; align-items:center; width:fit-content; padding:10px 12px; border:1px solid var(--line); border-radius:9px; background:var(--soft); }
+        .form-group small { display:block; margin-top:5px; color:var(--muted); font-size:11px; }
+        button { min-height:39px; padding:9px 15px; border:1px solid transparent; border-radius:9px; background:var(--forest); color:white; cursor:pointer; font:inherit; font-size:12px; font-weight:650; line-height:1.15; transition:background .16s,transform .16s,box-shadow .16s; }
+        button:hover { background:var(--forest-dark); box-shadow:0 4px 10px #29473d1b; }
+        button:active { transform:translateY(1px); }
+        button:focus-visible,a:focus-visible { outline:3px solid #b9d2c1; outline-offset:2px; }
+        button:disabled { opacity:.55; cursor:wait; box-shadow:none; }
+        button[type=submit] { min-width:160px; margin-top:3px; }
+        .secondary-btn { min-height:31px; padding:6px 10px; border-color:#dce3dd; background:white; color:var(--forest); }
+        .secondary-btn:hover { background:#f2f6f2; }
+        .translation-btn { min-height:31px; padding:6px 10px; background:#f3eee6; color:#8c6038; }
+        .translation-btn:hover { background:#eae0d2; }
+        button.delete-btn { min-height:31px; padding:6px 10px; border-color:#f0d7d2; background:#fff7f5; color:#a24e41; }
+        button.delete-btn:hover { background:#fbe9e5; }
+        .admin-actions button { min-height:36px; padding:8px 13px; background:white; border-color:#dce3dd; color:var(--forest); }
+        .msg:empty { display:none; }
+        .msg { margin:12px 0 0; padding:11px 13px; border-radius:9px; font-size:13px; }
+        .msg.success { border:1px solid #d2e6d8; background:#f1f8f2; color:#316544; }
+        .msg.error { border:1px solid #f0d4cf; background:#fff5f3; color:#923f35; }
+        #exhibits-list,#news-list,#events-list,#categories-list { overflow-x:auto; border:1px solid var(--line); border-radius:12px; }
+        table { width:100%; min-width:570px; border-collapse:collapse; background:white; font-size:12px; }
+        th,td { padding:12px 14px; border-bottom:1px solid #eeefeb; text-align:left; vertical-align:middle; }
+        th { background:#f7f8f5; color:#77817a; font-size:10px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+        tbody tr:last-child td { border-bottom:0; }
+        tbody tr:hover { background:#fafbf8; }
+        td:last-child { white-space:nowrap; }
+        td:last-child button { margin:2px; }
+        .table-toolbar { display:flex; justify-content:space-between; align-items:center; gap:12px; margin:5px 0 10px; }
+        .table-search { max-width:310px; min-height:38px !important; padding:8px 12px !important; font-size:12px !important; }
+        .empty-state { padding:25px 18px; color:var(--muted); text-align:center; }
+        .load-error { padding:14px; color:#923f35; font-size:12px; }
+        .image-preview { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+        .image-preview img { width:104px; height:76px; object-fit:cover; border-radius:8px; border:1px solid #e2e5df; background:var(--soft); }
+        #page-editor { min-height:520px; padding:24px; border:1px solid var(--line); border-radius:10px; background:#fff; color:#25352f; overflow:auto; }
+        #page-editor:focus { outline:3px solid #52776218; border-color:#769284; }
+        #page-editor img { max-width:100%; height:auto; }
+        .page-editor-toolbar { display:flex; flex-wrap:wrap; gap:6px; margin:10px 0; }
+        .page-editor-toolbar button { min-width:38px; min-height:34px; padding:6px 10px; }
+        dialog { color:var(--ink); box-shadow:0 25px 90px #18251c30; }
+        dialog::backdrop { background:#17241dcc; backdrop-filter:blur(3px); }
+        dialog h2 { font-family:Georgia,serif; font-weight:500; }
+        dialog form { display:block; }
+        #editor-container { padding:16px; border:1px solid var(--line); border-radius:12px; background:var(--soft); }
+        #page-editor { border-radius:8px; }
+        a { color:var(--forest); }
+        @media(max-width:900px) { body { padding:14px; } #admin-panel { grid-template-columns:210px minmax(0,1fr); gap:12px; min-height:calc(100vh - 28px); } .tabs { top:14px; min-height:calc(100vh - 28px); } .tab-content { padding:22px 18px 28px; } }
+        @media(max-width:680px) { body { padding:10px; } #admin-panel { display:flex; flex-direction:column; gap:10px; min-height:calc(100vh - 20px); } .admin-header { order:0; align-items:flex-start; padding:8px 3px; } .admin-header h1 { font-size:26px; } .admin-subtitle { max-width:250px; } .admin-actions { gap:7px; } .admin-actions a { font-size:11px; } .tabs { order:1; position:static; min-height:auto; flex-direction:row; overflow-x:auto; padding:7px; border-radius:13px; } .brand,.nav-label,.sidebar-foot { display:none; } .tab-btn { justify-content:center; flex:1 0 auto; width:auto; min-height:40px; padding:9px 11px; white-space:nowrap; } .nav-icon { display:none; } .notice { order:2; font-size:11px; } .tab-content { order:3; padding:20px 14px 24px; border-radius:14px; } form { grid-template-columns:1fr; } .form-group:has(textarea),.form-group:has(input[type=file]),.form-group:has(select),.form-group:has(input[type=checkbox]) { grid-column:auto; } .tab-content h2 { font-size:22px; } .admin-actions button { padding:7px 9px; } }
+        @media(max-width:420px) { .admin-header { flex-direction:column; gap:10px; } .admin-actions { align-self:stretch; justify-content:flex-end; } }
     </style>
 </head>
 <body>
     <div id="admin-panel">
-        <h1>Управление музеем</h1>
-        <div class="tabs">
-            <button class="tab-btn active" data-tab="exhibits">Экспонаты</button>
-            <button class="tab-btn" data-tab="news">Новости</button>
-            <button class="tab-btn" data-tab="events">Мероприятия</button>
-            <button class="tab-btn" data-tab="categories">Категории</button>
-            <button class="tab-btn" data-tab="pages">Страницы</button>
+        <div class="admin-header">
+            <div class="admin-title"><small>Рабочее пространство</small><h1>Панель музея</h1><p class="admin-subtitle">Управление материалами комплекса «Самыртай»</p></div>
+            <div class="admin-actions"><a class="admin-site-link" href="/" target="_blank" rel="noopener">На главную ↗</a><a href="/admin-guide.html" target="_blank" rel="noopener">Инструкция</a><button id="logout-btn" type="button">Выйти</button></div>
+        </div>
+        <p class="notice">Изображения: JPEG, PNG, WebP или GIF, не более 10 МБ на файл. Заполняйте английские поля, если запись должна отображаться на английском сайте.</p>
+        <div class="tabs" role="tablist" aria-label="Разделы админ-панели">
+            <div class="brand"><span class="brand-mark">С</span><div><div class="brand-name">Самыртай</div><div class="brand-caption">Музейный комплекс</div></div></div>
+            <div class="nav-label">Контент сайта</div>
+            <button class="tab-btn active" id="nav-exhibits" role="tab" aria-selected="true" aria-controls="tab-exhibits" data-tab="exhibits"><span class="nav-icon" aria-hidden="true">▧</span><span>Экспонаты</span></button>
+            <button class="tab-btn" id="nav-news" role="tab" aria-selected="false" aria-controls="tab-news" data-tab="news"><span class="nav-icon" aria-hidden="true">◷</span><span>Новости</span></button>
+            <button class="tab-btn" id="nav-events" role="tab" aria-selected="false" aria-controls="tab-events" data-tab="events"><span class="nav-icon" aria-hidden="true">▦</span><span>Мероприятия</span></button>
+            <button class="tab-btn" id="nav-categories" role="tab" aria-selected="false" aria-controls="tab-categories" data-tab="categories"><span class="nav-icon" aria-hidden="true">◈</span><span>Категории</span></button>
+            <div class="nav-label">Страницы</div>
+            <button class="tab-btn" id="nav-pages" role="tab" aria-selected="false" aria-controls="tab-pages" data-tab="pages"><span class="nav-icon" aria-hidden="true">▤</span><span>Тексты сайта</span></button>
+            <button class="tab-btn" id="nav-settings" role="tab" aria-selected="false" aria-controls="tab-settings" data-tab="settings"><span class="nav-icon" aria-hidden="true">⚙</span><span>Настройки сайта</span></button>
+            <div class="sidebar-foot">Администрирование<br>Кердемский музей · 2026</div>
         </div>
 
         <!-- Экспонаты -->
-        <div id="tab-exhibits" class="tab-content">
+        <div id="tab-exhibits" class="tab-content" role="tabpanel" aria-labelledby="nav-exhibits">
             <h2>Добавить экспонат</h2>
             <form id="exhibit-add-form">
     <div class="form-group"><input type="text" id="ex-title" placeholder="Название" required></div>
@@ -64,11 +152,9 @@
     <!-- Главное фото -->
     <div class="form-group">
         <input type="file" id="ex-image-file" accept="image/*">
-        <small>Главное фото</small>
     </div>
     <!-- Галерея деталей (до 4 файлов) -->
     <div class="form-group">
-        <label>Детали интерьера (до 4 фото)</label>
         <input type="file" id="ex-gallery" accept="image/*" multiple>
     </div>
     <div class="form-group"><label><input type="checkbox" id="ex-featured"> Показать на главной</label></div>
@@ -80,7 +166,7 @@
         </div>
 
         <!-- Новости -->
-        <div id="tab-news" class="tab-content hidden">
+        <div id="tab-news" class="tab-content hidden" role="tabpanel" aria-labelledby="nav-news">
             <h2>Добавить новость</h2>
             <form id="news-add-form">
                 <div class="form-group"><input type="text" id="news-title" placeholder="Заголовок" required></div>
@@ -92,7 +178,6 @@
                 <div class="form-group"><input type="datetime-local" id="news-date" placeholder="Дата публикации"></div>
                 <div class="form-group">
                     <input type="file" id="news-image-file" accept="image/*">
-                    <small style="color:#888">Загрузить изображение</small>
                 </div>
                 <button type="submit">Добавить новость</button>
             </form>
@@ -102,7 +187,7 @@
         </div>
 
         <!-- Мероприятия -->
-        <div id="tab-events" class="tab-content hidden">
+        <div id="tab-events" class="tab-content hidden" role="tabpanel" aria-labelledby="nav-events">
             <h2>Добавить мероприятие</h2>
             <form id="event-add-form">
                 <div class="form-group"><input type="text" id="event-title" placeholder="Название" required></div>
@@ -117,7 +202,6 @@
                 <div class="form-group"><input type="text" id="event-location-en" placeholder="Location (English)"></div>
                 <div class="form-group">
                     <input type="file" id="event-image-file" accept="image/*">
-                    <small style="color:#888">Загрузить афишу</small>
                 </div>
                 <div class="form-group"><label><input type="checkbox" id="event-featured"> Показать на главной</label></div>
                 <button type="submit">Добавить мероприятие</button>
@@ -128,7 +212,7 @@
         </div>
 
         <!-- Категории -->
-        <div id="tab-categories" class="tab-content hidden">
+        <div id="tab-categories" class="tab-content hidden" role="tabpanel" aria-labelledby="nav-categories">
             <h2>Добавить категорию</h2>
             <form id="category-add-form">
                 <div class="form-group"><input type="text" id="cat-name" placeholder="Название" required></div>
@@ -144,7 +228,7 @@
             <div id="categories-list"></div>
         </div>
         <!-- Вкладка "Страницы" -->
-<div id="tab-pages" class="tab-content hidden">
+<div id="tab-pages" class="tab-content hidden" role="tabpanel" aria-labelledby="nav-pages">
     <h2>Редактирование страниц</h2>
     
     <div class="form-group">
@@ -166,421 +250,88 @@
     <div id="editor-container" style="display:none;">
         <div class="form-group">
             <label>Содержимое страницы:</label>
-            <div id="page-editor" style="height:400px; border:1px solid #ccc; padding:10px; background:#fff;"></div>
+            <p class="form-group" id="page-editor-help">Загружаю исходный текст страницы…</p>
+            <div class="page-editor-toolbar" role="toolbar" aria-label="Форматирование текста">
+                <button type="button" data-editor-command="bold" aria-label="Жирный текст"><strong>Ж</strong></button>
+                <button type="button" data-editor-command="italic" aria-label="Курсив">К</button>
+                <button type="button" data-editor-command="underline" aria-label="Подчёркивание"><u>Ч</u></button>
+                <button type="button" data-editor-command="formatBlock" data-editor-value="h2" aria-label="Заголовок">Заголовок</button>
+                <button type="button" data-editor-command="insertUnorderedList" aria-label="Маркированный список">Список</button>
+                <button type="button" data-editor-command="undo" aria-label="Отменить">↶</button>
+            </div>
+            <div id="page-editor" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="true"></div>
         </div>
         <button id="save-page-btn">Сохранить страницу</button>
         <div id="page-msg"></div>
     </div>
 </div>
+
+<div id="tab-settings" class="tab-content hidden" role="tabpanel" aria-labelledby="nav-settings">
+    <h2>Настройки сайта</h2>
+    <p class="admin-subtitle">Название, логотип и статус отображаются на всех страницах сайта.</p>
+    <form id="site-settings-form">
+        <div class="form-group"><label for="setting-museum-name">Название музея</label><input id="setting-museum-name" type="text" maxlength="120" required></div>
+        <div class="form-group"><label for="setting-museum-name-en">Museum name (English)</label><input id="setting-museum-name-en" type="text" maxlength="120" required></div>
+        <div class="form-group"><label for="setting-branch-name">Название филиала / комплекса</label><input id="setting-branch-name" type="text" maxlength="180" required></div>
+        <div class="form-group"><label for="setting-branch-name-en">Branch / complex name (English)</label><input id="setting-branch-name-en" type="text" maxlength="180" required></div>
+        <div class="form-group"><label for="setting-logo-file">Логотип</label><input id="setting-logo-file" type="file" accept="image/jpeg,image/png,image/webp,image/gif"><small>JPEG, PNG, WebP или GIF, до 10 МБ. После выбора нажмите «Сохранить настройки».</small><div id="setting-logo-preview" class="image-preview"></div></div>
+        <input id="setting-logo-url" type="hidden" value="/img/logo-samartyai.png">
+        <div class="form-group"><label for="setting-opening-time">Время открытия</label><input id="setting-opening-time" type="time" required></div>
+        <div class="form-group"><label for="setting-closing-time">Время закрытия</label><input id="setting-closing-time" type="time" required></div>
+        <div class="form-group"><label>Рабочие дни</label>
+            <label><input class="setting-open-day" type="checkbox" value="1"> Понедельник</label>
+            <label><input class="setting-open-day" type="checkbox" value="2" checked> Вторник</label>
+            <label><input class="setting-open-day" type="checkbox" value="3" checked> Среда</label>
+            <label><input class="setting-open-day" type="checkbox" value="4" checked> Четверг</label>
+            <label><input class="setting-open-day" type="checkbox" value="5" checked> Пятница</label>
+            <label><input class="setting-open-day" type="checkbox" value="6" checked> Суббота</label>
+            <label><input class="setting-open-day" type="checkbox" value="0" checked> Воскресенье</label>
+        </div>
+        <div class="form-group"><label for="setting-status-mode">Статус в боковой панели</label><select id="setting-status-mode"><option value="auto">Автоматически по расписанию</option><option value="open">Всегда открыто</option><option value="closed">Всегда закрыто</option></select><small>В автоматическом режиме статус будет переключаться по указанным дням и времени Якутска. На праздники и санитарные дни вручную выберите статус или исключите день из расписания.</small></div>
+        <button type="submit">Сохранить настройки</button>
+    </form>
+    <div id="site-settings-msg" class="msg" role="status" aria-live="polite"></div>
+</div>
     </div>
 
-    <script>
-        const TOKEN = localStorage.getItem('token');
-        if (!TOKEN) window.location.href = '/admin.html';
-
-        // Переключение вкладок
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
-                document.getElementById('tab-' + btn.dataset.tab).classList.remove('hidden');
-            });
-        });
-
-        // ====== ЗАГРУЗКА КАТЕГОРИЙ В SELECT ======
-        async function loadCategoryOptions() {
-            const select = document.getElementById('ex-category');
-            if (!select) return;
-            try {
-                const res = await fetch('/api/categories');
-                const cats = await res.json();
-                select.innerHTML = '<option value="">Без категории</option>';
-                cats.forEach(cat => {
-                    select.innerHTML += `<option value="${cat.id}">${cat.name}</option>`;
-                });
-            } catch (err) {
-                console.error(err);
-            }
-        }
-
-        // ====== ЗАГРУЗКА СПИСКОВ ======
-        async function loadExhibitsList() {
-            const res = await fetch('/api/exhibits?page=1&per_page=100');
-            const data = await res.json();
-            const items = data.items || data; // fallback для старого формата
-            let html = '<table><tr><th>Название</th><th>Дата</th><th></th></tr>';
-            items.forEach(item => {
-                html += `<tr><td>${item.title}</td><td>${item.creation_date || ''}</td>
-                <td><button type="button" onclick="editEnglish('exhibits','${item.id}')">EN</button> <button class="delete-btn" onclick="deleteItem('exhibits','${item.id}')">Удалить</button></td></tr>`;
-            });
-            html += '</table>';
-            document.getElementById('exhibits-list').innerHTML = html || '<p>Нет экспонатов</p>';
-        }
-
-        async function loadNewsList() {
-            const res = await fetch('/api/news');
-            const data = await res.json();
-            let html = '<table><tr><th>Заголовок</th><th>Дата</th><th></th></tr>';
-            data.forEach(item => {
-                html += `<tr><td>${item.title}</td><td>${item.published_at ? new Date(item.published_at).toLocaleDateString('ru-RU') : ''}</td>
-                <td><button type="button" onclick="editEnglish('news','${item.id}')">EN</button> <button class="delete-btn" onclick="deleteItem('news','${item.id}')">Удалить</button></td></tr>`;
-            });
-            html += '</table>';
-            document.getElementById('news-list').innerHTML = html || '<p>Нет новостей</p>';
-        }
-
-        async function loadEventsList() {
-            const res = await fetch('/api/events');
-            const data = await res.json();
-            let html = '<table><tr><th>Название</th><th>Начало</th><th></th></tr>';
-            data.forEach(item => {
-                html += `<tr><td>${item.title}</td><td>${new Date(item.start_date).toLocaleString('ru-RU')}</td>
-                <td><button type="button" onclick="editEnglish('events','${item.id}')">EN</button> <button class="delete-btn" onclick="deleteItem('events','${item.id}')">Удалить</button></td></tr>`;
-            });
-            html += '</table>';
-            document.getElementById('events-list').innerHTML = html || '<p>Нет мероприятий</p>';
-        }
-
-        async function loadCategoriesList() {
-            const res = await fetch('/api/categories');
-            const data = await res.json();
-            let html = '<table><tr><th>Название</th><th>Slug</th><th></th></tr>';
-            data.forEach(item => {
-                html += `<tr><td>${item.name}</td><td>${item.slug}</td>
-                <td><button type="button" onclick="editEnglish('categories','${item.id}')">EN</button> <button class="delete-btn" onclick="deleteItem('categories','${item.id}')">Удалить</button></td></tr>`;
-            });
-            html += '</table>';
-            document.getElementById('categories-list').innerHTML = html || '<p>Нет категорий</p>';
-        }
-
-        window.deleteItem = async (type, id) => {
-            if (!confirm('Удалить?')) return;
-            await fetch(`/api/${type}/${id}`, { method: 'DELETE', headers: {'Authorization': 'Bearer ' + TOKEN} });
-            if (type === 'exhibits') loadExhibitsList();
-            else if (type === 'news') loadNewsList();
-            else if (type === 'events') loadEventsList();
-            else if (type === 'categories') {
-                loadCategoriesList();
-                loadCategoryOptions(); // обновить select при добавлении экспоната
-            }
-        };
-
-        window.editEnglish = async (type, id) => {
-            const fields = {
-                exhibits: [
-                    ['title_en', 'Title', 'title'],
-                    ['short_description_en', 'Short description', 'short_description', true],
-                    ['description_en', 'Full description', 'description', true],
-                    ['material_en', 'Material', 'material'],
-                    ['dimensions_en', 'Dimensions', 'dimensions'],
-                    ['origin_en', 'Origin', 'origin'],
-                    ['quote_en', 'Quote or story', 'quote'],
-                    ['quote_author_en', 'Quote author', 'quote_author']
-                ],
-                news: [
-                    ['title_en', 'Title', 'title'],
-                    ['short_text_en', 'Short summary', 'short_text', true],
-                    ['content_en', 'Full text', 'content', true]
-                ],
-                events: [
-                    ['title_en', 'Title', 'title'],
-                    ['short_text_en', 'Short description', 'short_text', true],
-                    ['description_en', 'Full description', 'description', true],
-                    ['location_en', 'Location', 'location']
-                ],
-                categories: [
-                    ['name_en', 'Name', 'name'],
-                    ['description_en', 'Description', 'description', true]
-                ]
-            }[type];
-            if (!fields) return;
-
-            const response = await fetch(`/api/${type}/${id}`);
-            const record = await response.json();
-            if (!response.ok || record.error) {
-                alert(record.error || 'Could not load this item.');
-                return;
-            }
-
-            const dialog = document.createElement('dialog');
-            dialog.style.cssText = 'width:min(720px,94vw);max-height:90vh;overflow:auto;border:1px solid #aaa;border-radius:8px;padding:1.25rem';
-            const form = document.createElement('form');
-            const heading = document.createElement('h2');
-            heading.textContent = 'English translation';
-            form.append(heading);
-
-            fields.forEach(([key, label, sourceKey, multiline]) => {
-                const wrapper = document.createElement('div');
-                wrapper.className = 'form-group';
-                const caption = document.createElement('label');
-                caption.textContent = `${label} (Russian: ${record[sourceKey] || '—'})`;
-                const input = document.createElement(multiline ? 'textarea' : 'input');
-                input.name = key;
-                input.value = record[key] || '';
-                if (multiline) input.rows = key.includes('content') || key.includes('description') ? 5 : 3;
-                wrapper.append(caption, input);
-                form.append(wrapper);
-            });
-
-            const actions = document.createElement('div');
-            actions.style.cssText = 'display:flex;justify-content:flex-end;gap:8px;margin-top:1rem';
-            const cancel = document.createElement('button');
-            cancel.type = 'button';
-            cancel.textContent = 'Cancel';
-            cancel.addEventListener('click', () => dialog.close());
-            const save = document.createElement('button');
-            save.type = 'submit';
-            save.textContent = 'Save English translation';
-            actions.append(cancel, save);
-            form.append(actions);
-            dialog.append(form);
-            document.body.append(dialog);
-
-            form.addEventListener('submit', async (event) => {
-                event.preventDefault();
-                save.disabled = true;
-                const body = Object.fromEntries(new FormData(form).entries());
-                try {
-                    const result = await fetch(`/api/${type}/${id}`, {
-                        method: 'PUT',
-                        headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN},
-                        body: JSON.stringify(body)
-                    });
-                    const resultData = await result.json();
-                    if (!result.ok || resultData.error) throw new Error(resultData.error || 'Could not save translation.');
-                    dialog.close();
-                    alert('English translation saved.');
-                } catch (error) {
-                    alert(error.message);
-                    save.disabled = false;
-                }
-            });
-            dialog.addEventListener('close', () => dialog.remove(), { once: true });
-            dialog.showModal();
-        };
-
-        // Инициализация
-        loadExhibitsList();
-        loadNewsList();
-        loadEventsList();
-        loadCategoriesList();
-        loadCategoryOptions();
-
-        // ====== УНИВЕРСАЛЬНАЯ ФУНКЦИЯ ЗАГРУЗКИ ФАЙЛА ======
-        async function uploadImage(fileInput) {
-            if (!fileInput || fileInput.files.length === 0) return '';
-            const formData = new FormData();
-            formData.append('image', fileInput.files[0]);
-            const res = await fetch('/api/upload', {
-                method: 'POST',
-                headers: {'Authorization': 'Bearer ' + TOKEN},
-                body: formData
-            });
-            const data = await res.json();
-            if (data.url) return data.url;
-            throw new Error(data.error || 'Ошибка загрузки');
-        }
-
-        // ====== ДОБАВЛЕНИЕ ЭКСПОНАТА (ПОЛНЫЙ) ======
-        document.getElementById('exhibit-add-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const msgEl = document.getElementById('exhibit-msg');
-            try {
-                // Загружаем главное фото
-                const mainImageUrl = await uploadImage(document.getElementById('ex-image-file'));
-
-                // Загружаем галерею деталей
-                const galleryInput = document.getElementById('ex-gallery');
-                let galleryUrls = [];
-                if (galleryInput.files.length > 0) {
-                    for (let i = 0; i < Math.min(galleryInput.files.length, 4); i++) {
-                        const formData = new FormData();
-                        formData.append('image', galleryInput.files[i]);
-                        const res = await fetch('/api/upload', {
-                            method: 'POST',
-                            headers: {'Authorization': 'Bearer ' + TOKEN},
-                            body: formData
-                        });
-                        const data = await res.json();
-                        if (data.url) galleryUrls.push(data.url);
-                    }
-                }
-
-                const body = {
-                    title: document.getElementById('ex-title').value,
-                    title_en: document.getElementById('ex-title-en').value,
-                    short_description: document.getElementById('ex-short').value,
-                    short_description_en: document.getElementById('ex-short-en').value,
-                    description: document.getElementById('ex-desc').value,
-                    description_en: document.getElementById('ex-desc-en').value,
-                    creation_date: document.getElementById('ex-date').value,
-                    material: document.getElementById('ex-material').value,
-                    material_en: document.getElementById('ex-material-en').value,
-                    dimensions: document.getElementById('ex-dimensions').value,
-                    dimensions_en: document.getElementById('ex-dimensions-en').value,
-                    origin: document.getElementById('ex-origin').value,
-                    origin_en: document.getElementById('ex-origin-en').value,
-                    audio_url: document.getElementById('ex-audio-url').value,
-                    quote: document.getElementById('ex-quote').value,
-                    quote_en: document.getElementById('ex-quote-en').value,
-                    quote_author: document.getElementById('ex-quote-author').value,
-                    quote_author_en: document.getElementById('ex-quote-author-en').value,
-                    image_url: mainImageUrl,
-                    images: galleryUrls,
-                    category_id: document.getElementById('ex-category').value || null,
-                    is_featured: document.getElementById('ex-featured').checked
-                };
-
-                const res = await fetch('/api/exhibits', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN},
-                    body: JSON.stringify(body)
-                });
-                const data = await res.json();
-
-                if (data.id) {
-                    msgEl.className = 'msg success';
-                    msgEl.textContent = '✅ Экспонат добавлен!';
-                    document.getElementById('exhibit-add-form').reset();
-                    loadExhibitsList();           // обновить таблицу
-                    loadCategoryOptions();        // обновить счётчики в категориях
-                } else {
-                    msgEl.className = 'msg error';
-                    msgEl.textContent = '❌ Ошибка: ' + JSON.stringify(data);
-                }
-            } catch (err) {
-                msgEl.className = 'msg error';
-                msgEl.textContent = '❌ Ошибка соединения: ' + err.message;
-            }
-        });
-
-        // ====== ДОБАВЛЕНИЕ НОВОСТИ ======
-        document.getElementById('news-add-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            try {
-                const imageUrl = await uploadImage(document.getElementById('news-image-file'));
-                const body = {
-                    title: document.getElementById('news-title').value,
-                    title_en: document.getElementById('news-title-en').value,
-                    short_text: document.getElementById('news-short').value,
-                    short_text_en: document.getElementById('news-short-en').value,
-                    content: document.getElementById('news-full').value,
-                    content_en: document.getElementById('news-full-en').value,
-                    image_url: imageUrl,
-                    published_at: document.getElementById('news-date').value || undefined
-                };
-                const res = await fetch('/api/news', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN},
-                    body: JSON.stringify(body)
-                });
-                const data = await res.json();
-                document.getElementById('news-msg').className = data.id ? 'msg success' : 'msg error';
-                document.getElementById('news-msg').textContent = data.id ? 'Добавлено' : ('Ошибка: '+JSON.stringify(data));
-                if (data.id) {
-                    document.getElementById('news-add-form').reset();
-                    loadNewsList();
-                }
-            } catch (err) {
-                document.getElementById('news-msg').className = 'msg error';
-                document.getElementById('news-msg').textContent = err.message;
-            }
-        });
-
-        // ====== ДОБАВЛЕНИЕ МЕРОПРИЯТИЯ ======
-        document.getElementById('event-add-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            try {
-                const imageUrl = await uploadImage(document.getElementById('event-image-file'));
-                const body = {
-                    title: document.getElementById('event-title').value,
-                    title_en: document.getElementById('event-title-en').value,
-                    short_text: document.getElementById('event-short').value,
-                    short_text_en: document.getElementById('event-short-en').value,
-                    description: document.getElementById('event-desc').value,
-                    description_en: document.getElementById('event-desc-en').value,
-                    start_date: document.getElementById('event-start').value,
-                    end_date: document.getElementById('event-end').value || null,
-                    location: document.getElementById('event-location').value,
-                    location_en: document.getElementById('event-location-en').value,
-                    image_url: imageUrl,
-                    is_featured: document.getElementById('event-featured').checked
-                };
-                const res = await fetch('/api/events', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN},
-                    body: JSON.stringify(body)
-                });
-                const data = await res.json();
-                document.getElementById('event-msg').className = data.id ? 'msg success' : 'msg error';
-                document.getElementById('event-msg').textContent = data.id ? 'Добавлено' : ('Ошибка: '+JSON.stringify(data));
-                if (data.id) {
-                    document.getElementById('event-add-form').reset();
-                    loadEventsList();
-                }
-            } catch (err) {
-                document.getElementById('event-msg').className = 'msg error';
-                document.getElementById('event-msg').textContent = err.message;
-            }
-        });
-
-        // ====== ДОБАВЛЕНИЕ КАТЕГОРИИ ======
-        document.getElementById('category-add-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            try {
-                const body = {
-                    name: document.getElementById('cat-name').value,
-                    name_en: document.getElementById('cat-name-en').value,
-                    slug: document.getElementById('cat-slug').value,
-                    description: document.getElementById('cat-desc').value,
-                    description_en: document.getElementById('cat-desc-en').value,
-                    order_index: document.getElementById('cat-order').value || 0
-                };
-                const res = await fetch('/api/categories', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN},
-                    body: JSON.stringify(body)
-                });
-                const data = await res.json();
-                document.getElementById('cat-msg').className = data.id ? 'msg success' : 'msg error';
-                document.getElementById('cat-msg').textContent = data.id ? 'Добавлено' : ('Ошибка: '+JSON.stringify(data));
-                if (data.id) {
-                    document.getElementById('category-add-form').reset();
-                    loadCategoriesList();
-                    loadCategoryOptions();
-                }
-            } catch (err) {
-                document.getElementById('cat-msg').className = 'msg error';
-                document.getElementById('cat-msg').textContent = err.message;
-            }
-        });
-    </script>
-    <!-- Quill Editor -->
-<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
-<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+    <script src="/js/admin-panel.js?v=4"></script>
 
 <script>
-    let quill;
+    const pageEditor = document.getElementById('page-editor');
+    const pageSaveButton = document.getElementById('save-page-btn');
+    let savedEditorRange = null;
 
-    // Инициализация редактора
-    function initEditor() {
-        if (quill) return;
-        quill = new Quill('#page-editor', {
-            theme: 'snow',
-            modules: {
-                toolbar: [
-                    [{ 'header': [1, 2, 3, false] }],
-                    ['bold', 'italic', 'underline'],
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                    ['link', 'image'],
-                    ['clean']
-                ]
+    function rememberEditorSelection() {
+        const selection = window.getSelection();
+        if (selection && selection.rangeCount && pageEditor.contains(selection.anchorNode)) {
+            savedEditorRange = selection.getRangeAt(0).cloneRange();
+        }
+    }
+    pageEditor.addEventListener('keyup', rememberEditorSelection);
+    pageEditor.addEventListener('mouseup', rememberEditorSelection);
+    document.querySelectorAll('[data-editor-command]').forEach((button) => {
+        button.addEventListener('mousedown', (event) => event.preventDefault());
+        button.addEventListener('click', () => {
+            pageEditor.focus();
+            const selection = window.getSelection();
+            if (savedEditorRange && selection) {
+                selection.removeAllRanges();
+                selection.addRange(savedEditorRange);
             }
+            document.execCommand(button.dataset.editorCommand, false, button.dataset.editorValue || null);
+            rememberEditorSelection();
         });
+    });
+
+    async function getPageTemplate(url) {
+        const response = await fetch(url, { cache: 'no-store' });
+        if (!response.ok) throw new Error('Не удалось загрузить исходный текст страницы.');
+        const html = await response.text();
+        const template = new DOMParser().parseFromString(html, 'text/html').querySelector('#page-content');
+        if (!template) throw new Error('Для этой страницы не найден блок редактирования.');
+        return template.innerHTML;
     }
 
-    // Загрузка контента страницы
     async function loadPageContent() {
         const url = document.getElementById('page-select').value;
         if (!url) {
@@ -589,15 +340,42 @@
         }
 
         document.getElementById('editor-container').style.display = 'block';
-        initEditor();
+        pageEditor.contentEditable = 'false';
+        pageSaveButton.disabled = true;
+        savedEditorRange = null;
 
         const language = document.getElementById('page-language').value;
-        const res = await fetch('/api/page?url=' + encodeURIComponent(url) + '&lang=' + language);
-        const data = await res.json();
-        if (data.content) {
-            quill.root.innerHTML = data.content;
-        } else {
-            quill.root.innerHTML = language === 'en' ? '<p>Enter the English page content here...</p>' : '<p>Новый контент страницы...</p>';
+        const msg = document.getElementById('page-msg');
+        const help = document.getElementById('page-editor-help');
+        msg.textContent = '';
+        help.textContent = 'Загружаю исходный текст страницы…';
+        try {
+            const res = await fetch('/api/page?url=' + encodeURIComponent(url) + '&lang=' + language);
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || 'Не удалось загрузить содержимое страницы.');
+            let content = data.content;
+            let fromTemplate = false;
+            const usingRussianFallback = language === 'en' && !data.has_translation;
+            if (!content) {
+                content = await getPageTemplate(url);
+                fromTemplate = true;
+            }
+            pageEditor.innerHTML = content;
+            pageEditor.contentEditable = 'true';
+            pageSaveButton.disabled = false;
+            help.textContent = usingRussianFallback
+                ? 'Показан русский текст страницы. Переведите его на английский перед сохранением.'
+                : fromTemplate
+                    ? 'Показан исходный текст сайта. Измените нужные фрагменты и сохраните страницу.'
+                    : 'Показан сохранённый текст. Редактируйте его прямо в блоке ниже.';
+            msg.textContent = '';
+            msg.className = 'msg';
+        } catch (error) {
+            pageEditor.innerHTML = '';
+            pageEditor.contentEditable = 'false';
+            help.textContent = '';
+            msg.className = 'msg error';
+            msg.textContent = error.message;
         }
     }
 
@@ -608,27 +386,149 @@
     document.getElementById('save-page-btn').addEventListener('click', async function() {
         const url = document.getElementById('page-select').value;
         const language = document.getElementById('page-language').value;
-        const content = quill.root.innerHTML;
+        const content = pageEditor.innerHTML;
         const msg = document.getElementById('page-msg');
-
-        const res = await fetch('/api/page', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + TOKEN
-            },
-            body: JSON.stringify({ page_url: url, content: content, lang: language })
-        });
-
-        const data = await res.json();
-        if (data.success) {
-            msg.className = 'msg success';
-            msg.textContent = 'Страница сохранена!';
-        } else {
+        const button = document.getElementById('save-page-btn');
+        if (!content.trim() || content.trim() === '<br>') {
             msg.className = 'msg error';
-            msg.textContent = 'Ошибка сохранения';
+            msg.textContent = 'Страница не может быть пустой.';
+            return;
+        }
+        button.disabled = true;
+        msg.className = 'msg';
+        msg.textContent = 'Сохраняю…';
+        try {
+            const res = await fetch('/api/page', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + window.ADMIN_TOKEN
+                },
+                body: JSON.stringify({ page_url: url, content: content, lang: language })
+            });
+            const data = await res.json();
+            if (res.status === 401 || res.status === 403) {
+                localStorage.removeItem('token');
+                window.location.replace('/admin.html');
+                return;
+            }
+            if (!res.ok || !data.success) throw new Error(data.error || 'Не удалось сохранить страницу.');
+            msg.className = 'msg success';
+            msg.textContent = 'Страница сохранена.';
+            document.getElementById('page-editor-help').textContent = 'Показан сохранённый текст. Редактируйте его прямо в блоке ниже.';
+        } catch (error) {
+            msg.className = 'msg error';
+            msg.textContent = error.message;
+        } finally {
+            button.disabled = false;
         }
     });
+
+    pageEditor.addEventListener('click', (event) => {
+        if (event.target.closest('a')) event.preventDefault();
+    });
+
+    const settingsForm = document.getElementById('site-settings-form');
+    const settingsMessage = document.getElementById('site-settings-msg');
+    const logoUrlInput = document.getElementById('setting-logo-url');
+    const logoPreview = document.getElementById('setting-logo-preview');
+    function showLogoPreview(url) {
+        logoPreview.replaceChildren();
+        if (!url) return;
+        const image = document.createElement('img');
+        image.src = url;
+        image.alt = 'Предпросмотр логотипа';
+        logoPreview.append(image);
+    }
+
+    async function loadSiteSettings() {
+        try {
+            const response = await fetch('/api/site-settings');
+            const settings = await response.json();
+            if (!response.ok) throw new Error(settings.error || 'Не удалось загрузить настройки.');
+            document.getElementById('setting-museum-name').value = settings.museum_name || '';
+            document.getElementById('setting-museum-name-en').value = settings.museum_name_en || '';
+            document.getElementById('setting-branch-name').value = settings.branch_name || '';
+            document.getElementById('setting-branch-name-en').value = settings.branch_name_en || '';
+            document.getElementById('setting-status-mode').value = settings.status_mode || 'auto';
+            document.getElementById('setting-opening-time').value = settings.opening_time || '10:00';
+            document.getElementById('setting-closing-time').value = settings.closing_time || '18:00';
+            const openDays = Array.isArray(settings.open_days) ? settings.open_days.map(Number) : [0, 2, 3, 4, 5, 6];
+            document.querySelectorAll('.setting-open-day').forEach((checkbox) => {
+                checkbox.checked = openDays.includes(Number(checkbox.value));
+            });
+            logoUrlInput.value = settings.logo_url || '/img/logo-samartyai.png';
+            showLogoPreview(logoUrlInput.value);
+        } catch (error) {
+            settingsMessage.className = 'msg error';
+            settingsMessage.textContent = error.message;
+        }
+    }
+
+    document.getElementById('setting-logo-file').addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+        const previewUrl = URL.createObjectURL(file);
+        showLogoPreview(previewUrl);
+    });
+
+    settingsForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const submit = settingsForm.querySelector('button[type="submit"]');
+        submit.disabled = true;
+        settingsMessage.className = 'msg';
+        settingsMessage.textContent = 'Сохраняю…';
+        try {
+            const imageFile = document.getElementById('setting-logo-file').files[0];
+            if (imageFile) {
+                const uploadBody = new FormData();
+                uploadBody.append('image', imageFile);
+                const uploadResponse = await fetch('/api/upload', {
+                    method: 'POST',
+                    headers: { 'Authorization': 'Bearer ' + window.ADMIN_TOKEN },
+                    body: uploadBody
+                });
+                const uploaded = await uploadResponse.json();
+                if (!uploadResponse.ok || !uploaded.url) throw new Error(uploaded.error || 'Не удалось загрузить логотип.');
+                logoUrlInput.value = uploaded.url;
+            }
+
+            const payload = {
+                museum_name: document.getElementById('setting-museum-name').value.trim(),
+                museum_name_en: document.getElementById('setting-museum-name-en').value.trim(),
+                branch_name: document.getElementById('setting-branch-name').value.trim(),
+                branch_name_en: document.getElementById('setting-branch-name-en').value.trim(),
+                logo_url: logoUrlInput.value,
+                status_mode: document.getElementById('setting-status-mode').value,
+                opening_time: document.getElementById('setting-opening-time').value,
+                closing_time: document.getElementById('setting-closing-time').value,
+                open_days: [...document.querySelectorAll('.setting-open-day:checked')].map((checkbox) => Number(checkbox.value))
+            };
+            const response = await fetch('/api/site-settings', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + window.ADMIN_TOKEN },
+                body: JSON.stringify(payload)
+            });
+            const result = await response.json();
+            if (response.status === 401 || response.status === 403) {
+                localStorage.removeItem('token');
+                window.location.replace('/admin.html');
+                return;
+            }
+            if (!response.ok || !result.success) throw new Error(result.error || 'Не удалось сохранить настройки.');
+            showLogoPreview(logoUrlInput.value);
+            document.getElementById('setting-logo-file').value = '';
+            settingsMessage.className = 'msg success';
+            settingsMessage.textContent = 'Настройки сохранены.';
+        } catch (error) {
+            settingsMessage.className = 'msg error';
+            settingsMessage.textContent = error.message;
+        } finally {
+            submit.disabled = false;
+        }
+    });
+
+    loadSiteSettings();
 </script>
 </body>
 </html>

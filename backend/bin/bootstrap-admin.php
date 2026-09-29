@@ -17,6 +17,12 @@ $db = new PDO($dsn, $_ENV['DB_USER'] ?? 'museum', $_ENV['DB_PASSWORD'] ?? '', [
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
 ]);
 
+$db->exec('CREATE TABLE IF NOT EXISTS site_settings (
+    setting_key TEXT PRIMARY KEY,
+    setting_value TEXT NOT NULL,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+)');
+
 // Older installations did not create this table, although the API uses it.
 $db->exec('CREATE TABLE IF NOT EXISTS page_blocks (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),

@@ -5,6 +5,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Support\Localization;
+use App\Support\AdminDateTime;
 
 class NewsController
 {
@@ -44,13 +45,12 @@ class NewsController
     $body = $request->getParsedBody();
     $db = $this->container->get('database');
 
-    // Преобразование даты из формата datetime-local в формат БД
-    $publishedAt = null;
-    if (!empty($body['published_at'])) {
-        $d = \DateTime::createFromFormat('Y-m-d\TH:i', $body['published_at']);
-        if ($d) {
-            $publishedAt = $d->format('Y-m-d H:i:s');
-        }
+    try {
+        $publishedAt = AdminDateTime::parse($body['published_at'] ?? null)
+            ?? (new \DateTimeImmutable('now', new \DateTimeZone($_ENV['APP_TIMEZONE'] ?? 'Asia/Yakutsk')))->format('Y-m-d H:i:sP');
+    } catch (\InvalidArgumentException $error) {
+        $response->getBody()->write(json_encode(['error' => $error->getMessage()], JSON_UNESCAPED_UNICODE));
+        return $response->withStatus(422)->withHeader('Content-Type', 'application/json; charset=utf-8');
     }
 
     $stmt = $db->prepare('INSERT INTO news (title, short_text, content, image_url, published_at, title_en, short_text_en, content_en) VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id');
@@ -74,10 +74,11 @@ class NewsController
     {
         $body = $request->getParsedBody();
         $db = $this->container->get('database');
-        $publishedAt = null;
-        if (!empty($body['published_at'])) {
-            $date = \DateTime::createFromFormat('Y-m-d\\TH:i', $body['published_at']);
-            $publishedAt = $date ? $date->format('Y-m-d H:i:s') : null;
+        try {
+            $publishedAt = array_key_exists('published_at', $body) ? AdminDateTime::parse($body['published_at']) : null;
+        } catch (\InvalidArgumentException $error) {
+            $response->getBody()->write(json_encode(['error' => $error->getMessage()], JSON_UNESCAPED_UNICODE));
+            return $response->withStatus(422)->withHeader('Content-Type', 'application/json; charset=utf-8');
         }
 
         $stmt = $db->prepare('UPDATE news SET title = COALESCE(?, title), short_text = COALESCE(?, short_text), content = COALESCE(?, content), image_url = COALESCE(?, image_url), published_at = COALESCE(?, published_at), title_en = COALESCE(?, title_en), short_text_en = COALESCE(?, short_text_en), content_en = COALESCE(?, content_en) WHERE id = ? AND is_deleted = false');

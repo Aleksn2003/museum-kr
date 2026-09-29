@@ -260,23 +260,46 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-function updateWorkingHours() {
+let museumSettingsPromise;
+function getMuseumSiteSettings() {
+    if (!museumSettingsPromise) {
+        museumSettingsPromise = fetch('/api/site-settings', { cache: 'no-store' })
+            .then((response) => response.ok ? response.json() : null)
+            .catch(() => null);
+    }
+    return museumSettingsPromise;
+}
+
+async function updateWorkingHours() {
     const statusDot = document.getElementById('status-dot');
     const statusText = document.getElementById('status-text');
     const iconEl = document.getElementById('status-icon');
     if (!statusDot || !statusText || !iconEl) return;
 
-    const now = new Date();
-    const day = now.getDay();     // 0 (вс) – 6 (сб)
-    const hour = now.getHours();
-    const minute = now.getMinutes();
+    const settings = await getMuseumSiteSettings();
 
-    // Вторник (2) – Суббота (6), с 10:00 до 18:00
-    const isOpenDay = day >= 2 && day <= 6 && day !== 0 && day !== 1;
+    const parts = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'Asia/Yakutsk', weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
+    }).formatToParts(new Date());
+    const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+    const day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(values.weekday);
+    const hour = Number(values.hour);
+    const minute = Number(values.minute);
+
     const currentTime = hour * 60 + minute;
-    const openTime = 10 * 60;
-    const closeTime = 18 * 60;
-    const isOpen = isOpenDay && currentTime >= openTime && currentTime < closeTime;
+    const openDays = Array.isArray(settings?.open_days) ? settings.open_days.map(Number) : [0, 2, 3, 4, 5, 6];
+    const openingTime = settings?.opening_time || '10:00';
+    const closingTime = settings?.closing_time || '18:00';
+    const [openingHour, openingMinute] = openingTime.split(':').map(Number);
+    const [closingHour, closingMinute] = closingTime.split(':').map(Number);
+    const openTime = openingHour * 60 + openingMinute;
+    const closeTime = closingHour * 60 + closingMinute;
+    const isOpenDay = openDays.includes(day);
+    const isOpen = settings?.status_mode === 'open'
+        ? true
+        : settings?.status_mode === 'closed'
+            ? false
+            : isOpenDay && currentTime >= openTime && currentTime < closeTime;
 
     if (isOpen) {
         statusDot.style.backgroundColor = '#22c55e'; // зелёный
@@ -291,7 +314,61 @@ function updateWorkingHours() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', updateWorkingHours);
+async function applyMuseumSiteSettings() {
+    const settings = await getMuseumSiteSettings();
+    if (!settings) return;
+
+    let language = 'ru';
+    try { language = localStorage.getItem('samyrtay-language') === 'en' ? 'en' : 'ru'; } catch (_) { /* Use Russian by default. */ }
+    const museumName = language === 'en' ? settings.museum_name_en : settings.museum_name;
+    const branchName = language === 'en' ? settings.branch_name_en : settings.branch_name;
+
+    document.querySelectorAll('header img[src*="logo-samartyai.png"]').forEach((logo) => {
+        logo.src = settings.logo_url || '/img/logo-samartyai.png';
+        logo.alt = museumName ? `Логотип: ${museumName}` : 'Логотип музея';
+        const brand = logo.closest('a');
+        const labels = brand?.querySelectorAll('span') || [];
+        if (labels[0] && museumName) labels[0].textContent = museumName;
+        if (labels[1] && branchName) labels[1].textContent = branchName;
+    });
+
+    if (museumName) document.title = document.title.replace(/Кердемский музей(?:-комплекс)?|Kerdem Museum(?: Complex)?/, museumName);
+}
+
+async function applySavedPageContent() {
+    const contentRoot = document.getElementById('page-content');
+    if (!contentRoot) return;
+
+    try {
+        const response = await fetch('/api/page?url=' + encodeURIComponent(window.location.pathname), { cache: 'no-store' });
+        if (!response.ok) return;
+        const data = await response.json();
+        if (typeof data.content === 'string' && data.content.trim()) {
+            const template = document.createElement('template');
+            template.innerHTML = data.content;
+
+            // Keep the live map instance while applying edited visitor-page text.
+            const currentMap = contentRoot.querySelector('#dgis-map');
+            const savedMap = template.content.querySelector('#dgis-map');
+            if (currentMap && savedMap) {
+                currentMap.className = savedMap.className;
+                currentMap.style.cssText = savedMap.style.cssText;
+                savedMap.replaceWith(currentMap);
+            }
+
+            contentRoot.replaceChildren(template.content);
+            window.initMuseumCompareSliders?.(contentRoot);
+            if (currentMap) window.dispatchEvent(new Event('resize'));
+        }
+    } catch (_) {
+        // Keep the bundled page content available if the API is temporarily offline.
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    applyMuseumSiteSettings();
+    applySavedPageContent();
+});
 
 
 
@@ -413,7 +490,10 @@ if (document.getElementById('fun-fact-text')) {
 document.addEventListener('DOMContentLoaded', () => {
     updateWorkingHours();
     loadUpcomingEventSidebar();
-    setInterval(updateWorkingHours, 60000);
+    setInterval(() => {
+        museumSettingsPromise = null;
+        updateWorkingHours();
+    }, 60000);
 
     // Сначала скрываем оба блока
     const funFactCard = document.getElementById('fun-fact-card');

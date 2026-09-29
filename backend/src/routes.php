@@ -262,10 +262,12 @@ $app->get('/api/search', function (Request $request, Response $response) {
         // Авторизация
         $app->get('/api/funfact', [\App\Controllers\FunFactController::class, 'random']);
         $app->get('/api/page', [\App\Controllers\PageController::class, 'getContent']);
+        $app->get('/api/site-settings', [\App\Controllers\SiteSettingsController::class, 'getSettings']);
         $app->post('/api/auth/login', [AuthController::class, 'login']);
 
         // Защищённые маршруты (админка)
         $app->group('/api', function ($group) {
+            $group->put('/site-settings', [\App\Controllers\SiteSettingsController::class, 'saveSettings']);
             $group->post('/page', [\App\Controllers\PageController::class, 'saveContent']);
             $group->post('/page-blocks', [\App\Controllers\PageBlocksController::class, 'saveBlocks']);
             // Экспонаты
@@ -285,38 +287,38 @@ $group->delete('/categories/{id}', [CategoryController::class, 'delete']);
             $group->delete('/news/{id}', [NewsController::class, 'delete']);
             $group->delete('/events/{id}', [EventController::class, 'delete']);
             $group->post('/upload', function (Request $request, Response $response) {
-    $uploadedFiles = $request->getUploadedFiles();
-    if (empty($uploadedFiles['image'])) {
-        $response->getBody()->write(json_encode(['error' => 'Файл не найден']));
-        return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
-    }
+                $uploadedFiles = $request->getUploadedFiles();
+                $image = $uploadedFiles['image'] ?? null;
+                if (!$image) {
+                    $response->getBody()->write(json_encode(['error' => 'Файл не найден'], JSON_UNESCAPED_UNICODE));
+                    return $response->withStatus(400)->withHeader('Content-Type', 'application/json; charset=utf-8');
+                }
+                if ($image->getError() !== UPLOAD_ERR_OK) {
+                    $response->getBody()->write(json_encode(['error' => 'Не удалось загрузить файл. Проверьте размер изображения (до 10 МБ).'], JSON_UNESCAPED_UNICODE));
+                    return $response->withStatus(400)->withHeader('Content-Type', 'application/json; charset=utf-8');
+                }
+                if (($image->getSize() ?? 0) < 1 || $image->getSize() > 10 * 1024 * 1024) {
+                    $response->getBody()->write(json_encode(['error' => 'Размер изображения должен быть не более 10 МБ.'], JSON_UNESCAPED_UNICODE));
+                    return $response->withStatus(413)->withHeader('Content-Type', 'application/json; charset=utf-8');
+                }
 
-    
+                $temporaryPath = $image->getStream()->getMetadata('uri');
+                $mimeType = $temporaryPath ? (new \finfo(FILEINFO_MIME_TYPE))->file($temporaryPath) : false;
+                $extensions = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp', 'image/gif' => 'gif'];
+                if (!$mimeType || !isset($extensions[$mimeType]) || !@getimagesize($temporaryPath)) {
+                    $response->getBody()->write(json_encode(['error' => 'Поддерживаются только корректные JPEG, PNG, WebP и GIF изображения.'], JSON_UNESCAPED_UNICODE));
+                    return $response->withStatus(415)->withHeader('Content-Type', 'application/json; charset=utf-8');
+                }
 
-    $image = $uploadedFiles['image'];
-    if ($image->getError() !== UPLOAD_ERR_OK) {
-        $response->getBody()->write(json_encode(['error' => 'Ошибка загрузки файла']));
-        return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
-    }
-
-    $extension = pathinfo($image->getClientFilename(), PATHINFO_EXTENSION);
-    $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-    if (!in_array(strtolower($extension), $allowed)) {
-        $response->getBody()->write(json_encode(['error' => 'Недопустимый формат']));
-        return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
-    }
-
-    $directory = '/var/www/html/uploads';
-    if (!is_dir($directory)) {
-        mkdir($directory, 0755, true);
-    }
-
-    $filename = uniqid() . '.' . $extension;
-    $image->moveTo($directory . '/' . $filename);
-
-    $url = '/img/uploads/' . $filename;
-    $response->getBody()->write(json_encode(['url' => $url]));
-    return $response->withHeader('Content-Type', 'application/json');
-});
+                $directory = '/var/www/html/uploads';
+                if (!is_dir($directory) && !mkdir($directory, 0755, true) && !is_dir($directory)) {
+                    $response->getBody()->write(json_encode(['error' => 'Не удалось подготовить папку для изображений.'], JSON_UNESCAPED_UNICODE));
+                    return $response->withStatus(500)->withHeader('Content-Type', 'application/json; charset=utf-8');
+                }
+                $filename = bin2hex(random_bytes(16)) . '.' . $extensions[$mimeType];
+                $image->moveTo($directory . '/' . $filename);
+                $response->getBody()->write(json_encode(['url' => '/img/uploads/' . $filename], JSON_UNESCAPED_UNICODE));
+                return $response->withHeader('Content-Type', 'application/json; charset=utf-8');
+            });
         })->add(new AuthMiddleware($_ENV['JWT_SECRET'] ?? ''));
     };

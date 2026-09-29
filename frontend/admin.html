@@ -2,41 +2,59 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Вход в админку</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#29473d">
+    <title>Вход в админку — музей Самыртай</title>
     <style>
-        body { font-family: sans-serif; max-width: 400px; margin: 4rem auto; padding: 0 1rem; }
-        .form-group { margin-bottom: 1rem; }
-        input { width: 100%; padding: 0.5rem; box-sizing: border-box; }
-        button { padding: 0.5rem 1.5rem; background: #5D4037; color: white; border: none; cursor: pointer; }
-        .error { color: red; }
+        *{box-sizing:border-box}body{display:grid;min-height:100vh;place-items:center;margin:0;padding:22px;background:radial-gradient(ellipse at 85% 8%,#e3ece5 0,transparent 38%),#f4f2ed;color:#25352f;font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+        .login-card{width:min(440px,100%);padding:38px;border:1px solid #e8e9e1;border-radius:20px;background:#fff;box-shadow:0 24px 70px #26372e12}
+        .brand{display:flex;align-items:center;gap:12px;margin-bottom:30px}.brand-mark{display:grid;width:46px;height:46px;place-items:center;border-radius:15px;background:#29473d;color:#fff;font:26px Georgia,serif}.brand-name{font:20px Georgia,serif}.brand-note{margin-top:3px;color:#78817b;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+        h1{margin:0;font:500 29px/1.2 Georgia,"Times New Roman",serif;letter-spacing:-.03em}.intro{margin:9px 0 25px;color:#78817b;font-size:13px}.form-group{margin-bottom:17px}label{display:block;margin-bottom:7px;color:#536059;font-size:12px;font-weight:700}
+        input{width:100%;min-height:46px;padding:11px 13px;border:1px solid #dfe3dc;border-radius:10px;outline:none;background:#fff;color:#25352f;font:inherit;font-size:14px}input:focus{border-color:#769284;box-shadow:0 0 0 3px #52776218}
+        button{width:100%;min-height:45px;margin-top:5px;padding:11px 16px;border:0;border-radius:10px;background:#29473d;color:#fff;cursor:pointer;font:inherit;font-weight:700;transition:background .15s,opacity .15s}button:hover{background:#1e382f}button:disabled{opacity:.58;cursor:wait}
+        .error{min-height:20px;margin-top:12px;color:#923f35;font-size:12px}.error:empty{display:none}.hint{margin-top:22px;padding:12px 14px;border-radius:10px;background:#f8f8f5;color:#78817b;font-size:11px}.back-link{display:block;margin-top:23px;color:#29473d;font-size:12px;text-align:center;text-decoration:none}.back-link:hover{text-decoration:underline}
+        @media(max-width:480px){.login-card{padding:28px 22px;border-radius:16px}}
     </style>
 </head>
 <body>
-    <h1>Вход для администратора</h1>
-    <form id="login-form">
-        <div class="form-group"><input type="text" id="username" placeholder="Логин" required></div>
-        <div class="form-group"><input type="password" id="password" placeholder="Пароль" required></div>
-        <button type="submit">Войти</button>
-    </form>
-    <div id="login-error" class="error"></div>
+    <main class="login-card">
+        <div class="brand"><span class="brand-mark" aria-hidden="true">С</span><div><div class="brand-name">Самыртай</div><div class="brand-note">Музейный комплекс</div></div></div>
+        <h1>Вход в админ-панель</h1>
+        <p class="intro">Управление новостями, афишей и коллекцией музея.</p>
+        <form id="login-form">
+            <div class="form-group"><label for="username">Логин</label><input type="text" id="username" name="username" autocomplete="username" placeholder="Введите логин" required></div>
+            <div class="form-group"><label for="password">Пароль</label><input type="password" id="password" name="password" autocomplete="current-password" placeholder="Введите пароль" required></div>
+            <button type="submit">Войти в панель</button>
+        </form>
+        <div id="login-error" class="error" role="alert" aria-live="polite"></div>
+        <div class="hint">Пароль администратора хранится в локальном файле <code>.env</code>. Не публикуйте этот файл.</div>
+        <a class="back-link" href="/">← Вернуться на сайт музея</a>
+    </main>
 
     <script>
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const res = await fetch('/api/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    username: document.getElementById('username').value,
-                    password: document.getElementById('password').value
-                })
-            });
-            const data = await res.json();
-            if (data.token) {
+            const form = e.currentTarget;
+            const button = form.querySelector('button[type="submit"]');
+            const message = document.getElementById('login-error');
+            button.disabled = true;
+            message.textContent = 'Проверяю данные…';
+            try {
+                const res = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username: document.getElementById('username').value.trim(),
+                        password: document.getElementById('password').value
+                    })
+                });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok || !data.token) throw new Error(data.error || 'Не удалось войти. Проверьте подключение.');
                 localStorage.setItem('token', data.token);
-                window.location.href = '/admin-panel.html';
-            } else {
-                document.getElementById('login-error').textContent = data.error || 'Ошибка входа';
+                window.location.replace('/admin-panel.html');
+            } catch (error) {
+                message.textContent = error.message;
+                button.disabled = false;
             }
         });
     </script>
