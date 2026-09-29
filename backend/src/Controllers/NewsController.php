@@ -64,6 +64,35 @@ class NewsController
     return $response->withStatus(201)->withHeader('Content-Type', 'application/json');
     }
 
+    // PUT /api/news/{id}
+    public function update(Request $request, Response $response, array $args): Response
+    {
+        $body = $request->getParsedBody();
+        $db = $this->container->get('database');
+        $publishedAt = null;
+        if (!empty($body['published_at'])) {
+            $date = \DateTime::createFromFormat('Y-m-d\\TH:i', $body['published_at']);
+            $publishedAt = $date ? $date->format('Y-m-d H:i:s') : null;
+        }
+
+        $stmt = $db->prepare('UPDATE news SET title = ?, short_text = ?, content = ?, image_url = ?, published_at = COALESCE(?, published_at) WHERE id = ? AND is_deleted = false');
+        $stmt->execute([
+            $body['title'] ?? '',
+            $body['short_text'] ?? null,
+            $body['content'] ?? null,
+            $body['image_url'] ?? null,
+            $publishedAt,
+            $args['id'],
+        ]);
+        if ($stmt->rowCount() === 0) {
+            $response->getBody()->write(json_encode(['error' => 'Новость не найдена']));
+            return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
+        }
+
+        $response->getBody()->write(json_encode(['success' => true]));
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
     // GET /api/news
     public function listAll(Request $request, Response $response): Response
     {

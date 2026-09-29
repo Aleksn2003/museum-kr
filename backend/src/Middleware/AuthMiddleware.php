@@ -29,12 +29,13 @@ class AuthMiddleware implements MiddlewareInterface
         $token = substr($header, 7);
         try {
             $decoded = JWT::decode($token, new Key($this->secret, 'HS256'));
-            $request = $request->withAttribute('admin', $decoded);
-            return $handler->handle($request);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $response = new SlimResponse();
             $response->getBody()->write(json_encode(['error' => 'Неверный токен']));
             return $response->withStatus(403)->withHeader('Content-Type', 'application/json');
         }
+
+        $request = $request->withAttribute('admin', $decoded);
+        return $handler->handle($request);
     }
 }

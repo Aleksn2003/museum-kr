@@ -82,7 +82,7 @@ public function upcoming(Request $request, Response $response): Response
             $endDate,
             $body['image_url'] ?? null,
             $body['location'] ?? null,
-            $body['is_featured'] ?? false,
+            filter_var($body['is_featured'] ?? false, FILTER_VALIDATE_BOOLEAN) ? 'true' : 'false',
         ]);
         $newId = $stmt->fetchColumn();
         $response->getBody()->write(json_encode(['id' => $newId]));
@@ -117,7 +117,7 @@ public function upcoming(Request $request, Response $response): Response
             $endDate,
             $body['image_url'] ?? null,
             $body['location'] ?? null,
-            $body['is_featured'] ?? false,
+            filter_var($body['is_featured'] ?? false, FILTER_VALIDATE_BOOLEAN) ? 'true' : 'false',
             $args['id']
         ]);
         $response->getBody()->write(json_encode(['success' => true]));
