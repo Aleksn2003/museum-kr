@@ -1,342 +1,296 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Конфигурация страниц
-    const sitePages = [
-        { title: 'Главная', url: '/', keywords: 'главная, музей, самыртай, кердем, добраться, проехать, маршрут, контакты, как добраться, адрес, телефон, часы работы' },
-        { title: 'О музее', url: '/about.html', keywords: 'о музее, история, основание, роберт захаров, создание, музейный комплекс' },
-        { title: 'Афиша', url: '/events.html', keywords: 'афиша, мероприятия, события, календарь, выставки, концерты' },
-        { title: 'Коллекции', url: '/collections.html', keywords: 'коллекции, экспонаты, фонды, предметы, собрание, артефакты' },
-        { title: 'Новости', url: '/news.html', keywords: 'новости, анонсы, события, пресс-релизы, объявления' },
-        { title: 'История', url: '/history.html', keywords: 'история, создание, основатель, прошлое, музей, развитие' },
-        { title: 'Контакты', url: '/contacts.html', keywords: 'контакты, адрес, телефон, как добраться, проехать, маршрут, схема, карта, парковка' },
-        { title: 'Филиалы', url: '/filialy.html', keywords: 'филиалы, подразделения, другие музеи' },
-        { title: 'Посетителям', url: '/visit.html', keywords: 'посетить, часы работы, билеты, льготы, экскурсии, правила посещения, стоимость' },
-        { title: 'Правила и льготы', url: '/rules.html', keywords: 'правила, льготы, посещение, билеты, скидки' },
-        { title: 'Документы', url: '/documents.html', keywords: 'документы, отчёты, устав, лицензии' },
-        { title: 'Сведения об учредителе', url: '/founder.html', keywords: 'учредитель, сведения, министерство, администрация' },
-        { title: 'Оценка качества услуг', url: '/quality.html', keywords: 'оценка, качество, услуги, анкета' },
-        { title: 'Политика конфиденциальности', url: '/privacy.html', keywords: 'конфиденциальность, политика, данные, защита' }
-    ];
+(function () {
+    const typeLabels = { news: 'Новость', event: 'Афиша', exhibit: 'Экспонат', page: 'Раздел сайта' };
+    const minQueryLength = 2;
 
-    const searchInputId = 'search-input-header';
-    const mobileInputId = 'search-input-mobile';
-    const dropdownId = 'search-dropdown';
-
-    let currentHighlights = [];
-    let currentHighlightIndex = -1;
-    let lastQuery = '';
-
-    let dropdown = document.getElementById(dropdownId);
-    if (!dropdown) {
-        dropdown = document.createElement('div');
-        dropdown.id = dropdownId;
-        dropdown.className = 'search-dropdown hidden absolute top-full left-0 w-80 bg-white border border-gray-200 rounded-lg shadow-lg mt-1 z-50 max-h-96 overflow-y-auto';
-        document.body.appendChild(dropdown);
+    function resultUrl(query) {
+        return '/search.html?q=' + encodeURIComponent(query);
     }
 
-    // Очистка подсветки
-    function clearHighlights() {
-        document.querySelectorAll('.search-highlight').forEach(el => {
-            el.outerHTML = el.innerHTML;
-        });
-        currentHighlights = [];
-        currentHighlightIndex = -1;
-    }
-
-    // Подсветка всех вхождений
-    function highlightAll(query) {
-        clearHighlights();
-        if (!query || query.length < 2) return [];
-
-        const regex = new RegExp(`(${query.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi');
-        function walk(node) {
-            if (node.nodeType === Node.TEXT_NODE) {
-                const parent = node.parentNode;
-                if (['SCRIPT','STYLE','INPUT','TEXTAREA','SELECT'].includes(parent.tagName)) return;
-                const newHTML = node.nodeValue.replace(regex, '<span class="search-highlight">$1</span>');
-                if (newHTML !== node.nodeValue) {
-                    const span = document.createElement('span');
-                    span.innerHTML = newHTML;
-                    parent.replaceChild(span, node);
-                }
-            } else if (node.nodeType === Node.ELEMENT_NODE && node.childNodes) {
-                Array.from(node.childNodes).forEach(walk);
-            }
-        }
-        walk(document.body);
-
-        const highlights = Array.from(document.querySelectorAll('.search-highlight'));
-        highlights.forEach(h => h.classList.remove('search-highlight-active'));
-        currentHighlights = highlights;
-        currentHighlightIndex = -1;
-        return highlights;
-    }
-
-    // Перемещение к следующему совпадению
-    function navigateToNext() {
-        if (currentHighlights.length === 0) return;
-        if (currentHighlightIndex >= 0 && currentHighlightIndex < currentHighlights.length) {
-            currentHighlights[currentHighlightIndex].classList.remove('search-highlight-active');
-        }
-        currentHighlightIndex++;
-        if (currentHighlightIndex >= currentHighlights.length) currentHighlightIndex = 0;
-        const el = currentHighlights[currentHighlightIndex];
-        el.classList.add('search-highlight-active');
-        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-
-    // Перемещение к предыдущему совпадению
-    function navigateToPrev() {
-        if (currentHighlights.length === 0) return;
-        if (currentHighlightIndex >= 0 && currentHighlightIndex < currentHighlights.length) {
-            currentHighlights[currentHighlightIndex].classList.remove('search-highlight-active');
-        }
-        currentHighlightIndex--;
-        if (currentHighlightIndex < 0) currentHighlightIndex = currentHighlights.length - 1;
-        const el = currentHighlights[currentHighlightIndex];
-        el.classList.add('search-highlight-active');
-        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-
-    // Локальный поиск на странице
-    function performLocalSearch(query) {
-        lastQuery = query;
-        const highlights = highlightAll(query);
-        if (highlights.length > 0) {
-            navigateToNext();
-            showSearchPopup(query, highlights.length);
-        }
-    }
-
-    // Показ всплывающего окошка со стрелками
-    function showSearchPopup(query, count) {
-        // Удаляем старый попап, если есть
-        const oldPopup = document.querySelector('.search-popup');
-        if (oldPopup) oldPopup.remove();
-
-        const popup = document.createElement('div');
-        popup.className = 'search-popup';
-        popup.innerHTML = `
-            <span>«${escapeHTML(query)}» — совпадений: ${count}</span>
-            <div class="search-popup-nav">
-                <button class="search-popup-arrow" id="search-prev" aria-label="Предыдущее">▲</button>
-                <button class="search-popup-arrow" id="search-next" aria-label="Следующее">▼</button>
-            </div>
-            <button class="search-popup-close" aria-label="Закрыть">×</button>
-        `;
-        document.body.appendChild(popup);
-
-        popup.querySelector('#search-next').addEventListener('click', navigateToNext);
-        popup.querySelector('#search-prev').addEventListener('click', navigateToPrev);
-popup.querySelector('.search-popup-close').addEventListener('click', () => {
-    clearHighlights();
-    popup.remove();
-    // Удаляем query-параметр search из URL без перезагрузки
-    const url = new URL(window.location);
-    url.searchParams.delete('search');
-    window.history.replaceState({}, document.title, url.pathname + url.search);
-});
-    }
-
-    function escapeHTML(str) {
-        const div = document.createElement('div');
-        div.appendChild(document.createTextNode(str));
-        return div.innerHTML;
-    }
-
-    // Проверка параметра search в URL (переход с другой страницы)
-    const params = new URLSearchParams(window.location.search);
-    const searchQuery = params.get('search');
-    if (searchQuery && searchQuery.trim().length >= 2) {
-        setTimeout(() => {
-            performLocalSearch(searchQuery.trim());
-        }, 600);
-    }
-
-    // Дебаунс
-    function debounce(fn, delay) {
-        let timer;
-        return function(...args) {
-            clearTimeout(timer);
-            timer = setTimeout(() => fn.apply(this, args), delay);
-        };
-    }
-
-    // Загрузка текста страницы по URL
-    async function fetchPageText(url) {
+    function destinationUrl(url, query) {
         try {
-            const res = await fetch(url);
-            const html = await res.text();
-            const tmp = document.createElement('div');
-            tmp.innerHTML = html.replace(/<script[^>]*>.*?<\/script>/gis, '')
-                               .replace(/<style[^>]*>.*?<\/style>/gis, '')
-                               .replace(/<head[^>]*>.*?<\/head>/gis, '');
-            return tmp.textContent || tmp.innerText || '';
-        } catch (e) {
-            return '';
+            const destination = new URL(url || resultUrl(query), window.location.origin);
+            if (destination.origin === window.location.origin && destination.pathname !== '/search.html') {
+                destination.searchParams.set('search', query);
+            }
+            return destination.pathname + destination.search + destination.hash;
+        } catch (error) {
+            return resultUrl(query);
         }
     }
 
-    // Поиск для выпадающего списка
-    async function searchForDropdown(query, inputElement) {
-        if (query.length < 2) {
-            dropdown.classList.add('hidden');
+    function highlightText(element, text, query) {
+        element.replaceChildren();
+        if (!query) {
+            element.textContent = text;
             return;
         }
-
-        const lowerQ = query.toLowerCase();
-        const currentPath = window.location.pathname;
-        let onThisPage = [];
-        let otherPages = [];
-
-        const thisPageText = document.body.innerText.toLowerCase();
-        if (thisPageText.includes(lowerQ)) {
-            onThisPage.push({
-                title: 'Текущая страница',
-                excerpt: 'Найдено на этой странице',
-                action: 'local',
-                query: query
-            });
+        const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const matcher = new RegExp(escaped, 'giu');
+        let cursor = 0;
+        for (const match of text.matchAll(matcher)) {
+            const index = match.index;
+            if (index > cursor) element.append(document.createTextNode(text.slice(cursor, index)));
+            const mark = document.createElement('mark');
+            mark.className = 'site-search-highlight';
+            mark.textContent = match[0];
+            element.append(mark);
+            cursor = index + match[0].length;
         }
-
-        for (const page of sitePages) {
-            if (page.url === currentPath || (page.url === '/' && currentPath === '/index.html')) continue;
-            if (page.keywords && page.keywords.toLowerCase().includes(lowerQ)) {
-                otherPages.push({
-                    title: page.title,
-                    url: page.url,
-                    excerpt: 'Найдено по ключевым словам',
-                    action: 'navigate',
-                    query: query
-                });
-            } else {
-                try {
-                    const text = await fetchPageText(page.url);
-                    if (text.includes(lowerQ)) {
-                        const idx = text.indexOf(lowerQ);
-                        const start = Math.max(0, idx - 40);
-                        const snippet = '…' + text.substring(start, start + 80) + '…';
-                        otherPages.push({
-                            title: page.title,
-                            url: page.url,
-                            excerpt: snippet,
-                            action: 'navigate',
-                            query: query
-                        });
-                    }
-                } catch (e) {}
-            }
-        }
-
-        let html = '';
-        if (onThisPage.length > 0) {
-            html += '<div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">На этой странице</div>';
-            onThisPage.forEach(item => {
-                html += `
-                <div class="search-result-item px-3 py-2 hover:bg-gray-50 cursor-pointer border-b border-gray-100" data-action="local" data-query="${item.query}">
-                    <span class="text-sm font-medium text-[#5D4037]">${item.title}</span>
-                    <p class="text-xs text-gray-600">${item.excerpt}</p>
-                </div>`;
-            });
-        }
-        if (otherPages.length > 0) {
-            html += '<div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase mt-2">В других разделах</div>';
-            otherPages.forEach(item => {
-                html += `
-                <a href="${item.url}?search=${encodeURIComponent(item.query)}" class="search-result-item px-3 py-2 hover:bg-gray-50 cursor-pointer border-b border-gray-100 flex flex-col">
-                    <span class="text-sm font-medium text-[#3E2723]">${item.title}</span>
-                    <p class="text-xs text-gray-600 truncate">${item.excerpt}</p>
-                </a>`;
-            });
-        }
-        if (!html) {
-            html = '<div class="p-3 text-sm text-gray-500">Ничего не найдено</div>';
-        }
-
-        dropdown.innerHTML = html;
-        dropdown.classList.remove('hidden');
-
-        const rect = inputElement.getBoundingClientRect();
-        dropdown.style.position = 'fixed';
-        dropdown.style.top = (rect.bottom + 4) + 'px';
-        dropdown.style.left = rect.left + 'px';
-        dropdown.style.width = rect.width + 'px';
+        if (cursor < text.length) element.append(document.createTextNode(text.slice(cursor)));
+        if (cursor === 0) element.textContent = text;
     }
 
-    dropdown.addEventListener('click', (e) => {
-        const item = e.target.closest('.search-result-item');
-        if (!item) return;
-        const action = item.dataset.action;
-        if (action === 'local') {
-            const q = item.dataset.query;
-            performLocalSearch(q);
-            dropdown.classList.add('hidden');
-        }
-    });
-
-    function setupInput(inputId) {
-        const input = document.getElementById(inputId);
-        if (!input) return;
-
-        const debouncedDropdownSearch = debounce(() => {
-            const query = input.value.trim();
-            searchForDropdown(query, input);
-        }, 300);
-        input.addEventListener('input', () => {
-            debouncedDropdownSearch();
-            if (lastQuery !== input.value.trim()) {
-                clearHighlights();
-                lastQuery = '';
-            }
+    function highlightCurrentPage(query) {
+        document.querySelectorAll('mark.site-search-highlight').forEach((mark) => {
+            mark.replaceWith(document.createTextNode(mark.textContent || ''));
         });
-
-        input.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                const query = input.value.trim();
-                if (query.length < 2) return;
-                if (query !== lastQuery) {
-                    performLocalSearch(query);
-                } else {
-                    navigateToNext();
+        const root = document.querySelector('main') || document.body;
+        root.normalize();
+        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+            acceptNode(node) {
+                const parent = node.parentElement;
+                if (!parent || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+                if (parent.closest('script, style, noscript, textarea, input, select, button, svg, mark, .search-dropdown, .search-popup')) {
+                    return NodeFilter.FILTER_REJECT;
                 }
-                dropdown.classList.add('hidden');
-                input.blur();
-            }
-            if (e.key === 'Escape') {
-                dropdown.classList.add('hidden');
-                clearHighlights();
+                return NodeFilter.FILTER_ACCEPT;
             }
         });
+        const textNodes = [];
+        while (walker.nextNode()) textNodes.push(walker.currentNode);
+        let firstMatch = null;
+        const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const matcher = new RegExp(escaped, 'giu');
+        textNodes.forEach((node) => {
+            const text = node.nodeValue;
+            matcher.lastIndex = 0;
+            if (!matcher.test(text)) return;
+            matcher.lastIndex = 0;
+            const fragment = document.createDocumentFragment();
+            let cursor = 0;
+            for (const match of text.matchAll(matcher)) {
+                const index = match.index;
+                if (index > cursor) fragment.append(document.createTextNode(text.slice(cursor, index)));
+                const mark = document.createElement('mark');
+                mark.className = 'site-search-highlight';
+                mark.textContent = match[0];
+                if (!firstMatch) firstMatch = mark;
+                fragment.append(mark);
+                cursor = index + match[0].length;
+            }
+            if (cursor < text.length) fragment.append(document.createTextNode(text.slice(cursor)));
+            node.replaceWith(fragment);
+        });
+        return firstMatch;
     }
 
-    setupInput(searchInputId);
-    setupInput(mobileInputId);
+    function setupPageHighlights() {
+        const query = (new URLSearchParams(window.location.search).get('search') || '').trim();
+        if (query.length < minQueryLength) return;
+        let attempts = 0;
+        let scrolled = false;
+        const timer = window.setInterval(() => {
+            const firstMatch = highlightCurrentPage(query);
+            attempts++;
+            if (firstMatch && !scrolled) {
+                firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                scrolled = true;
+            }
+            if (attempts >= 8 || (firstMatch && attempts >= 3)) window.clearInterval(timer);
+        }, 400);
+    }
 
-    function setupSearchButton(buttonId, inputId) {
-        const btn = document.getElementById(buttonId);
-        const input = document.getElementById(inputId);
-        if (!btn || !input) return;
-        btn.addEventListener('click', () => {
+    async function fetchResults(query) {
+        const response = await fetch('/api/search?q=' + encodeURIComponent(query), {
+            headers: { Accept: 'application/json' }
+        });
+        if (!response.ok) throw new Error('Search request failed');
+        const data = await response.json();
+        return Array.isArray(data.results) ? data.results : [];
+    }
+
+    function renderDropdown(dropdown, results, query) {
+        dropdown.replaceChildren();
+        if (!results.length) {
+            const empty = document.createElement('p');
+            empty.className = 'px-3 py-3 text-sm text-gray-600';
+            empty.textContent = 'Ничего не найдено';
+            dropdown.append(empty);
+        } else {
+            results.slice(0, 8).forEach((result) => {
+                const link = document.createElement('a');
+                link.className = 'block border-b border-gray-100 px-3 py-2 hover:bg-gray-50';
+                link.href = destinationUrl(result.url, query);
+                const kind = document.createElement('span');
+                kind.className = 'block text-xs text-gray-500';
+                kind.textContent = typeLabels[result.type] || 'Материал';
+                const title = document.createElement('span');
+                title.className = 'block text-sm font-medium text-[#3E2723]';
+                highlightText(title, result.title || 'Без названия', query);
+                const excerpt = document.createElement('span');
+                excerpt.className = 'block truncate text-xs text-gray-600';
+                highlightText(excerpt, result.excerpt || '', query);
+                link.append(kind, title, excerpt);
+                dropdown.append(link);
+            });
+            const all = document.createElement('a');
+            all.className = 'block px-3 py-2 text-sm font-medium text-[#5D4037] hover:bg-gray-50';
+            all.href = resultUrl(query);
+            all.textContent = 'Все результаты';
+            dropdown.append(all);
+        }
+        dropdown.classList.remove('hidden');
+    }
+
+    function setupHeaderSearch(input) {
+        const wrapper = input.closest('.relative');
+        const dropdown = wrapper && wrapper.querySelector('[id^="search-dropdown"]');
+        if (!dropdown) return;
+        let timer;
+        let requestId = 0;
+
+        const run = async () => {
             const query = input.value.trim();
-            if (query.length < 2) {
-                input.focus();
+            const id = ++requestId;
+            if (query.length < minQueryLength) {
+                dropdown.classList.add('hidden');
+                dropdown.replaceChildren();
                 return;
             }
-            if (query !== lastQuery) {
-                performLocalSearch(query);
-            } else {
-                navigateToNext();
+            const loading = document.createElement('p');
+            loading.className = 'px-3 py-3 text-sm text-gray-500';
+            loading.textContent = 'Ищем…';
+            dropdown.replaceChildren(loading);
+            dropdown.classList.remove('hidden');
+            try {
+                const results = await fetchResults(query);
+                if (id === requestId) renderDropdown(dropdown, results, query);
+            } catch (error) {
+                if (id !== requestId) return;
+                dropdown.replaceChildren();
+                const message = document.createElement('p');
+                message.className = 'px-3 py-3 text-sm text-red-700';
+                message.textContent = 'Не удалось выполнить поиск. Попробуйте ещё раз.';
+                dropdown.append(message);
             }
-            dropdown.classList.add('hidden');
+        };
+
+        input.addEventListener('input', () => {
+            clearTimeout(timer);
+            timer = setTimeout(run, 250);
+        });
+        input.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const query = input.value.trim();
+                if (query.length >= minQueryLength) window.location.assign(resultUrl(query));
+            } else if (event.key === 'Escape') {
+                dropdown.classList.add('hidden');
+            }
+        });
+        const button = wrapper.querySelector('button');
+        if (button) button.addEventListener('click', () => {
+            const query = input.value.trim();
+            if (query.length >= minQueryLength) window.location.assign(resultUrl(query));
+            else input.focus();
+        });
+        document.addEventListener('click', (event) => {
+            if (!wrapper.contains(event.target)) dropdown.classList.add('hidden');
         });
     }
-    setupSearchButton('search-button-header', searchInputId);
 
-    document.addEventListener('click', (e) => {
-        const input1 = document.getElementById(searchInputId);
-        const input2 = document.getElementById(mobileInputId);
-        if ((!input1 || !input1.contains(e.target)) && (!input2 || !input2.contains(e.target)) && !dropdown.contains(e.target)) {
-            dropdown.classList.add('hidden');
+    function renderSearchResults(container, results, query) {
+        container.replaceChildren();
+        if (!results.length) {
+            const empty = document.createElement('p');
+            empty.className = 'search-empty';
+            empty.textContent = 'По вашему запросу ничего не найдено. Попробуйте изменить формулировку.';
+            container.append(empty);
+            return;
         }
-    });
-});
+        results.forEach((result) => {
+            const article = document.createElement('article');
+            article.className = 'search-result-card';
+            const link = document.createElement('a');
+            link.href = destinationUrl(result.url, query);
+            const type = document.createElement('span');
+            type.className = 'search-result-type';
+            type.textContent = typeLabels[result.type] || 'Материал';
+            const title = document.createElement('h2');
+            highlightText(title, result.title || 'Без названия', query);
+            const excerpt = document.createElement('p');
+            highlightText(excerpt, result.excerpt || '', query);
+            link.append(type, title, excerpt);
+            article.append(link);
+            container.append(article);
+        });
+    }
+
+    function initSearch() {
+        const highlightStyle = document.createElement('style');
+        highlightStyle.textContent = '.site-search-highlight{background:#ffeb3b;color:inherit;padding:0 .08em;border-radius:2px}';
+        document.head.append(highlightStyle);
+        setupPageHighlights();
+        document.querySelectorAll('#search-input-header, #search-input-mobile').forEach(setupHeaderSearch);
+
+        const form = document.getElementById('search-page-form');
+        const input = document.getElementById('search-page-input');
+        const resultsContainer = document.getElementById('search-results');
+        if (!form || !input || !resultsContainer) return;
+
+        const params = new URLSearchParams(window.location.search);
+        const query = (params.get('q') || '').trim();
+        input.value = query;
+        const summary = document.getElementById('search-summary');
+        let searchTimer;
+        let requestId = 0;
+
+        async function searchPage(nextQuery, updateUrl = false) {
+            const id = ++requestId;
+            if (updateUrl && nextQuery.length >= minQueryLength) {
+                try {
+                    window.history.pushState({}, '', resultUrl(nextQuery));
+                } catch (error) {
+                    // Search still works when a browser disallows history updates.
+                }
+            }
+            if (nextQuery.length < minQueryLength) {
+                summary.textContent = 'Введите не менее двух символов, чтобы начать поиск.';
+                resultsContainer.replaceChildren();
+                return;
+            }
+            summary.textContent = 'Ищем по страницам сайта, новостям, афише и экспонатам…';
+            try {
+                const results = await fetchResults(nextQuery);
+                if (id !== requestId) return;
+                summary.textContent = `По запросу «${nextQuery}» показано результатов: ${results.length}`;
+                renderSearchResults(resultsContainer, results, nextQuery);
+            } catch (error) {
+                if (id !== requestId) return;
+                summary.textContent = 'Поиск временно недоступен.';
+                resultsContainer.replaceChildren();
+            }
+        }
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            clearTimeout(searchTimer);
+            searchPage(input.value.trim(), true);
+        });
+        input.addEventListener('input', () => {
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(() => searchPage(input.value.trim()), 300);
+        });
+        window.addEventListener('popstate', () => {
+            input.value = (new URLSearchParams(window.location.search).get('q') || '').trim();
+            searchPage(input.value);
+        });
+        searchPage(query);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initSearch, { once: true });
+    } else {
+        initSearch();
+    }
+})();

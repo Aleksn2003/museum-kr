@@ -184,150 +184,75 @@ $app->get('/api/sync/vk', function (Request $request, Response $response) {
     $response->getBody()->write(json_encode($result));
     return $response->withHeader('Content-Type', 'application/json');
 });
-// Поиск по сайту (расширенный)
+// Search public pages and published content.
 $app->get('/api/search', function (Request $request, Response $response) {
-    $params = $request->getQueryParams();
-    $query = trim($params['q'] ?? '');
+    $query = trim($request->getQueryParams()['q'] ?? '');
     if (mb_strlen($query) < 2) {
-        $response->getBody()->write(json_encode(['results' => []]));
-        return $response->withHeader('Content-Type', 'application/json');
+        $response->getBody()->write(json_encode(['results' => []], JSON_UNESCAPED_UNICODE));
+        return $response->withHeader('Content-Type', 'application/json; charset=utf-8');
     }
 
+    // Treat SQL LIKE metacharacters as ordinary search text.
+    $escapedQuery = strtr($query, ['!' => '!!', '%' => '!%', '_' => '!_']);
+    $like = '%' . $escapedQuery . '%';
     $db = $this->get('database');
-    $like = '%' . $query . '%';
-
-    // Экспонаты (ищем по title, short_description, description)
-    $stmt = $db->prepare("SELECT 'exhibit' AS type, id, title, short_description AS excerpt, image_url FROM exhibits WHERE title ILIKE ? OR short_description ILIKE ? OR description ILIKE ? LIMIT 3");
-    $stmt->execute([$like, $like, $like]);
-    $exhibits = $stmt->fetchAll();
-
-    // Новости (ищем по title, short_text, content)
-    $stmt = $db->prepare("SELECT 'news' AS type, id, title, short_text AS excerpt, image_url FROM news WHERE title ILIKE ? OR short_text ILIKE ? OR content ILIKE ? LIMIT 3");
-    $stmt->execute([$like, $like, $like]);
-    $news = $stmt->fetchAll();
-
-    // Мероприятия (ищем по title, short_text, description)
-    $stmt = $db->prepare("SELECT 'event' AS type, id, title, short_text AS excerpt, image_url FROM events WHERE title ILIKE ? OR short_text ILIKE ? OR description ILIKE ? LIMIT 3");
-    $stmt->execute([$like, $like, $like]);
-    $events = $stmt->fetchAll();
-
-    // Статические страницы с расширенными ключевыми словами
-    $pages = [
-        ['title' => 'Главная', 'url' => '/', 'keywords' => 'главная, музей, самыртай, кердем, визит, посещение'],
-        ['title' => 'О музее', 'url' => '/about.html', 'keywords' => 'о музее, история, основание, роберт захаров, создание, музейный комплекс'],
-        ['title' => 'Афиша', 'url' => '/events.html', 'keywords' => 'афиша, мероприятия, события, календарь, выставки, концерты'],
-        ['title' => 'Коллекции', 'url' => '/collections.html', 'keywords' => 'коллекции, экспонаты, фонды, предметы, собрание, артефакты'],
-        ['title' => 'Новости', 'url' => '/news.html', 'keywords' => 'новости, анонсы, события, пресс-релизы, объявления'],
-        ['title' => 'История', 'url' => '/history.html', 'keywords' => 'история, создание, основатель, прошлое, музей, развитие'],
-        ['title' => 'Контакты', 'url' => '/contacts.html', 'keywords' => 'контакты, адрес, телефон, как добраться, проехать, маршрут, схема, карта, парковка'],
-        ['title' => 'Филиалы', 'url' => '/filialy.html', 'keywords' => 'филиалы, подразделения, другие музеи'],
-        ['title' => 'Посетителям', 'url' => '/visit.html', 'keywords' => 'посетить, часы работы, билеты, льготы, экскурсии, правила посещения, стоимость'],
-        ['title' => 'Правила и льготы', 'url' => '/rules.html', 'keywords' => 'правила, льготы, посещение, билеты, скидки'],
-        ['title' => 'Документы', 'url' => '/documents.html', 'keywords' => 'документы, отчёты, устав, лицензии'],
-        ['title' => 'Сведения об учредителе', 'url' => '/founder.html', 'keywords' => 'учредитель, сведения, министерство, администрация'],
-        ['title' => 'Оценка качества услуг', 'url' => '/quality.html', 'keywords' => 'оценка, качество, услуги, анкета'],
-        ['title' => 'Политика конфиденциальности', 'url' => '/privacy.html', 'keywords' => 'конфиденциальность, политика, данные, защита'],
-    ];
-
-    $matchedPages = [];
-    $queryLower = mb_strtolower($query);
-    foreach ($pages as $page) {
-        $titleLower = mb_strtolower($page['title']);
-        $keywordsLower = mb_strtolower($page['keywords']);
-        if (strpos($titleLower, $queryLower) !== false || strpos($keywordsLower, $queryLower) !== false) {
-            $matchedPages[] = [
-                'type' => 'page',
-                'title' => $page['title'],
-                'url' => $page['url'],
-                'excerpt' => 'Страница сайта',
-                'image_url' => 'img/logo-samartyai.png'
-            ];
-        }
-    }
-
-    $results = array_merge(
-        array_map(function($item) { $item['url'] = '/exhibit.html?id=' . $item['id']; return $item; }, $exhibits),
-        array_map(function($item) { $item['url'] = '/news-single.html?id=' . $item['id']; return $item; }, $news),
-        array_map(function($item) { $item['url'] = '/event.html?id=' . $item['id']; return $item; }, $events),
-        $matchedPages
-    );  
-
-    $response->getBody()->write(json_encode(['results' => $results]));
-    return $response->withHeader('Content-Type', 'application/json');
-});
-// Полнотекстовый поиск по HTML-страницам
-$app->get('/api/fulltext-search', function (Request $request, Response $response) {
-    $params = $request->getQueryParams();
-    $query = mb_strtolower(trim($params['q'] ?? ''));
-    if (mb_strlen($query) < 2) {
-        $response->getBody()->write(json_encode(['results' => []]));
-        return $response->withHeader('Content-Type', 'application/json');
-    }
-
-    // Список страниц для поиска (пути к файлам и их заголовки)
-    $pages = [
-        ['file' => __DIR__ . '/../../frontend/index.html', 'title' => 'Главная', 'url' => '/'],
-        ['file' => __DIR__ . '/../../frontend/about.html', 'title' => 'О музее', 'url' => '/about.html'],
-        ['file' => __DIR__ . '/../../frontend/events.html', 'title' => 'Афиша', 'url' => '/events.html'],
-        ['file' => __DIR__ . '/../../frontend/collections.html', 'title' => 'Коллекции', 'url' => '/collections.html'],
-        ['file' => __DIR__ . '/../../frontend/news.html', 'title' => 'Новости', 'url' => '/news.html'],
-        ['file' => __DIR__ . '/../../frontend/history.html', 'title' => 'История', 'url' => '/history.html'],
-        ['file' => __DIR__ . '/../../frontend/contacts.html', 'title' => 'Контакты', 'url' => '/contacts.html'],
-        ['file' => __DIR__ . '/../../frontend/filialy.html', 'title' => 'Филиалы', 'url' => '/filialy.html'],
-        ['file' => __DIR__ . '/../../frontend/visit.html', 'title' => 'Посетителям', 'url' => '/visit.html'],
-        ['file' => __DIR__ . '/../../frontend/rules.html', 'title' => 'Правила и льготы', 'url' => '/rules.html'],
-        ['file' => __DIR__ . '/../../frontend/documents.html', 'title' => 'Документы', 'url' => '/documents.html'],
-        ['file' => __DIR__ . '/../../frontend/founder.html', 'title' => 'Сведения об учредителе', 'url' => '/founder.html'],
-        ['file' => __DIR__ . '/../../frontend/quality.html', 'title' => 'Оценка качества услуг', 'url' => '/quality.html'],
-        ['file' => __DIR__ . '/../../frontend/privacy.html', 'title' => 'Политика конфиденциальности', 'url' => '/privacy.html'],
-        ['file' => __DIR__ . '/../../frontend/search.html', 'title' => 'Поиск', 'url' => '/search.html'],
-        // можно добавить любые другие HTML-файлы
-    ];
-
     $results = [];
+    $searchGroups = [
+        [
+            'sql' => "SELECT id, title, short_description AS excerpt, image_url FROM exhibits WHERE title ILIKE ? ESCAPE '!' OR short_description ILIKE ? ESCAPE '!' OR description ILIKE ? ESCAPE '!' ORDER BY CASE WHEN title ILIKE ? ESCAPE '!' THEN 0 ELSE 1 END, title LIMIT 10",
+            'type' => 'exhibit', 'url' => '/exhibit.html?id=',
+        ],
+        [
+            'sql' => "SELECT id, title, short_text AS excerpt, image_url FROM news WHERE is_deleted = false AND (title ILIKE ? ESCAPE '!' OR short_text ILIKE ? ESCAPE '!' OR content ILIKE ? ESCAPE '!') ORDER BY CASE WHEN title ILIKE ? ESCAPE '!' THEN 0 ELSE 1 END, published_at DESC LIMIT 10",
+            'type' => 'news', 'url' => '/news-single.html?id=',
+        ],
+        [
+            'sql' => "SELECT id, title, short_text AS excerpt, image_url FROM events WHERE is_deleted = false AND (title ILIKE ? ESCAPE '!' OR short_text ILIKE ? ESCAPE '!' OR description ILIKE ? ESCAPE '!') ORDER BY CASE WHEN title ILIKE ? ESCAPE '!' THEN 0 ELSE 1 END, start_date DESC LIMIT 10",
+            'type' => 'event', 'url' => '/event.html?id=',
+        ],
+    ];
 
-    foreach ($pages as $page) {
-        $filePath = $page['file'];
-        if (!file_exists($filePath)) continue;
-
-        $htmlContent = file_get_contents($filePath);
-        // Удаляем всё, что внутри тегов <script>, <style>, <head>
-        $htmlContent = preg_replace('/<script[^>]*>.*?<\/script>/is', '', $htmlContent);
-        $htmlContent = preg_replace('/<style[^>]*>.*?<\/style>/is', '', $htmlContent);
-        $htmlContent = preg_replace('/<head[^>]*>.*?<\/head>/is', '', $htmlContent);
-
-        $textOnly = strip_tags($htmlContent);
-        $textLower = mb_strtolower($textOnly);
-
-        // Ищем все вхождения
-        $offset = 0;
-        $foundPositions = [];
-        while (($pos = mb_strpos($textLower, $query, $offset)) !== false) {
-            $foundPositions[] = $pos;
-            $offset = $pos + mb_strlen($query);
-        }
-
-        if (!empty($foundPositions)) {
-            // Берём первое вхождение и формируем сниппет
-            $pos = $foundPositions[0];
-            $start = max(0, $pos - 50);
-            $snippet = mb_substr($textOnly, $start, 100 + mb_strlen($query));
-            // Обрезаем по словам
-            if ($start > 0) $snippet = '…' . $snippet;
-            if ($start + 100 + mb_strlen($query) < mb_strlen($textOnly)) $snippet .= '…';
-
-            $results[] = [
-                'type' => 'page',
-                'title' => $page['title'],
-                'url' => $page['url'],
-                'excerpt' => $snippet,
-                'image_url' => 'img/logo-samartyai.png'
-            ];
+    foreach ($searchGroups as $group) {
+        $stmt = $db->prepare($group['sql']);
+        $stmt->execute([$like, $like, $like, $like]);
+        foreach ($stmt->fetchAll() as $item) {
+            $item['type'] = $group['type'];
+            $item['url'] = $group['url'] . rawurlencode((string)$item['id']);
+            $item['excerpt'] = trim(strip_tags((string)($item['excerpt'] ?? '')));
+            $results[] = $item;
         }
     }
 
-    $response->getBody()->write(json_encode(['results' => $results]));
-    return $response->withHeader('Content-Type', 'application/json');
+    // Search visible text in the real static pages; ignore repeated navigation and scripts.
+    $pages = [
+        ['file' => 'index.html', 'title' => 'Главная', 'url' => '/'],
+        ['file' => 'about.html', 'title' => 'О музее', 'url' => '/about.html'],
+        ['file' => 'events.html', 'title' => 'Афиша', 'url' => '/events.html'],
+        ['file' => 'collections.html', 'title' => 'Коллекции', 'url' => '/collections.html'],
+        ['file' => 'news.html', 'title' => 'Новости', 'url' => '/news.html'],
+        ['file' => 'history.html', 'title' => 'История', 'url' => '/history.html'],
+        ['file' => 'explore.html', 'title' => 'Экспозиция', 'url' => '/explore.html'],
+        ['file' => 'architecture.html', 'title' => 'Архитектура и наследие', 'url' => '/architecture.html'],
+        ['file' => 'visit.html', 'title' => 'Посетителям', 'url' => '/visit.html'],
+    ];
+    $frontendDir = dirname(__DIR__) . '/frontend/';
+    foreach ($pages as $page) {
+        $path = $frontendDir . $page['file'];
+        if (!is_readable($path)) continue;
+        $html = file_get_contents($path);
+        $html = preg_replace('/<(script|style|header|footer|nav)\\b[^>]*>.*?<\\/\\1>/is', ' ', $html);
+        $text = html_entity_decode(preg_replace('/\\s+/u', ' ', strip_tags($html)), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $position = mb_stripos($text, $query);
+        if ($position === false) continue;
+        $start = max(0, $position - 70);
+        $excerpt = mb_substr($text, $start, 180);
+        if ($start > 0) $excerpt = '…' . $excerpt;
+        if ($start + 180 < mb_strlen($text)) $excerpt .= '…';
+        $results[] = ['type' => 'page', 'title' => $page['title'], 'url' => $page['url'], 'excerpt' => trim($excerpt)];
+    }
+
+    $response->getBody()->write(json_encode(['results' => $results], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+    return $response->withHeader('Content-Type', 'application/json; charset=utf-8');
 });
         // Авторизация
         $app->get('/api/funfact', [\App\Controllers\FunFactController::class, 'random']);

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Поиск по страницам, новостям, афише и экспонатам музея Самыртай.">
+    <title>Поиск по сайту — музей Самыртай</title>
+    <style>
+        :root { color-scheme: light; --brown: #5D4037; --ink: #2f2926; --muted: #665f5c; --line: #e6e0dc; --paper: #fbf9f6; }
+        * { box-sizing: border-box; }
+        .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+        body { margin: 0; color: var(--ink); background: var(--paper); font: 16px/1.55 Arial, sans-serif; }
+        a { color: inherit; }
+        .site-header { padding: 18px max(20px, calc((100% - 1040px)/2)); background: white; border-bottom: 1px solid var(--line); }
+        .site-header a { color: var(--brown); font-weight: 700; text-decoration: none; }
+        main { max-width: 900px; margin: 0 auto; padding: 42px 20px 72px; }
+        h1 { margin: 0 0 8px; font-size: clamp(30px, 5vw, 42px); }
+        .intro, #search-summary { color: var(--muted); }
+        form { display: flex; gap: 10px; margin: 24px 0 18px; }
+        input { min-width: 0; flex: 1; padding: 13px 15px; border: 1px solid #bdb4ae; border-radius: 6px; font: inherit; }
+        input:focus { outline: 3px solid #d7c6bb; border-color: var(--brown); }
+        button { padding: 12px 22px; border: 0; border-radius: 6px; color: white; background: var(--brown); font: inherit; font-weight: 700; cursor: pointer; }
+        .search-result-card { margin: 12px 0; padding: 18px 20px; border: 1px solid var(--line); border-radius: 8px; background: white; }
+        .search-result-card a { display: block; text-decoration: none; }
+        .search-result-card a:hover h2 { text-decoration: underline; }
+        .search-result-type { color: var(--brown); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+        .search-result-card h2 { margin: 3px 0 6px; font-size: 20px; }
+        .search-result-card p { margin: 0; color: var(--muted); }
+        .search-empty { padding: 18px 0; color: var(--muted); }
+        @media (max-width: 560px) { main { padding-top: 28px; } form { flex-direction: column; } button { width: 100%; } }
+    </style>
+</head>
+<body>
+    <header class="site-header"><a href="/">← Музей Самыртай</a></header>
+    <main>
+        <h1>Поиск по сайту</h1>
+        <p class="intro">Найдите информацию на страницах музея, в новостях, афише и коллекциях.</p>
+        <form id="search-page-form" action="/search.html" method="get" role="search">
+            <label for="search-page-input" class="visually-hidden">Поисковый запрос</label>
+            <input id="search-page-input" name="q" type="search" minlength="2" placeholder="Например, история музея" autocomplete="off">
+            <button type="submit">Найти</button>
+        </form>
+        <p id="search-summary" aria-live="polite"></p>
+        <section id="search-results" aria-label="Результаты поиска"></section>
+    </main>
+    <script src="/js/search.js?v=7"></script>
+</body>
+</html>
