@@ -9,6 +9,7 @@ services:
       - db_data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
       - ./seed-demo.sql:/docker-entrypoint-initdb.d/02-demo.sql:ro
+      - ./seed-demo-exhibits.sql:/docker-entrypoint-initdb.d/03-demo-exhibits.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U museum -d museum_db"]
       interval: 5s
