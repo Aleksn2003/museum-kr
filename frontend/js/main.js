@@ -165,7 +165,7 @@ async function loadEventsList() {
   if (!container) return;
 
   try {
-    const res = await fetch('/api/events/upcoming');
+    const res = await fetch('/api/events/upcoming?featured=1');
     const data = await res.json();
     if (data.length > 0) {
       container.innerHTML = data.map(item => `
@@ -277,6 +277,32 @@ async function updateWorkingHours() {
     if (!statusDot || !statusText || !iconEl) return;
 
     const settings = await getMuseumSiteSettings();
+    const schedule = document.getElementById('working-hours-schedule');
+    const homeSchedule = document.getElementById('home-working-hours-schedule');
+    const openDays = Array.isArray(settings?.open_days) ? settings.open_days.map(Number) : [0, 2, 3, 4, 5, 6];
+    const openingTime = settings?.opening_time || '10:00';
+    const closingTime = settings?.closing_time || '18:00';
+    const dayNames = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+    const dayGroups = [];
+    for (let index = 0; index < dayNames.length; index++) {
+        if (!openDays.includes((index + 1) % 7)) continue;
+        const start = index;
+        while (index + 1 < dayNames.length && openDays.includes((index + 2) % 7)) index++;
+        dayGroups.push(index - start >= 2 ? `${dayNames[start]}–${dayNames[index]}` : dayNames.slice(start, index + 1).join(', '));
+    }
+    const scheduleText = `${dayGroups.join(', ')}: ${openingTime}–${closingTime}`;
+    if (schedule) schedule.textContent = scheduleText;
+    if (homeSchedule) homeSchedule.textContent = scheduleText;
+    const visitSchedule = document.getElementById('visit-working-hours-schedule');
+    if (visitSchedule) visitSchedule.textContent = scheduleText;
+    const visitClosedDays = document.getElementById('visit-closed-days');
+    if (visitClosedDays) {
+        const closedDays = dayNames.filter((_, index) => !openDays.includes((index + 1) % 7));
+        visitClosedDays.textContent = closedDays.length ? `Выходной: ${closedDays.join(', ')}` : '';
+    }
+    if (typeof infoData !== 'undefined' && infoData.hours) {
+        infoData.hours.content = `<p>${scheduleText}</p>`;
+    }
 
     const parts = new Intl.DateTimeFormat('en-US', {
         timeZone: 'Asia/Yakutsk', weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
@@ -287,9 +313,6 @@ async function updateWorkingHours() {
     const minute = Number(values.minute);
 
     const currentTime = hour * 60 + minute;
-    const openDays = Array.isArray(settings?.open_days) ? settings.open_days.map(Number) : [0, 2, 3, 4, 5, 6];
-    const openingTime = settings?.opening_time || '10:00';
-    const closingTime = settings?.closing_time || '18:00';
     const [openingHour, openingMinute] = openingTime.split(':').map(Number);
     const [closingHour, closingMinute] = closingTime.split(':').map(Number);
     const openTime = openingHour * 60 + openingMinute;

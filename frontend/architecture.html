@@ -12,7 +12,21 @@
     <style>
         body { font-family: 'PT Sans', sans-serif; }
         .font-serif { font-family: 'PT Serif', serif; }
-        
+        .detail-gallery { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+        .detail-gallery-thumb {
+            position: relative;
+            width: 6rem;
+            height: 4rem;
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.25rem;
+            cursor: pointer;
+        }
+        .detail-gallery-thumb img { position: absolute; width: 200%; height: 200%; max-width: none; object-fit: cover; }
+        .detail-gallery-thumb:nth-child(1) img { left: -50%; top: -25%; }
+        .detail-gallery-thumb:nth-child(2) img { left: -100%; top: -25%; }
+        .detail-gallery-thumb:nth-child(3) img { left: -50%; top: -75%; }
+        .detail-gallery-thumb:nth-child(4) img { left: -100%; top: -75%; }
     </style>
 </head>
 <body class="bg-[#FDF8F5] text-gray-800 antialiased">
@@ -215,17 +229,17 @@
                     </div>
                     <p class="text-xs text-gray-500 mt-2 text-center">Передвиньте стрелки ← → для сравнения. Слева — 1939 г., справа — 2024 г.</p>
 
-                    <!-- Галерея деталей (перенесена под фото) -->
                     <div class="mt-6">
-                        <h3 class="font-serif text-base font-semibold mb-3 text-[#3E2723]">Детали интерьера</h3>
-                        <div class="flex flex-wrap gap-3">
-                            <img src="https://picsum.photos/120/80" alt="Деталь 1" class="zoomable-image w-24 h-16 object-cover rounded border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105">
-                            <img src="https://picsum.photos/121/80" alt="Деталь 2" class="zoomable-image w-24 h-16 object-cover rounded border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105">
-                            <img src="https://picsum.photos/122/80" alt="Деталь 3" class="zoomable-image w-24 h-16 object-cover rounded border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105">
-                            <img src="https://picsum.photos/123/80" alt="Деталь 4" class="zoomable-image w-24 h-16 object-cover rounded border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105">
+                        <h3 class="font-serif text-base font-semibold mb-3 text-[#3E2723]">Детали архитектуры</h3>
+                        <div class="detail-gallery" aria-label="Крупные планы церкви на исторической и современной фотографиях">
+                            <div class="detail-gallery-thumb"><img src="img/tserkov1.jpg" alt="Крупный план архивной фотографии церкви" class="zoomable-image"></div>
+                            <div class="detail-gallery-thumb"><img src="img/tserkov1.jpg" alt="Фрагмент архивной фотографии церкви" class="zoomable-image"></div>
+                            <div class="detail-gallery-thumb"><img src="img/tserkov2.jpg" alt="Крупный план современной фотографии церкви" class="zoomable-image"></div>
+                            <div class="detail-gallery-thumb"><img src="img/tserkov2.jpg" alt="Фрагмент современной фотографии церкви" class="zoomable-image"></div>
                         </div>
-                        <p class="text-xs text-gray-400 mt-1">Резной наличник, дверная ручка, угол сруба, текстура дерева</p>
+                        <p class="text-xs text-gray-400 mt-1">Фрагменты тех же архивной и современной фотографий, что и в сравнении выше.</p>
                     </div>
+
                 </div>
 
                 <!-- Правая колонка: описание + техпаспорт + аудио + цитата -->
@@ -283,17 +297,17 @@
                     </div>
                     <p class="text-xs text-gray-500 mt-2 text-center">Два ракурса одного объекта</p>
 
-                    <!-- Галерея деталей (под фото) -->
                     <div class="mt-6">
-                        <h3 class="font-serif text-base font-semibold mb-3 text-[#3E2723]">Детали интерьера</h3>
-                        <div class="flex flex-wrap gap-3">
-                            <img src="https://picsum.photos/124/80" alt="Деталь 1" class="zoomable-image w-24 h-16 object-cover rounded border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105">
-                            <img src="https://picsum.photos/125/80" alt="Деталь 2" class="zoomable-image w-24 h-16 object-cover rounded border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105">
-                            <img src="https://picsum.photos/126/80" alt="Деталь 3" class="zoomable-image w-24 h-16 object-cover rounded border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105">
-                            <img src="https://picsum.photos/127/80" alt="Деталь 4" class="zoomable-image w-24 h-16 object-cover rounded border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105">
+                        <h3 class="font-serif text-base font-semibold mb-3 text-[#3E2723]">Детали архитектуры</h3>
+                        <div class="detail-gallery" aria-label="Крупные планы двух ракурсов амбара Кирилла Скрябина">
+                            <div class="detail-gallery-thumb"><img src="img/ambar2_bogacha_kirilla2.jpg" alt="Крупный план амбара Кирилла Скрябина" class="zoomable-image"></div>
+                            <div class="detail-gallery-thumb"><img src="img/ambar2_bogacha_kirilla2.jpg" alt="Фрагмент фотографии амбара Кирилла Скрябина" class="zoomable-image"></div>
+                            <div class="detail-gallery-thumb"><img src="img/ambar2_bogacha_kirilla.jpg" alt="Крупный план амбара Кирилла Скрябина со второго ракурса" class="zoomable-image"></div>
+                            <div class="detail-gallery-thumb"><img src="img/ambar2_bogacha_kirilla.jpg" alt="Фрагмент второго ракурса амбара Кирилла Скрябина" class="zoomable-image"></div>
                         </div>
-                        <p class="text-xs text-gray-400 mt-1">Резной декор, задвижка, угловое соединение, текстура</p>
+                        <p class="text-xs text-gray-400 mt-1">Крупные планы двух фотографий амбара.</p>
                     </div>
+
                 </div>
 
                 <!-- Левая колонка: описание + техпаспорт + аудио + цитата -->
@@ -345,17 +359,17 @@
                     </div>
                     <p class="text-xs text-gray-500 mt-2 text-center">Два ракурса одного объекта</p>
 
-                    <!-- Галерея деталей (под фото) -->
                     <div class="mt-6">
-                        <h3 class="font-serif text-base font-semibold mb-3 text-[#3E2723]">Детали интерьера</h3>
-                        <div class="flex flex-wrap gap-3">
-                            <img src="https://picsum.photos/128/80" alt="Деталь 1" class="zoomable-image w-24 h-16 object-cover rounded border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105">
-                            <img src="https://picsum.photos/129/80" alt="Деталь 2" class="zoomable-image w-24 h-16 object-cover rounded border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105">
-                            <img src="https://picsum.photos/130/80" alt="Деталь 3" class="zoomable-image w-24 h-16 object-cover rounded border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105">
-                            <img src="https://picsum.photos/131/80" alt="Деталь 4" class="zoomable-image w-24 h-16 object-cover rounded border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105">
+                        <h3 class="font-serif text-base font-semibold mb-3 text-[#3E2723]">Детали архитектуры</h3>
+                        <div class="detail-gallery" aria-label="Крупные планы двух ракурсов шестигранного балагана">
+                            <div class="detail-gallery-thumb"><img src="img/chestigrannyi_balbalagan.jpg" alt="Крупный план шестигранного балагана" class="zoomable-image"></div>
+                            <div class="detail-gallery-thumb"><img src="img/chestigrannyi_balbalagan.jpg" alt="Фрагмент фотографии шестигранного балагана" class="zoomable-image"></div>
+                            <div class="detail-gallery-thumb"><img src="img/chestigrannyi_balbalagan2.jpg" alt="Крупный план балагана со второго ракурса" class="zoomable-image"></div>
+                            <div class="detail-gallery-thumb"><img src="img/chestigrannyi_balbalagan2.jpg" alt="Фрагмент второго ракурса балагана" class="zoomable-image"></div>
                         </div>
-                        <p class="text-xs text-gray-400 mt-1">Очаг, нары, утварь, фрагмент сруба</p>
+                        <p class="text-xs text-gray-400 mt-1">Крупные планы двух фотографий балагана.</p>
                     </div>
+
                 </div>
 
                 <!-- Правая колонка: описание + техпаспорт + аудио + цитата -->
@@ -406,17 +420,17 @@
                     </div>
                     <p class="text-xs text-gray-500 mt-2 text-center">Два ракурса одного объекта</p>
 
-                    <!-- Галерея деталей (под фото) -->
                     <div class="mt-6">
-                        <h3 class="font-serif text-base font-semibold mb-3 text-[#3E2723]">Детали интерьера</h3>
-                        <div class="flex flex-wrap gap-3">
-                            <img src="https://picsum.photos/132/80" alt="Деталь 1" class="zoomable-image w-24 h-16 object-cover rounded border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105">
-                            <img src="https://picsum.photos/133/80" alt="Деталь 2" class="zoomable-image w-24 h-16 object-cover rounded border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105">
-                            <img src="https://picsum.photos/134/80" alt="Деталь 3" class="zoomable-image w-24 h-16 object-cover rounded border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105">
-                            <img src="https://picsum.photos/135/80" alt="Деталь 4" class="zoomable-image w-24 h-16 object-cover rounded border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105">
+                        <h3 class="font-serif text-base font-semibold mb-3 text-[#3E2723]">Детали архитектуры</h3>
+                        <div class="detail-gallery" aria-label="Крупные планы двух ракурсов башни-амбара">
+                            <div class="detail-gallery-thumb"><img src="img/ambar.jpg" alt="Крупный план башни-амбара" class="zoomable-image"></div>
+                            <div class="detail-gallery-thumb"><img src="img/ambar.jpg" alt="Фрагмент фотографии башни-амбара" class="zoomable-image"></div>
+                            <div class="detail-gallery-thumb"><img src="img/ambar2.jpg" alt="Крупный план башни-амбара со второго ракурса" class="zoomable-image"></div>
+                            <div class="detail-gallery-thumb"><img src="img/ambar2.jpg" alt="Фрагмент второго ракурса башни-амбара" class="zoomable-image"></div>
                         </div>
-                        <p class="text-xs text-gray-400 mt-1">Бойницы, крепёж, лестница, фрагмент сруба</p>
+                        <p class="text-xs text-gray-400 mt-1">Крупные планы двух фотографий башни-амбара.</p>
                     </div>
+
                 </div>
 
                 <!-- Левая колонка: описание + техпаспорт + аудио + цитата -->
@@ -470,7 +484,7 @@
     </div>
     <div>
         <h4 class="font-serif font-bold text-sm text-[#3E2723]">Режим работы</h4>
-        <p class="text-xs text-gray-600">Вт–Сб: 10:00–18:00</p>
+        <p class="text-xs text-gray-600" id="working-hours-schedule">Загрузка расписания…</p>
         <p class="text-xs font-semibold mt-1" id="open-status-text">
             <span id="status-dot" class="inline-block w-2 h-2 rounded-full mr-1" style="background-color: #22c55e;"></span>
             <span id="status-text">Загрузка…</span>
@@ -807,7 +821,7 @@ document.addEventListener('keydown', function(e) {
 
 <script src="js/accessibility.js"></script>
 <script src="js/search.js?v=7"></script>
-<script src="js/main.js"></script>
+<script src="js/main.js?v=8"></script>
 <script>
     document.getElementById('menu-toggle').addEventListener('click', () => {
         document.getElementById('mobile-menu').classList.toggle('hidden');

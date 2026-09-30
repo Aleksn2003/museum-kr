@@ -34,7 +34,7 @@
       ['description', 'Полное описание', 'textarea'], ['description_en', 'Full description (English)', 'textarea'],
       ['start_date', 'Начало', 'datetime-local', true], ['end_date', 'Окончание', 'datetime-local'],
       ['location', 'Место', 'text'], ['location_en', 'Location (English)', 'text'],
-      ['image_url', 'Путь к афише', 'image-url'], ['is_featured', 'Показывать на главной', 'checkbox']
+      ['image_url', 'Путь к афише', 'image-url'], ['is_featured', 'Показывать в афише на главной', 'checkbox']
     ] },
     categories: { label: 'категорию', list: 'categories-list', fields: [
       ['name', 'Название', 'text', true], ['name_en', 'Name (English)', 'text'], ['slug', 'URL slug', 'text', true],

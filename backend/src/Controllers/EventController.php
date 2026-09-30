@@ -29,7 +29,13 @@ public function listAll(Request $request, Response $response): Response
 public function upcoming(Request $request, Response $response): Response
 {
     $db = $this->container->get('database');
-    $stmt = $db->prepare('SELECT id, title, title_en, short_text, short_text_en, start_date, image_url, location, location_en FROM events WHERE is_deleted = false ORDER BY created_at DESC LIMIT 3');
+    $featuredOnly = ($request->getQueryParams()['featured'] ?? '') === '1';
+    $sql = 'SELECT id, title, title_en, short_text, short_text_en, start_date, image_url, location, location_en
+            FROM events
+            WHERE is_deleted = false AND COALESCE(end_date, start_date) >= NOW()';
+    if ($featuredOnly) $sql .= ' AND is_featured = true';
+    $sql .= ' ORDER BY start_date ASC, id ASC LIMIT 3';
+    $stmt = $db->prepare($sql);
     $stmt->execute();
     $data = Localization::rows($stmt->fetchAll(), Localization::language($request), ['title', 'short_text', 'location']);
     $response->getBody()->write(json_encode($data));

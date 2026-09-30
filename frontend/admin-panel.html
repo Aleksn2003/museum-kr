@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#29473d">
+    <meta name="theme-color" content="#3b5666">
     <title>Админ‑панель — музей Самыртай</title>
     <link rel="stylesheet" href="/css/style.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root { color-scheme: light; --ink:#25352f; --muted:#78817b; --forest:#29473d; --forest-dark:#1e382f; --clay:#a65f46; --paper:#f4f2ed; --line:#e8e7e1; --white:#fff; --soft:#f8f8f5; }
+        :root { color-scheme: light; --ink:#29343a; --muted:#737e81; --forest:#3b5666; --forest-dark:#2c414d; --clay:#b9704d; --paper:#f1f0ec; --line:#e1e3df; --white:#fffefd; --soft:#f7f7f3; }
         * { box-sizing:border-box; }
-        body { margin:0; min-height:100vh; padding:24px; background:radial-gradient(ellipse at 92% 0%,#e4ece5 0,transparent 36%),var(--paper); color:var(--ink); font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif; }
+        body { margin:0; min-height:100vh; padding:24px; background:radial-gradient(ellipse at 92% 0%,#e3ecee 0,transparent 38%),radial-gradient(ellipse at 8% 100%,#f0e9e2 0,transparent 36%),var(--paper); color:var(--ink); font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif; }
         .hidden { display:none !important; }
         #admin-panel { display:grid; grid-template-columns:248px minmax(0,1fr); grid-template-rows:auto auto 1fr; gap:16px 22px; max-width:1440px; min-height:calc(100vh - 48px); margin:0 auto; }
         .admin-header { grid-column:2; grid-row:1; display:flex; justify-content:space-between; align-items:center; gap:24px; padding:8px 4px; }
@@ -20,62 +20,61 @@
         .admin-actions { display:flex; align-items:center; gap:10px; flex-shrink:0; }
         .admin-actions a { color:var(--forest); font-size:13px; font-weight:700; text-decoration:none; }
         .admin-actions a:hover { text-decoration:underline; }
-        .admin-actions .admin-site-link { display:inline-flex; align-items:center; gap:6px; min-height:36px; padding:8px 12px; border:1px solid #dce3dd; border-radius:9px; background:#fff; }
-        .admin-actions .admin-site-link:hover { background:#f2f6f2; text-decoration:none; }
-        .tabs { grid-column:1; grid-row:1 / span 3; align-self:start; position:sticky; top:24px; display:flex; flex-direction:column; gap:6px; min-height:calc(100vh - 48px); padding:18px 12px; border:1px solid #e8e9e1; border-radius:18px; background:rgba(255,255,255,.92); box-shadow:0 12px 34px #26372e0b; }
+        .admin-actions .admin-site-link { display:inline-flex; align-items:center; min-height:36px; padding:8px 12px; border:1px solid #d9e1e2; border-radius:9px; background:var(--white); }
+        .admin-actions .admin-site-link:hover { background:#edf2f2; text-decoration:none; }
+        .tabs { grid-column:1; grid-row:1 / span 3; align-self:start; position:sticky; top:24px; display:flex; flex-direction:column; gap:6px; min-height:calc(100vh - 48px); padding:18px 12px; border:1px solid #e1e3df; border-radius:18px; background:rgba(255,254,253,.95); box-shadow:0 12px 34px #26383f0b; }
         .brand { display:flex; align-items:center; gap:11px; padding:6px 8px 20px; margin-bottom:11px; border-bottom:1px solid var(--line); }
-        .brand-mark { display:grid; width:39px; height:39px; place-items:center; border-radius:13px; background:var(--forest); color:white; font-family:Georgia,serif; font-size:23px; }
+        .brand-logo { display:block; width:39px; height:39px; flex:none; border-radius:11px; object-fit:contain; background:#fff; }
         .brand-name { font-family:Georgia,serif; font-size:17px; line-height:1.15; }
-        .brand-caption { margin-top:4px; color:var(--muted); font-size:10px; letter-spacing:.07em; text-transform:uppercase; }
+        .brand-caption { margin-top:4px; color:var(--muted); font-size:10px; line-height:1.25; }
         .nav-label { padding:6px 10px 4px; color:#99a09b; font-size:10px; font-weight:800; letter-spacing:.13em; text-transform:uppercase; }
         .tab-btn { display:flex; align-items:center; gap:11px; width:100%; padding:11px 12px; border:0; border-radius:10px; background:transparent; color:#59645e; cursor:pointer; font:inherit; font-size:13px; font-weight:600; line-height:1.2; text-align:left; transition:background .18s,color .18s,transform .18s; }
-        .tab-btn:hover { background:#f3f5f1; color:var(--forest); }
-        .tab-btn.active { background:var(--forest); color:white; box-shadow:0 5px 12px #29473d25; }
+        .tab-btn:hover { background:#eef2f2; color:var(--forest); }
+        .tab-btn.active { background:var(--forest); color:white; box-shadow:0 5px 12px #3b566626; }
         .nav-icon { display:grid; width:22px; height:22px; place-items:center; color:inherit; font-size:16px; }
         .tab-btn>span:last-child { display:flex; flex:1; align-items:center; }
         .nav-count { margin-left:auto; color:inherit; font-size:11px; opacity:.7; }
         .sidebar-foot { margin-top:auto; padding:14px 10px 3px; border-top:1px solid var(--line); color:var(--muted); font-size:11px; }
         .notice { grid-column:2; grid-row:2; display:flex; align-items:flex-start; gap:10px; padding:12px 15px; margin:0; border:1px solid #e7e3d8; border-radius:12px; background:#fcfaf4; color:#6e6757; font-size:12px; }
         .notice::before { content:"ℹ"; display:grid; width:19px; height:19px; flex:none; place-items:center; border-radius:50%; background:#efe8d8; color:#866e3f; font-weight:800; }
-        .tab-content { grid-column:2; grid-row:3; align-self:start; padding:26px clamp(18px,3vw,34px) 34px; border:1px solid #e8e9e1; border-radius:18px; background:var(--white); box-shadow:0 12px 34px #26372e0b; }
+        .tab-content { grid-column:2; grid-row:3; align-self:start; padding:26px clamp(18px,3vw,34px) 34px; border:1px solid #e1e3df; border-radius:18px; background:var(--white); box-shadow:0 12px 34px #26383f0b; }
         .tab-content h2 { margin:0 0 5px; font-family:Georgia,"Times New Roman",serif; font-size:25px; font-weight:500; letter-spacing:-.025em; }
-        .tab-content h3 { display:flex; align-items:center; gap:10px; margin:30px 0 12px; font-size:15px; font-weight:750; }
-        .tab-content h3::before { content:""; width:4px; height:17px; border-radius:2px; background:var(--clay); }
+        .tab-content h3 { margin:30px 0 12px; font-size:15px; font-weight:750; }
         form { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 16px; padding-top:18px; }
         .form-group { min-width:0; margin:0 0 14px; }
         .form-group:has(textarea),.form-group:has(input[type=file]),.form-group:has(select),.form-group:has(input[type=checkbox]) { grid-column:1 / -1; }
         label { display:block; margin-bottom:6px; color:#536059; font-size:11px; font-weight:750; letter-spacing:.025em; }
         input:not([type=checkbox]):not([type=file]),textarea,select { display:block; width:100%; min-height:43px; padding:10px 12px; border:1px solid #dfe3dc; border-radius:9px; outline:none; background:#fff; color:var(--ink); font:inherit; font-size:13px; transition:border-color .15s,box-shadow .15s; }
         textarea { min-height:92px; resize:vertical; }
-        input:focus,textarea:focus,select:focus { border-color:#769284; box-shadow:0 0 0 3px #52776218; }
+        input:focus,textarea:focus,select:focus { border-color:#77919a; box-shadow:0 0 0 3px #3b56661c; }
         input::placeholder,textarea::placeholder { color:#a0a7a1; }
         input[type=file] { width:100%; padding:11px; border:1px dashed #cbd2ca; border-radius:9px; background:var(--soft); color:#68736c; font-size:12px; }
         input[type=checkbox] { width:17px; height:17px; margin:0 7px 0 0; accent-color:var(--forest); vertical-align:middle; }
         .form-group:has(input[type=checkbox]) label { display:flex; align-items:center; width:fit-content; padding:10px 12px; border:1px solid var(--line); border-radius:9px; background:var(--soft); }
         .form-group small { display:block; margin-top:5px; color:var(--muted); font-size:11px; }
         button { min-height:39px; padding:9px 15px; border:1px solid transparent; border-radius:9px; background:var(--forest); color:white; cursor:pointer; font:inherit; font-size:12px; font-weight:650; line-height:1.15; transition:background .16s,transform .16s,box-shadow .16s; }
-        button:hover { background:var(--forest-dark); box-shadow:0 4px 10px #29473d1b; }
+        button:hover { background:var(--forest-dark); box-shadow:0 4px 10px #3b56661b; }
         button:active { transform:translateY(1px); }
-        button:focus-visible,a:focus-visible { outline:3px solid #b9d2c1; outline-offset:2px; }
+        button:focus-visible,a:focus-visible { outline:3px solid #c4d6da; outline-offset:2px; }
         button:disabled { opacity:.55; cursor:wait; box-shadow:none; }
         button[type=submit] { min-width:160px; margin-top:3px; }
-        .secondary-btn { min-height:31px; padding:6px 10px; border-color:#dce3dd; background:white; color:var(--forest); }
-        .secondary-btn:hover { background:#f2f6f2; }
+        .secondary-btn { min-height:31px; padding:6px 10px; border-color:#d9e1e2; background:white; color:var(--forest); }
+        .secondary-btn:hover { background:#edf2f2; }
         .translation-btn { min-height:31px; padding:6px 10px; background:#f3eee6; color:#8c6038; }
         .translation-btn:hover { background:#eae0d2; }
         button.delete-btn { min-height:31px; padding:6px 10px; border-color:#f0d7d2; background:#fff7f5; color:#a24e41; }
         button.delete-btn:hover { background:#fbe9e5; }
-        .admin-actions button { min-height:36px; padding:8px 13px; background:white; border-color:#dce3dd; color:var(--forest); }
+        .admin-actions button { min-height:36px; padding:8px 13px; background:white; border-color:#d9e1e2; color:var(--forest); }
         .msg:empty { display:none; }
         .msg { margin:12px 0 0; padding:11px 13px; border-radius:9px; font-size:13px; }
         .msg.success { border:1px solid #d2e6d8; background:#f1f8f2; color:#316544; }
         .msg.error { border:1px solid #f0d4cf; background:#fff5f3; color:#923f35; }
         #exhibits-list,#news-list,#events-list,#categories-list { overflow-x:auto; border:1px solid var(--line); border-radius:12px; }
-        table { width:100%; min-width:570px; border-collapse:collapse; background:white; font-size:12px; }
+        table { width:100%; min-width:570px; border-collapse:collapse; background:var(--white); font-size:12px; }
         th,td { padding:12px 14px; border-bottom:1px solid #eeefeb; text-align:left; vertical-align:middle; }
-        th { background:#f7f8f5; color:#77817a; font-size:10px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+        th { background:#f2f4f2; color:#68767a; font-size:10px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
         tbody tr:last-child td { border-bottom:0; }
-        tbody tr:hover { background:#fafbf8; }
+        tbody tr:hover { background:#f7f8f6; }
         td:last-child { white-space:nowrap; }
         td:last-child button { margin:2px; }
         .table-toolbar { display:flex; justify-content:space-between; align-items:center; gap:12px; margin:5px 0 10px; }
@@ -85,7 +84,7 @@
         .image-preview { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
         .image-preview img { width:104px; height:76px; object-fit:cover; border-radius:8px; border:1px solid #e2e5df; background:var(--soft); }
         #page-editor { min-height:520px; padding:24px; border:1px solid var(--line); border-radius:10px; background:#fff; color:#25352f; overflow:auto; }
-        #page-editor:focus { outline:3px solid #52776218; border-color:#769284; }
+        #page-editor:focus { outline:3px solid #3b56661c; border-color:#77919a; }
         #page-editor img { max-width:100%; height:auto; }
         .page-editor-toolbar { display:flex; flex-wrap:wrap; gap:6px; margin:10px 0; }
         .page-editor-toolbar button { min-width:38px; min-height:34px; padding:6px 10px; }
@@ -105,11 +104,11 @@
     <div id="admin-panel">
         <div class="admin-header">
             <div class="admin-title"><small>Рабочее пространство</small><h1>Панель музея</h1><p class="admin-subtitle">Управление материалами комплекса «Самыртай»</p></div>
-            <div class="admin-actions"><a class="admin-site-link" href="/" target="_blank" rel="noopener">На главную ↗</a><a href="/admin-guide.html" target="_blank" rel="noopener">Инструкция</a><button id="logout-btn" type="button">Выйти</button></div>
+            <div class="admin-actions"><a href="/admin-guide.html" target="_blank" rel="noopener">Инструкция</a><a class="admin-site-link" href="/" target="_blank" rel="noopener">На главную</a><button id="logout-btn" type="button">Выйти</button></div>
         </div>
         <p class="notice">Изображения: JPEG, PNG, WebP или GIF, не более 10 МБ на файл. Заполняйте английские поля, если запись должна отображаться на английском сайте.</p>
         <div class="tabs" role="tablist" aria-label="Разделы админ-панели">
-            <div class="brand"><span class="brand-mark">С</span><div><div class="brand-name">Самыртай</div><div class="brand-caption">Музейный комплекс</div></div></div>
+            <div class="brand"><img class="brand-logo" src="/img/logo-samartyai.png" alt="Логотип музея"><div><div class="brand-name">Самыртай</div><div class="brand-caption">Музейный комплекс</div></div></div>
             <div class="nav-label">Контент сайта</div>
             <button class="tab-btn active" id="nav-exhibits" role="tab" aria-selected="true" aria-controls="tab-exhibits" data-tab="exhibits"><span class="nav-icon" aria-hidden="true">▧</span><span>Экспонаты</span></button>
             <button class="tab-btn" id="nav-news" role="tab" aria-selected="false" aria-controls="tab-news" data-tab="news"><span class="nav-icon" aria-hidden="true">◷</span><span>Новости</span></button>
@@ -203,7 +202,7 @@
                 <div class="form-group">
                     <input type="file" id="event-image-file" accept="image/*">
                 </div>
-                <div class="form-group"><label><input type="checkbox" id="event-featured"> Показать на главной</label></div>
+                <div class="form-group"><label><input type="checkbox" id="event-featured"> Показать в афише на главной</label></div>
                 <button type="submit">Добавить мероприятие</button>
             </form>
             <div id="event-msg"></div>
@@ -288,13 +287,14 @@
             <label><input class="setting-open-day" type="checkbox" value="0" checked> Воскресенье</label>
         </div>
         <div class="form-group"><label for="setting-status-mode">Статус в боковой панели</label><select id="setting-status-mode"><option value="auto">Автоматически по расписанию</option><option value="open">Всегда открыто</option><option value="closed">Всегда закрыто</option></select><small>В автоматическом режиме статус будет переключаться по указанным дням и времени Якутска. На праздники и санитарные дни вручную выберите статус или исключите день из расписания.</small></div>
+        <p id="setting-status-preview" role="status" aria-live="polite"></p>
         <button type="submit">Сохранить настройки</button>
     </form>
     <div id="site-settings-msg" class="msg" role="status" aria-live="polite"></div>
 </div>
     </div>
 
-    <script src="/js/admin-panel.js?v=4"></script>
+    <script src="/js/admin-panel.js?v=5"></script>
 
 <script>
     const pageEditor = document.getElementById('page-editor');
@@ -432,6 +432,38 @@
     const settingsMessage = document.getElementById('site-settings-msg');
     const logoUrlInput = document.getElementById('setting-logo-url');
     const logoPreview = document.getElementById('setting-logo-preview');
+    function updateStatusPreview() {
+        const parts = new Intl.DateTimeFormat('en-US', {
+            timeZone: 'Asia/Yakutsk', weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
+        }).formatToParts(new Date());
+        const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+        const day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(values.weekday);
+        const now = Number(values.hour) * 60 + Number(values.minute);
+        const [openingHour, openingMinute] = (document.getElementById('setting-opening-time').value || '10:00').split(':').map(Number);
+        const [closingHour, closingMinute] = (document.getElementById('setting-closing-time').value || '18:00').split(':').map(Number);
+        const openDays = [...document.querySelectorAll('.setting-open-day:checked')].map((checkbox) => Number(checkbox.value));
+        const mode = document.getElementById('setting-status-mode').value;
+        const isOpen = mode === 'open' || (mode === 'auto' && openDays.includes(day)
+            && now >= openingHour * 60 + openingMinute && now < closingHour * 60 + closingMinute);
+        const preview = document.getElementById('setting-status-preview');
+        preview.textContent = `По выбранным настройкам сейчас ${isOpen ? 'открыто' : 'закрыто'} (время Якутска: ${values.hour}:${values.minute}).`;
+    }
+    settingsForm.addEventListener('change', updateStatusPreview);
+    function updateAdminBrand(settings) {
+        const logo = document.querySelector('.brand-logo');
+        const museumName = settings.museum_name || 'Самыртай';
+        const branchName = settings.branch_name || 'Музейный комплекс';
+        if (logo) {
+            logo.src = settings.logo_url || '/img/logo-samartyai.png';
+            logo.alt = `Логотип: ${museumName}`;
+            logo.onerror = () => {
+                logo.onerror = null;
+                logo.src = '/img/logo-samartyai.png';
+            };
+        }
+        document.querySelector('.brand-name').textContent = museumName;
+        document.querySelector('.brand-caption').textContent = branchName;
+    }
     function showLogoPreview(url) {
         logoPreview.replaceChildren();
         if (!url) return;
@@ -446,6 +478,7 @@
             const response = await fetch('/api/site-settings');
             const settings = await response.json();
             if (!response.ok) throw new Error(settings.error || 'Не удалось загрузить настройки.');
+            updateAdminBrand(settings);
             document.getElementById('setting-museum-name').value = settings.museum_name || '';
             document.getElementById('setting-museum-name-en').value = settings.museum_name_en || '';
             document.getElementById('setting-branch-name').value = settings.branch_name || '';
@@ -457,6 +490,7 @@
             document.querySelectorAll('.setting-open-day').forEach((checkbox) => {
                 checkbox.checked = openDays.includes(Number(checkbox.value));
             });
+            updateStatusPreview();
             logoUrlInput.value = settings.logo_url || '/img/logo-samartyai.png';
             showLogoPreview(logoUrlInput.value);
         } catch (error) {
@@ -516,6 +550,8 @@
                 return;
             }
             if (!response.ok || !result.success) throw new Error(result.error || 'Не удалось сохранить настройки.');
+            updateAdminBrand(result.settings || payload);
+            updateStatusPreview();
             showLogoPreview(logoUrlInput.value);
             document.getElementById('setting-logo-file').value = '';
             settingsMessage.className = 'msg success';
@@ -529,6 +565,7 @@
     });
 
     loadSiteSettings();
+    setInterval(updateStatusPreview, 60000);
 </script>
 </body>
 </html>

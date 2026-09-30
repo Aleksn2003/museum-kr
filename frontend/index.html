@@ -208,7 +208,7 @@
                     </svg>
                 </div>
                 <h3 class="font-serif font-semibold text-sm text-[#3E2723] mb-1">Часы работы</h3>
-                <p class="text-xs text-gray-500">10:00–18:00 (Вт–Сб)</p>
+                <p class="text-xs text-gray-500" id="home-working-hours-schedule">Загрузка расписания…</p>
             </div>
 
             <!-- Билеты и цены -->
@@ -824,7 +824,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
     <div>
         <h4 class="font-serif font-bold text-sm text-[#3E2723]">Режим работы</h4>
-        <p class="text-xs text-gray-600">Вт–Сб: 10:00–18:00</p>
+        <p class="text-xs text-gray-600" id="working-hours-schedule">Загрузка расписания…</p>
         <p class="text-xs font-semibold mt-1" id="open-status-text">
             <span id="status-dot" class="inline-block w-2 h-2 rounded-full mr-1" style="background-color: #22c55e;"></span>
             <span id="status-text">Загрузка…</span>
@@ -1002,7 +1002,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </footer>
 
 
-<script src="js/main.js"></script>
+<script src="js/main.js?v=8"></script>
 <script src="https://maps.api.2gis.ru/2.0/loader.js?pkg=full&key=a49e24e8-5b8a-4ccf-a669-fa3a4c710d11"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
