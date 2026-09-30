@@ -43,6 +43,7 @@ CREATE TABLE exhibits (
     quote_en TEXT,
     quote_author_en TEXT,
     is_exhibit_of_day BOOLEAN DEFAULT false,
+    order_index INTEGER NOT NULL DEFAULT 0,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -57,8 +58,10 @@ CREATE TABLE news (
     is_pinned BOOLEAN DEFAULT false,
     published_at TIMESTAMPTZ DEFAULT NOW(),
     created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW(),
     vk_post_id BIGINT UNIQUE,
     is_deleted BOOLEAN NOT NULL DEFAULT false,
+    publication_status VARCHAR(20) NOT NULL DEFAULT 'published',
     title_en VARCHAR(255),
     short_text_en TEXT,
     content_en TEXT
@@ -78,6 +81,7 @@ CREATE TABLE events (
     updated_at TIMESTAMPTZ DEFAULT NOW(),
     vk_post_id BIGINT UNIQUE,
     is_deleted BOOLEAN NOT NULL DEFAULT false,
+    publication_status VARCHAR(20) NOT NULL DEFAULT 'published',
     title_en VARCHAR(255),
     short_text_en TEXT,
     description_en TEXT,
@@ -100,6 +104,29 @@ CREATE TABLE page_blocks (
     content_en TEXT,
     updated_at TIMESTAMPTZ DEFAULT NOW(),
     UNIQUE (page_url, block_id)
+);
+
+CREATE TABLE page_edit_history (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    page_url TEXT NOT NULL,
+    language VARCHAR(2) NOT NULL CHECK (language IN ('ru', 'en')),
+    content_type VARCHAR(16) NOT NULL CHECK (content_type IN ('html', 'blocks')),
+    snapshot JSONB NOT NULL,
+    changed_fields JSONB NOT NULL DEFAULT '[]'::jsonb,
+    action VARCHAR(16) NOT NULL DEFAULT 'save',
+    reverted_at TIMESTAMPTZ,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE schedule_exceptions (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    exception_date DATE NOT NULL UNIQUE,
+    is_open BOOLEAN NOT NULL DEFAULT false,
+    opening_time TIME,
+    closing_time TIME,
+    label VARCHAR(180) NOT NULL,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    CHECK ((is_open = false) OR (opening_time IS NOT NULL AND closing_time IS NOT NULL AND opening_time < closing_time))
 );
 
 CREATE TABLE fun_facts (

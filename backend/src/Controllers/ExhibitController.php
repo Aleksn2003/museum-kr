@@ -18,10 +18,25 @@ class ExhibitController
     public function featured(Request $request, Response $response): Response
     {
         $db = $this->container->get('database');
-        $stmt = $db->query('SELECT id, title, title_en, short_description, short_description_en, creation_date, image_url FROM exhibits WHERE is_featured = true ORDER BY created_at DESC LIMIT 3');
+        $stmt = $db->query('SELECT id, title, title_en, short_description, short_description_en, creation_date, image_url FROM exhibits WHERE is_featured = true ORDER BY order_index ASC, created_at DESC LIMIT 3');
         $data = Localization::rows($stmt->fetchAll(), Localization::language($request), ['title', 'short_description']);
         $response->getBody()->write(json_encode($data));
         return $response->withHeader('Content-Type', 'application/json');
+    }
+
+    public function exhibitOfDay(Request $request, Response $response): Response
+    {
+        $db = $this->container->get('database');
+        $stmt = $db->query('SELECT id, title, title_en, short_description, short_description_en, creation_date, image_url FROM exhibits WHERE is_exhibit_of_day = true ORDER BY updated_at DESC LIMIT 1');
+        $exhibit = $stmt->fetch();
+        if (!$exhibit) {
+            $stmt = $db->query('SELECT id, title, title_en, short_description, short_description_en, creation_date, image_url FROM exhibits ORDER BY md5(id::text || (NOW() AT TIME ZONE \'Asia/Yakutsk\')::date::text) LIMIT 1');
+            $exhibit = $stmt->fetch();
+        }
+        if (!$exhibit) $exhibit = null;
+        elseif ($exhibit) $exhibit = Localization::row($exhibit, Localization::language($request), ['title', 'short_description']);
+        $response->getBody()->write(json_encode($exhibit, JSON_UNESCAPED_UNICODE));
+        return $response->withHeader('Content-Type', 'application/json; charset=utf-8')->withHeader('Cache-Control', 'no-store');
     }
 
     // GET /api/exhibits/{id}
@@ -39,6 +54,9 @@ if ($exhibit && isset($exhibit['images'])) {
             $response->getBody()->write(json_encode(['error' => 'Экспонат не найден']));
             return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
         }
+        foreach (['is_featured', 'is_exhibit_of_day'] as $flag) {
+            if (array_key_exists($flag, $exhibit)) $exhibit[$flag] = in_array($exhibit[$flag], [true, 't', '1', 1], true);
+        }
         $exhibit = Localization::row($exhibit, Localization::language($request), ['title', 'short_description', 'description', 'material', 'dimensions', 'origin', 'quote', 'quote_author']);
         $response->getBody()->write(json_encode($exhibit));
         return $response->withHeader('Content-Type', 'application/json');
@@ -49,7 +67,10 @@ public function create(Request $request, Response $response): Response
 {
     $body = $request->getParsedBody();
     $db = $this->container->get('database');
-    $stmt = $db->prepare('INSERT INTO exhibits (title, short_description, description, creation_date, image_url, is_featured, category_id, material, dimensions, origin, audio_url, quote, quote_author, images, title_en, short_description_en, description_en, material_en, dimensions_en, origin_en, quote_en, quote_author_en) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id');
+    $isDay = filter_var($body['is_exhibit_of_day'] ?? false, FILTER_VALIDATE_BOOLEAN);
+    $db->beginTransaction();
+    try {
+    $stmt = $db->prepare('INSERT INTO exhibits (title, short_description, description, creation_date, image_url, is_featured, category_id, material, dimensions, origin, audio_url, quote, quote_author, images, title_en, short_description_en, description_en, material_en, dimensions_en, origin_en, quote_en, quote_author_en, is_exhibit_of_day, order_index) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id');
     $stmt->execute([
         $body['title'],
         $body['short_description'] ?? null,
@@ -73,8 +94,16 @@ public function create(Request $request, Response $response): Response
         $body['origin_en'] ?? null,
         $body['quote_en'] ?? null,
         $body['quote_author_en'] ?? null,
+        $isDay ? 'true' : 'false',
+        max(0, (int) ($body['order_index'] ?? 0)),
     ]);
     $newId = $stmt->fetchColumn();
+    if ($isDay) $db->prepare('UPDATE exhibits SET is_exhibit_of_day = false WHERE id <> ?')->execute([$newId]);
+    $db->commit();
+    } catch (\Throwable $error) {
+        if ($db->inTransaction()) $db->rollBack();
+        throw $error;
+    }
     $response->getBody()->write(json_encode(['id' => $newId]));
     return $response->withStatus(201)->withHeader('Content-Type', 'application/json');
 }
@@ -87,6 +116,9 @@ public function update(Request $request, Response $response, array $args): Respo
 
     // Если передан массив изображений, преобразуем его в JSON-строку
     $images = isset($body['images']) ? json_encode($body['images']) : null;
+
+    $db->beginTransaction();
+    try {
 
     $stmt = $db->prepare('UPDATE exhibits SET 
         title = COALESCE(?, title),
@@ -110,7 +142,10 @@ public function update(Request $request, Response $response, array $args): Respo
         dimensions_en = COALESCE(?, dimensions_en),
         origin_en = COALESCE(?, origin_en),
         quote_en = COALESCE(?, quote_en),
-        quote_author_en = COALESCE(?, quote_author_en)
+        quote_author_en = COALESCE(?, quote_author_en),
+        is_exhibit_of_day = COALESCE(?, is_exhibit_of_day),
+        order_index = COALESCE(?, order_index),
+        updated_at = NOW()
         WHERE id = ?');
 
     $stmt->execute([
@@ -136,8 +171,21 @@ public function update(Request $request, Response $response, array $args): Respo
         $body['origin_en'] ?? null,
         $body['quote_en'] ?? null,
         $body['quote_author_en'] ?? null,
+        array_key_exists('is_exhibit_of_day', $body) ? (filter_var($body['is_exhibit_of_day'], FILTER_VALIDATE_BOOLEAN) ? 'true' : 'false') : null,
+        isset($body['order_index']) ? max(0, (int) $body['order_index']) : null,
         $args['id']
     ]);
+    if ($stmt->rowCount() === 0) {
+        $db->rollBack();
+        $response->getBody()->write(json_encode(['error' => 'Экспонат не найден'], JSON_UNESCAPED_UNICODE));
+        return $response->withStatus(404)->withHeader('Content-Type', 'application/json; charset=utf-8');
+    }
+    if (filter_var($body['is_exhibit_of_day'] ?? false, FILTER_VALIDATE_BOOLEAN)) $db->prepare('UPDATE exhibits SET is_exhibit_of_day = false WHERE id <> ?')->execute([$args['id']]);
+    $db->commit();
+    } catch (\Throwable $error) {
+        if ($db->inTransaction()) $db->rollBack();
+        throw $error;
+    }
 
     $response->getBody()->write(json_encode(['success' => true]));
     return $response->withHeader('Content-Type', 'application/json');
@@ -152,21 +200,31 @@ public function update(Request $request, Response $response, array $args): Respo
     $page = max(1, (int)($params['page'] ?? 1));
     $perPage = min(50, max(1, (int)($params['per_page'] ?? 12))); // по умолчанию 12, можно до 50
 
-    $where = '';
+    $conditions = [];
     $bindings = [];
     if (!empty($params['category_id'])) {
-        $where = 'WHERE category_id = ?';
+        $conditions[] = 'category_id = ?';
         $bindings[] = $params['category_id'];
     }
+    $query = trim((string) ($params['q'] ?? ''));
+    if ($query !== '') {
+        $conditions[] = "(title ILIKE ? OR COALESCE(title_en, '') ILIKE ? OR COALESCE(creation_date, '') ILIKE ?)";
+        $pattern = '%' . $query . '%';
+        array_push($bindings, $pattern, $pattern, $pattern);
+    }
+    $where = $conditions ? 'WHERE ' . implode(' AND ', $conditions) : '';
 
     $countStmt = $db->prepare("SELECT COUNT(*) FROM exhibits {$where}");
     $countStmt->execute($bindings);
     $total = $countStmt->fetchColumn();
 
     $offset = ($page - 1) * $perPage;
-    $stmt = $db->prepare("SELECT id, title, title_en, short_description, short_description_en, creation_date, image_url, category_id FROM exhibits {$where} ORDER BY created_at DESC LIMIT ? OFFSET ?");
+    $stmt = $db->prepare("SELECT id, title, title_en, short_description, short_description_en, creation_date, image_url, category_id, order_index, is_exhibit_of_day FROM exhibits {$where} ORDER BY order_index ASC, created_at DESC LIMIT ? OFFSET ?");
     $stmt->execute(array_merge($bindings, [$perPage, $offset]));
-    $items = Localization::rows($stmt->fetchAll(), Localization::language($request), ['title', 'short_description']);
+    $items = $stmt->fetchAll();
+    foreach ($items as &$item) $item['is_exhibit_of_day'] = in_array($item['is_exhibit_of_day'], [true, 't', '1', 1], true);
+    unset($item);
+    $items = Localization::rows($items, Localization::language($request), ['title', 'short_description']);
 
     $response->getBody()->write(json_encode([
         'items' => $items,

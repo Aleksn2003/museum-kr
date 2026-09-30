@@ -203,10 +203,10 @@
     <div class="container mx-auto px-4 max-w-6xl">
         <!-- Заголовок -->
         <div class="mb-14 text-center md:text-left">
-            <span class="text-[#8D6E63] uppercase tracking-widest text-sm font-bold">Наследие</span>
-            <h1 class="font-serif text-4xl lg:text-5xl font-bold mt-2 text-[#3E2723]">Архитектурное наследие</h1>
+            <span class="text-[#8D6E63] uppercase tracking-widest text-sm font-bold" data-page-block="architecture.intro.eyebrow" data-page-block-label="Надпись над заголовком" data-page-block-group="Введение">Наследие</span>
+            <h1 class="font-serif text-4xl lg:text-5xl font-bold mt-2 text-[#3E2723]" data-page-block="architecture.intro.title" data-page-block-label="Заголовок страницы" data-page-block-group="Введение">Архитектурное наследие</h1>
             <div class="w-16 h-1 bg-[#5D4037] mt-4 mx-auto md:mx-0"></div>
-            <p class="text-lg text-gray-700 mt-6 max-w-3xl">
+            <p class="text-lg text-gray-700 mt-6 max-w-3xl" data-page-block="architecture.intro.description" data-page-block-label="Вводное описание" data-page-block-group="Введение" data-page-block-type="textarea">
                 На территории музея находятся архитектурные памятники XIX века. 
                 Эти постройки — живые свидетели быта и культуры якутов, сохранившиеся до наших дней.
             </p>
@@ -214,13 +214,13 @@
 
         <!-- ========== 1. Качикатская Николаевская церковь ========== -->
         <div class="mb-20">
-            <h2 class="font-serif text-2xl font-bold mb-6 text-[#3E2723]">Качикатская Николаевская церковь, 1896 г.</h2>
+            <h2 class="font-serif text-2xl font-bold mb-6 text-[#3E2723]" data-page-block="architecture.church.title" data-page-block-label="Название" data-page-block-group="Николаевская церковь">Качикатская Николаевская церковь, 1896 г.</h2>
             <div class="flex flex-col lg:flex-row gap-8 items-start">
                 <!-- Левая колонка: слайдер + галерея деталей -->
                 <div class="lg:w-1/2 w-full">
                     <div class="compare-container rounded-lg border border-gray-300 shadow-sm overflow-hidden" style="height: 400px;">
-                        <div class="compare-before" style="background-image: url('img/tserkov1.jpg');"></div>
-                        <div class="compare-after" style="background-image: url('img/tserkov2.jpg');"></div>
+                        <div class="compare-before" style="background-image: url('img/tserkov1.jpg');" data-page-block="architecture.church.image_before" data-page-block-label="Историческая фотография" data-page-block-group="Николаевская церковь" data-page-block-type="image" data-page-block-target="background-image"></div>
+                        <div class="compare-after" style="background-image: url('img/tserkov2.jpg');" data-page-block="architecture.church.image_after" data-page-block-label="Современная фотография" data-page-block-group="Николаевская церковь" data-page-block-type="image" data-page-block-target="background-image"></div>
                         <div class="compare-slider">
                             <div class="compare-slider-handle">
                                 <span style="color: white; font-size: 18px; line-height: 1; user-select: none;">←→</span>
@@ -232,10 +232,10 @@
                     <div class="mt-6">
                         <h3 class="font-serif text-base font-semibold mb-3 text-[#3E2723]">Детали архитектуры</h3>
                         <div class="detail-gallery" aria-label="Крупные планы церкви на исторической и современной фотографиях">
-                            <div class="detail-gallery-thumb"><img src="img/tserkov1.jpg" alt="Крупный план архивной фотографии церкви" class="zoomable-image"></div>
-                            <div class="detail-gallery-thumb"><img src="img/tserkov1.jpg" alt="Фрагмент архивной фотографии церкви" class="zoomable-image"></div>
-                            <div class="detail-gallery-thumb"><img src="img/tserkov2.jpg" alt="Крупный план современной фотографии церкви" class="zoomable-image"></div>
-                            <div class="detail-gallery-thumb"><img src="img/tserkov2.jpg" alt="Фрагмент современной фотографии церкви" class="zoomable-image"></div>
+                            <div class="detail-gallery-thumb"><img src="img/tserkov1.jpg" alt="Крупный план архивной фотографии церкви" class="zoomable-image" data-page-block="architecture.church.image_before" data-page-block-target="src"></div>
+                            <div class="detail-gallery-thumb"><img src="img/tserkov1.jpg" alt="Фрагмент архивной фотографии церкви" class="zoomable-image" data-page-block="architecture.church.image_before" data-page-block-target="src"></div>
+                            <div class="detail-gallery-thumb"><img src="img/tserkov2.jpg" alt="Крупный план современной фотографии церкви" class="zoomable-image" data-page-block="architecture.church.image_after" data-page-block-target="src"></div>
+                            <div class="detail-gallery-thumb"><img src="img/tserkov2.jpg" alt="Фрагмент современной фотографии церкви" class="zoomable-image" data-page-block="architecture.church.image_after" data-page-block-target="src"></div>
                         </div>
                         <p class="text-xs text-gray-400 mt-1">Фрагменты тех же архивной и современной фотографий, что и в сравнении выше.</p>
                     </div>
@@ -244,12 +244,12 @@
 
                 <!-- Правая колонка: описание + техпаспорт + аудио + цитата -->
                 <div class="lg:w-1/2 w-full">
-                    <p class="text-gray-700 leading-relaxed mb-4">
+                    <p class="text-gray-700 leading-relaxed mb-4" data-page-block="architecture.church.description_primary" data-page-block-label="Основное описание" data-page-block-group="Николаевская церковь" data-page-block-type="textarea">
                         Деревянная Николаевская церковь, построенная в 1896 году в селе Качикат, является одной из старейших сохранившихся церквей Хангаласского улуса. 
                         Её архитектура сочетает традиции русского деревянного зодчества с местными приёмами строительства.
                     </p>
                     <p class="text-gray-700 leading-relaxed">
-                        Церковь была перевезена на территорию музейного комплекса для сохранения и реставрации. Сегодня она открыта для посетителей и продолжает оставаться духовным центром.
+                        <span data-page-block="architecture.church.description_secondary" data-page-block-label="Дополнительное описание" data-page-block-group="Николаевская церковь" data-page-block-type="textarea">Церковь была перевезена на территорию музейного комплекса для сохранения и реставрации. Сегодня она открыта для посетителей и продолжает оставаться духовным центром.</span>
                         <span class="block mt-2 text-sm text-[#5D4037]">
                             Подробнее об основании церкви и комплекса читайте в разделе 
                             <a href="/history.html" class="font-semibold text-[#5D4037] hover:text-[#3E2723] border-b border-[#5D4037] hover:border-[#3E2723] transition">История</a>.
@@ -258,10 +258,10 @@
 
                     <!-- Техпаспорт (перемещён в описание) -->
                     <div class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-xs text-gray-600">
-                        <span class="inline-flex items-center gap-1"><i class="ri-calendar-line text-[#5D4037]"></i><span class="font-medium">1896 г.</span></span>
-                        <span class="inline-flex items-center gap-1"><i class="ri-plant-line text-[#5D4037]"></i>Лиственница (рубка «в обло»)</span>
-                        <span class="inline-flex items-center gap-1"><i class="ri-map-pin-line text-[#5D4037]"></i>с. Качикат, Хангаласский улус</span>
-                        <span class="inline-flex items-center gap-1"><i class="ri-ruler-2-line text-[#5D4037]"></i>≈ 52 кв. м</span>
+                        <span class="inline-flex items-center gap-1"><i class="ri-calendar-line text-[#5D4037]"></i><span class="font-medium" data-page-block="architecture.church.date" data-page-block-label="Дата" data-page-block-group="Николаевская церковь">1896 г.</span></span>
+                        <span class="inline-flex items-center gap-1"><i class="ri-plant-line text-[#5D4037]"></i><span data-page-block="architecture.church.material" data-page-block-label="Материал" data-page-block-group="Николаевская церковь">Лиственница (рубка «в обло»)</span></span>
+                        <span class="inline-flex items-center gap-1"><i class="ri-map-pin-line text-[#5D4037]"></i><span data-page-block="architecture.church.origin" data-page-block-label="Происхождение" data-page-block-group="Николаевская церковь">с. Качикат, Хангаласский улус</span></span>
+                        <span class="inline-flex items-center gap-1"><i class="ri-ruler-2-line text-[#5D4037]"></i><span data-page-block="architecture.church.area" data-page-block-label="Площадь" data-page-block-group="Николаевская церковь">≈ 52 кв. м</span></span>
                     </div>
 
                     <!-- Аудиогид (компактный) -->
@@ -271,14 +271,14 @@
                             <source src="" type="audio/mpeg">
                             Ваш браузер не поддерживает аудиоэлемент.
                         </audio>
-                        <span class="text-xs text-gray-500">Рассказ о церкви</span>
+                        <span class="text-xs text-gray-500" data-page-block="architecture.church.audio_caption" data-page-block-label="Подпись аудиогида" data-page-block-group="Николаевская церковь">Рассказ о церкви</span>
                     </div>
 
                     <!-- Цитата / Легенда -->
                     <div class="mt-6">
                         <blockquote class="text-sm italic text-gray-600 border-l-4 border-[#5D4037] pl-3 py-1">
-                            «Старики говорили, что эта церковь была самым крепким строением во всей округе...»
-                            <div class="text-xs text-gray-400 mt-1 not-italic">— из воспоминаний старожилов села</div>
+                            <span data-page-block="architecture.church.quote" data-page-block-label="Цитата" data-page-block-group="Николаевская церковь" data-page-block-type="textarea">«Старики говорили, что эта церковь была самым крепким строением во всей округе...»</span>
+                            <div class="text-xs text-gray-400 mt-1 not-italic" data-page-block="architecture.church.quote_author" data-page-block-label="Автор или источник цитаты" data-page-block-group="Николаевская церковь">— из воспоминаний старожилов села</div>
                         </blockquote>
                     </div>
                 </div>
@@ -287,23 +287,23 @@
 
         <!-- ========== 2. Амбар богача Кирилла Скрябина ========== -->
         <div class="mb-20">
-            <h2 class="font-serif text-2xl font-bold mb-6 text-[#3E2723]">Амбар 2‑уровневый богача Кирилла Скрябина, с. Тит‑Эбэ</h2>
+            <h2 class="font-serif text-2xl font-bold mb-6 text-[#3E2723]" data-page-block="architecture.barn.title" data-page-block-label="Название" data-page-block-group="Амбар Кирилла Скрябина">Амбар 2‑уровневый богача Кирилла Скрябина, с. Тит‑Эбэ</h2>
             <div class="flex flex-col lg:flex-row-reverse gap-8 items-start">
                 <!-- Правая колонка: фото + галерея деталей -->
                 <div class="lg:w-1/2 w-full">
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <img src="img/ambar2_bogacha_kirilla2.jpg" alt="Амбар богача Кирилла" class="zoomable-image w-full sm:w-2/3 h-64 md:h-80 object-cover rounded-lg border border-gray-300 shadow-sm transition-transform duration-300 ease-in-out hover:scale-[1.02] cursor-pointer">
-                        <img src="img/ambar2_bogacha_kirilla.jpg" alt="Амбар богача Кирилла (второй ракурс)" class="zoomable-image w-full sm:w-1/3 h-64 md:h-80 object-cover rounded-lg border border-gray-300 shadow-sm transition-transform duration-300 ease-in-out hover:scale-[1.02] cursor-pointer">
+                        <img src="img/ambar2_bogacha_kirilla2.jpg" alt="Амбар богача Кирилла" class="zoomable-image w-full sm:w-2/3 h-64 md:h-80 object-cover rounded-lg border border-gray-300 shadow-sm transition-transform duration-300 ease-in-out hover:scale-[1.02] cursor-pointer" data-page-block="architecture.barn.image_primary" data-page-block-label="Основная фотография" data-page-block-group="Амбар Кирилла Скрябина" data-page-block-type="image" data-page-block-target="src">
+                        <img src="img/ambar2_bogacha_kirilla.jpg" alt="Амбар богача Кирилла (второй ракурс)" class="zoomable-image w-full sm:w-1/3 h-64 md:h-80 object-cover rounded-lg border border-gray-300 shadow-sm transition-transform duration-300 ease-in-out hover:scale-[1.02] cursor-pointer" data-page-block="architecture.barn.image_secondary" data-page-block-label="Вторая фотография" data-page-block-group="Амбар Кирилла Скрябина" data-page-block-type="image" data-page-block-target="src">
                     </div>
                     <p class="text-xs text-gray-500 mt-2 text-center">Два ракурса одного объекта</p>
 
                     <div class="mt-6">
                         <h3 class="font-serif text-base font-semibold mb-3 text-[#3E2723]">Детали архитектуры</h3>
                         <div class="detail-gallery" aria-label="Крупные планы двух ракурсов амбара Кирилла Скрябина">
-                            <div class="detail-gallery-thumb"><img src="img/ambar2_bogacha_kirilla2.jpg" alt="Крупный план амбара Кирилла Скрябина" class="zoomable-image"></div>
-                            <div class="detail-gallery-thumb"><img src="img/ambar2_bogacha_kirilla2.jpg" alt="Фрагмент фотографии амбара Кирилла Скрябина" class="zoomable-image"></div>
-                            <div class="detail-gallery-thumb"><img src="img/ambar2_bogacha_kirilla.jpg" alt="Крупный план амбара Кирилла Скрябина со второго ракурса" class="zoomable-image"></div>
-                            <div class="detail-gallery-thumb"><img src="img/ambar2_bogacha_kirilla.jpg" alt="Фрагмент второго ракурса амбара Кирилла Скрябина" class="zoomable-image"></div>
+                            <div class="detail-gallery-thumb"><img src="img/ambar2_bogacha_kirilla2.jpg" alt="Крупный план амбара Кирилла Скрябина" class="zoomable-image" data-page-block="architecture.barn.image_primary" data-page-block-target="src"></div>
+                            <div class="detail-gallery-thumb"><img src="img/ambar2_bogacha_kirilla2.jpg" alt="Фрагмент фотографии амбара Кирилла Скрябина" class="zoomable-image" data-page-block="architecture.barn.image_primary" data-page-block-target="src"></div>
+                            <div class="detail-gallery-thumb"><img src="img/ambar2_bogacha_kirilla.jpg" alt="Крупный план амбара Кирилла Скрябина со второго ракурса" class="zoomable-image" data-page-block="architecture.barn.image_secondary" data-page-block-target="src"></div>
+                            <div class="detail-gallery-thumb"><img src="img/ambar2_bogacha_kirilla.jpg" alt="Фрагмент второго ракурса амбара Кирилла Скрябина" class="zoomable-image" data-page-block="architecture.barn.image_secondary" data-page-block-target="src"></div>
                         </div>
                         <p class="text-xs text-gray-400 mt-1">Крупные планы двух фотографий амбара.</p>
                     </div>
@@ -312,20 +312,20 @@
 
                 <!-- Левая колонка: описание + техпаспорт + аудио + цитата -->
                 <div class="lg:w-1/2 w-full">
-                    <p class="text-gray-700 leading-relaxed mb-4">
+                    <p class="text-gray-700 leading-relaxed mb-4" data-page-block="architecture.barn.description_primary" data-page-block-label="Основное описание" data-page-block-group="Амбар Кирилла Скрябина" data-page-block-type="textarea">
                         Двухэтажный амбар из села Тит‑Эбэ принадлежал зажиточному якуту Кириллу Скрябину. Нижний ярус использовался для хранения припасов, верхний — как летнее жильё. 
                         Постройка отличается сложной конструкцией и богатой резьбой по дереву.
                     </p>
-                    <p class="text-gray-700 leading-relaxed">
+                    <p class="text-gray-700 leading-relaxed" data-page-block="architecture.barn.description_secondary" data-page-block-label="Дополнительное описание" data-page-block-group="Амбар Кирилла Скрябина" data-page-block-type="textarea">
                         Амбар был перевезён в музейный комплекс «Самыртай» и полностью отреставрирован. Сегодня он является ценным экспонатом, демонстрирующим социальное расслоение якутского общества XIX века.
                     </p>
 
                     <!-- Техпаспорт (компактный) -->
                     <div class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-xs text-gray-600">
-                        <span class="inline-flex items-center gap-1"><i class="ri-calendar-line text-[#5D4037]"></i><span class="font-medium">кон. XIX в.</span></span>
-                        <span class="inline-flex items-center gap-1"><i class="ri-plant-line text-[#5D4037]"></i>Лиственница (рубка «в обло»)</span>
-                        <span class="inline-flex items-center gap-1"><i class="ri-map-pin-line text-[#5D4037]"></i>с. Тит‑Эбэ</span>
-                        <span class="inline-flex items-center gap-1"><i class="ri-ruler-2-line text-[#5D4037]"></i>≈ 45 кв. м</span>
+                        <span class="inline-flex items-center gap-1"><i class="ri-calendar-line text-[#5D4037]"></i><span class="font-medium" data-page-block="architecture.barn.date" data-page-block-label="Дата" data-page-block-group="Амбар Кирилла Скрябина">кон. XIX в.</span></span>
+                        <span class="inline-flex items-center gap-1"><i class="ri-plant-line text-[#5D4037]"></i><span data-page-block="architecture.barn.material" data-page-block-label="Материал" data-page-block-group="Амбар Кирилла Скрябина">Лиственница (рубка «в обло»)</span></span>
+                        <span class="inline-flex items-center gap-1"><i class="ri-map-pin-line text-[#5D4037]"></i><span data-page-block="architecture.barn.origin" data-page-block-label="Происхождение" data-page-block-group="Амбар Кирилла Скрябина">с. Тит‑Эбэ</span></span>
+                        <span class="inline-flex items-center gap-1"><i class="ri-ruler-2-line text-[#5D4037]"></i><span data-page-block="architecture.barn.area" data-page-block-label="Площадь" data-page-block-group="Амбар Кирилла Скрябина">≈ 45 кв. м</span></span>
                     </div>
 
                     <div class="mt-6 flex items-center gap-3 text-sm text-gray-700">
@@ -334,13 +334,13 @@
                             <source src="" type="audio/mpeg">
                             Ваш браузер не поддерживает аудиоэлемент.
                         </audio>
-                        <span class="text-xs text-gray-500">Рассказ об амбаре</span>
+                        <span class="text-xs text-gray-500" data-page-block="architecture.barn.audio_caption" data-page-block-label="Подпись аудиогида" data-page-block-group="Амбар Кирилла Скрябина">Рассказ об амбаре</span>
                     </div>
 
                     <div class="mt-6">
                         <blockquote class="text-sm italic text-gray-600 border-l-4 border-[#5D4037] pl-3 py-1">
-                            «Говорят, Кирилл Скрябин был настолько богат, что зерно из этого амбара кормило половину наслега...»
-                            <div class="text-xs text-gray-400 mt-1 not-italic">— из рассказов потомков Скрябиных</div>
+                            <span data-page-block="architecture.barn.quote" data-page-block-label="Цитата" data-page-block-group="Амбар Кирилла Скрябина" data-page-block-type="textarea">«Говорят, Кирилл Скрябин был настолько богат, что зерно из этого амбара кормило половину наслега...»</span>
+                            <div class="text-xs text-gray-400 mt-1 not-italic" data-page-block="architecture.barn.quote_author" data-page-block-label="Автор или источник цитаты" data-page-block-group="Амбар Кирилла Скрябина">— из рассказов потомков Скрябиных</div>
                         </blockquote>
                     </div>
                 </div>
@@ -349,23 +349,23 @@
 
         <!-- ========== 3. Шестигранный балаган ========== -->
         <div class="mb-20">
-            <h2 class="font-serif text-2xl font-bold mb-6 text-[#3E2723]">Балаган 6‑гранный, летник Даркылах (семья Марковых)</h2>
+            <h2 class="font-serif text-2xl font-bold mb-6 text-[#3E2723]" data-page-block="architecture.balagan.title" data-page-block-label="Название" data-page-block-group="Шестигранный балаган">Балаган 6‑гранный, летник Даркылах (семья Марковых)</h2>
             <div class="flex flex-col lg:flex-row gap-8 items-start">
                 <!-- Левая колонка: фото + галерея деталей -->
                 <div class="lg:w-1/2 w-full">
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <img src="img/chestigrannyi_balbalagan.jpg" alt="Шестигранный балаган" class="zoomable-image w-full sm:w-2/3 h-64 md:h-80 object-cover rounded-lg border border-gray-300 shadow-sm transition-transform duration-300 ease-in-out hover:scale-[1.02] cursor-pointer">
-                        <img src="img/chestigrannyi_balbalagan2.jpg" alt="Шестигранный балаган (второй ракурс)" class="zoomable-image w-full sm:w-1/3 h-64 md:h-80 object-cover rounded-lg border border-gray-300 shadow-sm transition-transform duration-300 ease-in-out hover:scale-[1.02] cursor-pointer">
+                        <img src="img/chestigrannyi_balbalagan.jpg" alt="Шестигранный балаган" class="zoomable-image w-full sm:w-2/3 h-64 md:h-80 object-cover rounded-lg border border-gray-300 shadow-sm transition-transform duration-300 ease-in-out hover:scale-[1.02] cursor-pointer" data-page-block="architecture.balagan.image_primary" data-page-block-label="Основная фотография" data-page-block-group="Шестигранный балаган" data-page-block-type="image" data-page-block-target="src">
+                        <img src="img/chestigrannyi_balbalagan2.jpg" alt="Шестигранный балаган (второй ракурс)" class="zoomable-image w-full sm:w-1/3 h-64 md:h-80 object-cover rounded-lg border border-gray-300 shadow-sm transition-transform duration-300 ease-in-out hover:scale-[1.02] cursor-pointer" data-page-block="architecture.balagan.image_secondary" data-page-block-label="Вторая фотография" data-page-block-group="Шестигранный балаган" data-page-block-type="image" data-page-block-target="src">
                     </div>
                     <p class="text-xs text-gray-500 mt-2 text-center">Два ракурса одного объекта</p>
 
                     <div class="mt-6">
                         <h3 class="font-serif text-base font-semibold mb-3 text-[#3E2723]">Детали архитектуры</h3>
                         <div class="detail-gallery" aria-label="Крупные планы двух ракурсов шестигранного балагана">
-                            <div class="detail-gallery-thumb"><img src="img/chestigrannyi_balbalagan.jpg" alt="Крупный план шестигранного балагана" class="zoomable-image"></div>
-                            <div class="detail-gallery-thumb"><img src="img/chestigrannyi_balbalagan.jpg" alt="Фрагмент фотографии шестигранного балагана" class="zoomable-image"></div>
-                            <div class="detail-gallery-thumb"><img src="img/chestigrannyi_balbalagan2.jpg" alt="Крупный план балагана со второго ракурса" class="zoomable-image"></div>
-                            <div class="detail-gallery-thumb"><img src="img/chestigrannyi_balbalagan2.jpg" alt="Фрагмент второго ракурса балагана" class="zoomable-image"></div>
+                            <div class="detail-gallery-thumb"><img src="img/chestigrannyi_balbalagan.jpg" alt="Крупный план шестигранного балагана" class="zoomable-image" data-page-block="architecture.balagan.image_primary" data-page-block-target="src"></div>
+                            <div class="detail-gallery-thumb"><img src="img/chestigrannyi_balbalagan.jpg" alt="Фрагмент фотографии шестигранного балагана" class="zoomable-image" data-page-block="architecture.balagan.image_primary" data-page-block-target="src"></div>
+                            <div class="detail-gallery-thumb"><img src="img/chestigrannyi_balbalagan2.jpg" alt="Крупный план балагана со второго ракурса" class="zoomable-image" data-page-block="architecture.balagan.image_secondary" data-page-block-target="src"></div>
+                            <div class="detail-gallery-thumb"><img src="img/chestigrannyi_balbalagan2.jpg" alt="Фрагмент второго ракурса балагана" class="zoomable-image" data-page-block="architecture.balagan.image_secondary" data-page-block-target="src"></div>
                         </div>
                         <p class="text-xs text-gray-400 mt-1">Крупные планы двух фотографий балагана.</p>
                     </div>
@@ -374,19 +374,19 @@
 
                 <!-- Правая колонка: описание + техпаспорт + аудио + цитата -->
                 <div class="lg:w-1/2 w-full">
-                    <p class="text-gray-700 leading-relaxed mb-4">
+                    <p class="text-gray-700 leading-relaxed mb-4" data-page-block="architecture.balagan.description_primary" data-page-block-label="Основное описание" data-page-block-group="Шестигранный балаган" data-page-block-type="textarea">
                         Редкий тип якутской постройки — шестигранный балаган, перевезённый с летника Даркылах, принадлежавшего семье Марковых. 
                         В отличие от прямоугольных жилищ, такая форма обеспечивала лучшую устойчивость к сильным ветрам и морозам.
                     </p>
-                    <p class="text-gray-700 leading-relaxed">
+                    <p class="text-gray-700 leading-relaxed" data-page-block="architecture.balagan.description_secondary" data-page-block-label="Дополнительное описание" data-page-block-group="Шестигранный балаган" data-page-block-type="textarea">
                         Балаган использовался как зимнее жильё. На сегодняшний день это единственный сохранившийся образец подобной архитектуры в Хангаласском улусе.
                     </p>
 
                     <div class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-xs text-gray-600">
-                        <span class="inline-flex items-center gap-1"><i class="ri-calendar-line text-[#5D4037]"></i><span class="font-medium">кон. XIX в.</span></span>
-                        <span class="inline-flex items-center gap-1"><i class="ri-plant-line text-[#5D4037]"></i>Лиственница (рубка «в лапу»)</span>
-                        <span class="inline-flex items-center gap-1"><i class="ri-map-pin-line text-[#5D4037]"></i>летник Даркылах</span>
-                        <span class="inline-flex items-center gap-1"><i class="ri-ruler-2-line text-[#5D4037]"></i>≈ 38 кв. м</span>
+                        <span class="inline-flex items-center gap-1"><i class="ri-calendar-line text-[#5D4037]"></i><span class="font-medium" data-page-block="architecture.balagan.date" data-page-block-label="Дата" data-page-block-group="Шестигранный балаган">кон. XIX в.</span></span>
+                        <span class="inline-flex items-center gap-1"><i class="ri-plant-line text-[#5D4037]"></i><span data-page-block="architecture.balagan.material" data-page-block-label="Материал" data-page-block-group="Шестигранный балаган">Лиственница (рубка «в лапу»)</span></span>
+                        <span class="inline-flex items-center gap-1"><i class="ri-map-pin-line text-[#5D4037]"></i><span data-page-block="architecture.balagan.origin" data-page-block-label="Происхождение" data-page-block-group="Шестигранный балаган">летник Даркылах</span></span>
+                        <span class="inline-flex items-center gap-1"><i class="ri-ruler-2-line text-[#5D4037]"></i><span data-page-block="architecture.balagan.area" data-page-block-label="Площадь" data-page-block-group="Шестигранный балаган">≈ 38 кв. м</span></span>
                     </div>
 
                     <div class="mt-6 flex items-center gap-3 text-sm text-gray-700">
@@ -395,13 +395,13 @@
                             <source src="" type="audio/mpeg">
                             Ваш браузер не поддерживает аудиоэлемент.
                         </audio>
-                        <span class="text-xs text-gray-500">Рассказ о балагане</span>
+                        <span class="text-xs text-gray-500" data-page-block="architecture.balagan.audio_caption" data-page-block-label="Подпись аудиогида" data-page-block-group="Шестигранный балаган">Рассказ о балагане</span>
                     </div>
 
                     <div class="mt-6">
                         <blockquote class="text-sm italic text-gray-600 border-l-4 border-[#5D4037] pl-3 py-1">
-                            «Даркылахский балаган пережил столько бурь, что старожилы считали его заколдованным...»
-                            <div class="text-xs text-gray-400 mt-1 not-italic">— из легенд семьи Марковых</div>
+                            <span data-page-block="architecture.balagan.quote" data-page-block-label="Цитата" data-page-block-group="Шестигранный балаган" data-page-block-type="textarea">«Даркылахский балаган пережил столько бурь, что старожилы считали его заколдованным...»</span>
+                            <div class="text-xs text-gray-400 mt-1 not-italic" data-page-block="architecture.balagan.quote_author" data-page-block-label="Автор или источник цитаты" data-page-block-group="Шестигранный балаган">— из легенд семьи Марковых</div>
                         </blockquote>
                     </div>
                 </div>
@@ -410,23 +410,23 @@
 
         <!-- ========== 4. Башня-двухэтажный амбар с бойницами ========== -->
         <div class="mb-20">
-            <h2 class="font-serif text-2xl font-bold mb-6 text-[#3E2723]">Башня-двухэтажный амбар с бойницами, сер. XIX в. (ОКН)</h2>
+            <h2 class="font-serif text-2xl font-bold mb-6 text-[#3E2723]" data-page-block="architecture.tower.title" data-page-block-label="Название" data-page-block-group="Башня-амбар">Башня-двухэтажный амбар с бойницами, сер. XIX в. (ОКН)</h2>
             <div class="flex flex-col lg:flex-row-reverse gap-8 items-start">
                 <!-- Правая колонка: фото + галерея деталей -->
                 <div class="lg:w-1/2 w-full">
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <img src="img/ambar.jpg" alt="Башня-амбар" class="zoomable-image w-full sm:w-2/3 h-64 md:h-80 object-cover rounded-lg border border-gray-300 shadow-sm transition-transform duration-300 ease-in-out hover:scale-[1.02] cursor-pointer">
-                        <img src="img/ambar2.jpg" alt="Башня-амбар (второй ракурс)" class="zoomable-image w-full sm:w-1/3 h-64 md:h-80 object-cover rounded-lg border border-gray-300 shadow-sm transition-transform duration-300 ease-in-out hover:scale-[1.02] cursor-pointer">
+                        <img src="img/ambar.jpg" alt="Башня-амбар" class="zoomable-image w-full sm:w-2/3 h-64 md:h-80 object-cover rounded-lg border border-gray-300 shadow-sm transition-transform duration-300 ease-in-out hover:scale-[1.02] cursor-pointer" data-page-block="architecture.tower.image_primary" data-page-block-label="Основная фотография" data-page-block-group="Башня-амбар" data-page-block-type="image" data-page-block-target="src">
+                        <img src="img/ambar2.jpg" alt="Башня-амбар (второй ракурс)" class="zoomable-image w-full sm:w-1/3 h-64 md:h-80 object-cover rounded-lg border border-gray-300 shadow-sm transition-transform duration-300 ease-in-out hover:scale-[1.02] cursor-pointer" data-page-block="architecture.tower.image_secondary" data-page-block-label="Вторая фотография" data-page-block-group="Башня-амбар" data-page-block-type="image" data-page-block-target="src">
                     </div>
                     <p class="text-xs text-gray-500 mt-2 text-center">Два ракурса одного объекта</p>
 
                     <div class="mt-6">
                         <h3 class="font-serif text-base font-semibold mb-3 text-[#3E2723]">Детали архитектуры</h3>
                         <div class="detail-gallery" aria-label="Крупные планы двух ракурсов башни-амбара">
-                            <div class="detail-gallery-thumb"><img src="img/ambar.jpg" alt="Крупный план башни-амбара" class="zoomable-image"></div>
-                            <div class="detail-gallery-thumb"><img src="img/ambar.jpg" alt="Фрагмент фотографии башни-амбара" class="zoomable-image"></div>
-                            <div class="detail-gallery-thumb"><img src="img/ambar2.jpg" alt="Крупный план башни-амбара со второго ракурса" class="zoomable-image"></div>
-                            <div class="detail-gallery-thumb"><img src="img/ambar2.jpg" alt="Фрагмент второго ракурса башни-амбара" class="zoomable-image"></div>
+                            <div class="detail-gallery-thumb"><img src="img/ambar.jpg" alt="Крупный план башни-амбара" class="zoomable-image" data-page-block="architecture.tower.image_primary" data-page-block-target="src"></div>
+                            <div class="detail-gallery-thumb"><img src="img/ambar.jpg" alt="Фрагмент фотографии башни-амбара" class="zoomable-image" data-page-block="architecture.tower.image_primary" data-page-block-target="src"></div>
+                            <div class="detail-gallery-thumb"><img src="img/ambar2.jpg" alt="Крупный план башни-амбара со второго ракурса" class="zoomable-image" data-page-block="architecture.tower.image_secondary" data-page-block-target="src"></div>
+                            <div class="detail-gallery-thumb"><img src="img/ambar2.jpg" alt="Фрагмент второго ракурса башни-амбара" class="zoomable-image" data-page-block="architecture.tower.image_secondary" data-page-block-target="src"></div>
                         </div>
                         <p class="text-xs text-gray-400 mt-1">Крупные планы двух фотографий башни-амбара.</p>
                     </div>
@@ -435,19 +435,19 @@
 
                 <!-- Левая колонка: описание + техпаспорт + аудио + цитата -->
                 <div class="lg:w-1/2 w-full">
-                    <p class="text-gray-700 leading-relaxed mb-4">
+                    <p class="text-gray-700 leading-relaxed mb-4" data-page-block="architecture.tower.description_primary" data-page-block-label="Основное описание" data-page-block-group="Башня-амбар" data-page-block-type="textarea">
                         Деревянная башня-двухэтажный амбар с бойницами, построенная в середине XIX века, является объектом культурного наследия регионального значения. 
                         Массивные стены и проёмы для обороны говорят о её двойном назначении — хозяйственном и оборонительном.
                     </p>
-                    <p class="text-gray-700 leading-relaxed">
+                    <p class="text-gray-700 leading-relaxed" data-page-block="architecture.tower.description_secondary" data-page-block-label="Дополнительное описание" data-page-block-group="Башня-амбар" data-page-block-type="textarea">
                         Башня перевезена в комплекс «Самыртай» и отреставрирована. Это уникальный образец фортификационной архитектуры якутов, не имеющий аналогов в республике.
                     </p>
 
                     <div class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-xs text-gray-600">
-                        <span class="inline-flex items-center gap-1"><i class="ri-calendar-line text-[#5D4037]"></i><span class="font-medium">сер. XIX в.</span></span>
-                        <span class="inline-flex items-center gap-1"><i class="ri-plant-line text-[#5D4037]"></i>Лиственница (рубка «в обло»)</span>
-                        <span class="inline-flex items-center gap-1"><i class="ri-map-pin-line text-[#5D4037]"></i>с. Кердем (окрестности)</span>
-                        <span class="inline-flex items-center gap-1"><i class="ri-ruler-2-line text-[#5D4037]"></i>≈ 32 кв. м</span>
+                        <span class="inline-flex items-center gap-1"><i class="ri-calendar-line text-[#5D4037]"></i><span class="font-medium" data-page-block="architecture.tower.date" data-page-block-label="Дата" data-page-block-group="Башня-амбар">сер. XIX в.</span></span>
+                        <span class="inline-flex items-center gap-1"><i class="ri-plant-line text-[#5D4037]"></i><span data-page-block="architecture.tower.material" data-page-block-label="Материал" data-page-block-group="Башня-амбар">Лиственница (рубка «в обло»)</span></span>
+                        <span class="inline-flex items-center gap-1"><i class="ri-map-pin-line text-[#5D4037]"></i><span data-page-block="architecture.tower.origin" data-page-block-label="Происхождение" data-page-block-group="Башня-амбар">с. Кердем (окрестности)</span></span>
+                        <span class="inline-flex items-center gap-1"><i class="ri-ruler-2-line text-[#5D4037]"></i><span data-page-block="architecture.tower.area" data-page-block-label="Площадь" data-page-block-group="Башня-амбар">≈ 32 кв. м</span></span>
                     </div>
 
                     <div class="mt-6 flex items-center gap-3 text-sm text-gray-700">
@@ -456,13 +456,13 @@
                             <source src="" type="audio/mpeg">
                             Ваш браузер не поддерживает аудиоэлемент.
                         </audio>
-                        <span class="text-xs text-gray-500">Рассказ о башне-амбаре</span>
+                        <span class="text-xs text-gray-500" data-page-block="architecture.tower.audio_caption" data-page-block-label="Подпись аудиогида" data-page-block-group="Башня-амбар">Рассказ о башне-амбаре</span>
                     </div>
 
                     <div class="mt-6">
                         <blockquote class="text-sm italic text-gray-600 border-l-4 border-[#5D4037] pl-3 py-1">
-                            «Эту башню строили не для зерна, а для защиты от набегов — из неё просматривается вся долина...»
-                            <div class="text-xs text-gray-400 mt-1 not-italic">— из архивных записей</div>
+                            <span data-page-block="architecture.tower.quote" data-page-block-label="Цитата" data-page-block-group="Башня-амбар" data-page-block-type="textarea">«Эту башню строили не для зерна, а для защиты от набегов — из неё просматривается вся долина...»</span>
+                            <div class="text-xs text-gray-400 mt-1 not-italic" data-page-block="architecture.tower.quote_author" data-page-block-label="Автор или источник цитаты" data-page-block-group="Башня-амбар">— из архивных записей</div>
                         </blockquote>
                     </div>
                 </div>
@@ -821,7 +821,7 @@ document.addEventListener('keydown', function(e) {
 
 <script src="js/accessibility.js"></script>
 <script src="js/search.js?v=7"></script>
-<script src="js/main.js?v=8"></script>
+<script src="js/main.js?v=13"></script>
 <script>
     document.getElementById('menu-toggle').addEventListener('click', () => {
         document.getElementById('mobile-menu').classList.toggle('hidden');

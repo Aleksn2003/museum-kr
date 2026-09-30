@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Предпросмотр материала — музей Самыртай</title>
+    <style>
+        :root { --ink:#29343a; --muted:#737e81; --forest:#3b5666; --paper:#f1f0ec; --line:#e1e3df; }
+        * { box-sizing:border-box; }
+        body { margin:0; padding:24px; background:var(--paper); color:var(--ink); font:16px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif; }
+        .shell { max-width:920px; margin:0 auto; }
+        .toolbar { display:flex; justify-content:space-between; align-items:center; gap:15px; margin-bottom:18px; }
+        .toolbar a { color:var(--forest); font-weight:700; text-decoration:none; }
+        .badge { padding:5px 9px; border-radius:999px; background:#fff3d6; color:#8a6426; font-size:12px; font-weight:750; }
+        article { padding:clamp(20px,5vw,52px); border:1px solid var(--line); border-radius:18px; background:#fff; box-shadow:0 15px 45px #26383f12; }
+        h1 { margin:0 0 12px; color:#3e2723; font:700 clamp(30px,5vw,48px)/1.15 Georgia,serif; }
+        .meta { margin-bottom:24px; color:var(--muted); font-size:14px; }
+        .cover { display:block; width:100%; max-height:470px; margin:22px 0; object-fit:cover; border-radius:12px; }
+        .summary { color:#56625c; font-size:19px; }
+        .content { white-space:pre-line; }
+        .error { padding:18px; border:1px solid #f0d4cf; border-radius:10px; background:#fff5f3; color:#923f35; }
+    </style>
+</head>
+<body>
+<main class="shell">
+    <div class="toolbar"><a href="/admin-panel.html">← Вернуться в админку</a><span class="badge" id="preview-status">Предпросмотр</span></div>
+    <article id="preview"><p>Загружаю материал…</p></article>
+</main>
+<script>
+(() => {
+    const token = localStorage.getItem('token');
+    if (!token) { window.location.replace('/admin.html'); return; }
+    const params = new URLSearchParams(window.location.search);
+    const type = params.get('type');
+    const id = params.get('id');
+    const root = document.getElementById('preview');
+    const statusNames = { draft:'Черновик', published:'Опубликовано', hidden:'Скрыто' };
+    if (!['news', 'event'].includes(type) || !id) {
+        root.className = 'error'; root.textContent = 'Некорректная ссылка предпросмотра.'; return;
+    }
+    let language = 'ru';
+    try { language = localStorage.getItem('samyrtay-language') === 'en' ? 'en' : 'ru'; } catch (_) {}
+    fetch(`/api/admin/${type === 'news' ? 'news' : 'events'}/${encodeURIComponent(id)}?lang=${language}`, {
+        headers: { 'Authorization': `Bearer ${token}` }, cache:'no-store'
+    }).then(async (response) => {
+        const data = await response.json().catch(() => ({}));
+        if (response.status === 401 || response.status === 403) { localStorage.removeItem('token'); window.location.replace('/admin.html'); return; }
+        if (!response.ok) throw new Error(data.error || 'Не удалось загрузить материал.');
+        root.replaceChildren();
+        document.getElementById('preview-status').textContent = statusNames[data.publication_status] || data.publication_status;
+        const title = document.createElement('h1'); title.textContent = data.title || 'Без названия';
+        const meta = document.createElement('p'); meta.className = 'meta';
+        const dateValue = type === 'news' ? data.published_at : data.start_date;
+        meta.textContent = dateValue ? new Date(dateValue).toLocaleString(language === 'en' ? 'en-GB' : 'ru-RU') : '';
+        root.append(title, meta);
+        if (data.image_url) { const image = document.createElement('img'); image.className = 'cover'; image.src = data.image_url; image.alt = data.title || ''; root.append(image); }
+        const summary = document.createElement('p'); summary.className = 'summary'; summary.textContent = data.short_text || '';
+        const content = document.createElement('div'); content.className = 'content'; content.textContent = (type === 'news' ? data.content : data.description) || '';
+        root.append(summary, content);
+    }).catch((error) => { root.className = 'error'; root.textContent = error.message; });
+})();
+</script>
+</body>
+</html>

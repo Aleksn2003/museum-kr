@@ -33,12 +33,36 @@ $db->exec('CREATE TABLE IF NOT EXISTS page_blocks (
     UNIQUE (page_url, block_id)
 )');
 
+$db->exec('CREATE TABLE IF NOT EXISTS page_edit_history (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    page_url TEXT NOT NULL,
+    language VARCHAR(2) NOT NULL CHECK (language IN (\'ru\', \'en\')),
+    content_type VARCHAR(16) NOT NULL CHECK (content_type IN (\'html\', \'blocks\')),
+    snapshot JSONB NOT NULL,
+    changed_fields JSONB NOT NULL DEFAULT \'[]\'::jsonb,
+    action VARCHAR(16) NOT NULL DEFAULT \'save\',
+    reverted_at TIMESTAMPTZ,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+)');
+$db->exec("ALTER TABLE page_edit_history ADD COLUMN IF NOT EXISTS changed_fields JSONB NOT NULL DEFAULT '[]'::jsonb");
+$db->exec('CREATE TABLE IF NOT EXISTS schedule_exceptions (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    exception_date DATE NOT NULL UNIQUE,
+    is_open BOOLEAN NOT NULL DEFAULT false,
+    opening_time TIME,
+    closing_time TIME,
+    label VARCHAR(180) NOT NULL,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    CHECK ((is_open = false) OR (opening_time IS NOT NULL AND closing_time IS NOT NULL AND opening_time < closing_time))
+)');
+$db->exec('ALTER TABLE exhibits ADD COLUMN IF NOT EXISTS order_index INTEGER NOT NULL DEFAULT 0');
+
 // Keep existing Docker volumes compatible with the optional English fields.
 foreach ([
     'categories' => ['name_en VARCHAR(255)', 'description_en TEXT'],
-    'exhibits' => ['title_en VARCHAR(255)', 'short_description_en TEXT', 'description_en TEXT', 'material_en TEXT', 'dimensions_en TEXT', 'origin_en TEXT', 'quote_en TEXT', 'quote_author_en TEXT'],
-    'news' => ['title_en VARCHAR(255)', 'short_text_en TEXT', 'content_en TEXT'],
-    'events' => ['title_en VARCHAR(255)', 'short_text_en TEXT', 'description_en TEXT', 'location_en TEXT'],
+    'exhibits' => ['title_en VARCHAR(255)', 'short_description_en TEXT', 'description_en TEXT', 'material_en TEXT', 'dimensions_en TEXT', 'origin_en TEXT', 'quote_en TEXT', 'quote_author_en TEXT', 'order_index INTEGER NOT NULL DEFAULT 0'],
+    'news' => ['title_en VARCHAR(255)', 'short_text_en TEXT', 'content_en TEXT', "publication_status VARCHAR(20) NOT NULL DEFAULT 'published'", 'updated_at TIMESTAMPTZ DEFAULT NOW()'],
+    'events' => ['title_en VARCHAR(255)', 'short_text_en TEXT', 'description_en TEXT', 'location_en TEXT', "publication_status VARCHAR(20) NOT NULL DEFAULT 'published'"],
     'page_content' => ['content_en TEXT'],
     'page_blocks' => ['content_en TEXT'],
     'fun_facts' => ['text_en TEXT'],

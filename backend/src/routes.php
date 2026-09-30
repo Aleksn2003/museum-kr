@@ -11,6 +11,10 @@
     use App\Controllers\FunFactController;
     use App\Controllers\PageController;
     use App\Controllers\PageBlocksController;
+    use App\Controllers\AdminDashboardController;
+    use App\Controllers\MediaLibraryController;
+    use App\Controllers\ScheduleExceptionsController;
+    use App\Controllers\PageEditHistoryController;
 
 
     return function (App $app) {
@@ -21,6 +25,7 @@
 
         // Публичные маршруты
         $app->get('/api/exhibits/featured', [ExhibitController::class, 'featured']);
+        $app->get('/api/exhibit-of-day', [ExhibitController::class, 'exhibitOfDay']);
         $app->get('/api/exhibits/{id}', [ExhibitController::class, 'getOne']);
         $app->get('/api/news/latest', [NewsController::class, 'latest']);
         $app->get('/api/news/{id}', [NewsController::class, 'getOne']);
@@ -31,6 +36,7 @@
         $app->get('/api/events/{id}', [EventController::class, 'getOne']);
         $app->get('/api/categories', [CategoryController::class, 'listAll']);
         $app->get('/api/categories/{id}', [CategoryController::class, 'getOne']);
+        $app->get('/api/schedule-exceptions', [ScheduleExceptionsController::class, 'publicList']);
         $app->get('/api/page-blocks', [\App\Controllers\PageBlocksController::class, 'getBlocks']);
        
 // Маршрут для синхронизации VK (финальный)
@@ -208,11 +214,11 @@ $app->get('/api/search', function (Request $request, Response $response) {
             'type' => 'exhibit', 'url' => '/exhibit.html?id=',
         ],
         [
-            'sql' => "SELECT id, {$localizedField('title')} AS title, {$localizedField('short_text')} AS excerpt, image_url FROM news WHERE is_deleted = false AND ({$localizedField('title')} ILIKE ? ESCAPE '!' OR {$localizedField('short_text')} ILIKE ? ESCAPE '!' OR {$localizedField('content')} ILIKE ? ESCAPE '!') ORDER BY CASE WHEN {$localizedField('title')} ILIKE ? ESCAPE '!' THEN 0 ELSE 1 END, published_at DESC LIMIT 10",
+            'sql' => "SELECT id, {$localizedField('title')} AS title, {$localizedField('short_text')} AS excerpt, image_url FROM news WHERE is_deleted = false AND publication_status = 'published' AND ({$localizedField('title')} ILIKE ? ESCAPE '!' OR {$localizedField('short_text')} ILIKE ? ESCAPE '!' OR {$localizedField('content')} ILIKE ? ESCAPE '!') ORDER BY CASE WHEN {$localizedField('title')} ILIKE ? ESCAPE '!' THEN 0 ELSE 1 END, published_at DESC LIMIT 10",
             'type' => 'news', 'url' => '/news-single.html?id=',
         ],
         [
-            'sql' => "SELECT id, {$localizedField('title')} AS title, {$localizedField('short_text')} AS excerpt, image_url FROM events WHERE is_deleted = false AND ({$localizedField('title')} ILIKE ? ESCAPE '!' OR {$localizedField('short_text')} ILIKE ? ESCAPE '!' OR {$localizedField('description')} ILIKE ? ESCAPE '!') ORDER BY CASE WHEN {$localizedField('title')} ILIKE ? ESCAPE '!' THEN 0 ELSE 1 END, start_date DESC LIMIT 10",
+            'sql' => "SELECT id, {$localizedField('title')} AS title, {$localizedField('short_text')} AS excerpt, image_url FROM events WHERE is_deleted = false AND publication_status = 'published' AND ({$localizedField('title')} ILIKE ? ESCAPE '!' OR {$localizedField('short_text')} ILIKE ? ESCAPE '!' OR {$localizedField('description')} ILIKE ? ESCAPE '!') ORDER BY CASE WHEN {$localizedField('title')} ILIKE ? ESCAPE '!' THEN 0 ELSE 1 END, start_date DESC LIMIT 10",
             'type' => 'event', 'url' => '/event.html?id=',
         ],
     ];
@@ -267,6 +273,17 @@ $app->get('/api/search', function (Request $request, Response $response) {
 
         // Защищённые маршруты (админка)
         $app->group('/api', function ($group) {
+            $group->get('/admin/overview', [AdminDashboardController::class, 'overview']);
+            $group->get('/admin/media', [MediaLibraryController::class, 'list']);
+            $group->get('/admin/schedule-exceptions', [ScheduleExceptionsController::class, 'adminList']);
+            $group->post('/admin/schedule-exceptions', [ScheduleExceptionsController::class, 'save']);
+            $group->delete('/admin/schedule-exceptions/{id}', [ScheduleExceptionsController::class, 'delete']);
+            $group->get('/admin/page-history', [PageEditHistoryController::class, 'list']);
+            $group->post('/admin/page-history/{id}/undo', [PageEditHistoryController::class, 'undoLatest']);
+            $group->get('/admin/news', [NewsController::class, 'listAdmin']);
+            $group->get('/admin/news/{id}', [NewsController::class, 'getAdmin']);
+            $group->get('/admin/events', [EventController::class, 'listAdmin']);
+            $group->get('/admin/events/{id}', [EventController::class, 'getAdmin']);
             $group->put('/site-settings', [\App\Controllers\SiteSettingsController::class, 'saveSettings']);
             $group->post('/page', [\App\Controllers\PageController::class, 'saveContent']);
             $group->post('/page-blocks', [\App\Controllers\PageBlocksController::class, 'saveBlocks']);

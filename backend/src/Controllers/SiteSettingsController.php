@@ -19,6 +19,12 @@ class SiteSettingsController
         'opening_time' => '10:00',
         'closing_time' => '18:00',
         'open_days' => [0, 2, 3, 4, 5, 6],
+        'adult_price' => 100,
+        'student_price' => 50,
+        'pensioner_price' => 50,
+        'school_price' => 30,
+        'excursion_price' => 300,
+        'free_age' => 7,
     ];
 
     public function __construct(ContainerInterface $container)
@@ -28,15 +34,7 @@ class SiteSettingsController
 
     public function getSettings(Request $request, Response $response): Response
     {
-        $settings = self::DEFAULTS;
-        $stmt = $this->container->get('database')->query('SELECT setting_key, setting_value FROM site_settings');
-        foreach ($stmt->fetchAll() as $row) {
-            if (array_key_exists($row['setting_key'], $settings)) {
-                $settings[$row['setting_key']] = $row['setting_key'] === 'open_days'
-                    ? (json_decode($row['setting_value'], true) ?? self::DEFAULTS['open_days'])
-                    : $row['setting_value'];
-            }
-        }
+        $settings = $this->allSettings();
 
         $response->getBody()->write(json_encode($settings, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
         return $response->withHeader('Content-Type', 'application/json; charset=utf-8')->withHeader('Cache-Control', 'no-store');
@@ -45,16 +43,23 @@ class SiteSettingsController
     public function saveSettings(Request $request, Response $response): Response
     {
         $body = $request->getParsedBody();
+        $current = $this->allSettings();
         $values = [
-            'museum_name' => trim((string) ($body['museum_name'] ?? '')),
-            'museum_name_en' => trim((string) ($body['museum_name_en'] ?? '')),
-            'branch_name' => trim((string) ($body['branch_name'] ?? '')),
-            'branch_name_en' => trim((string) ($body['branch_name_en'] ?? '')),
-            'logo_url' => trim((string) ($body['logo_url'] ?? '')),
-            'status_mode' => (string) ($body['status_mode'] ?? ''),
-            'opening_time' => (string) ($body['opening_time'] ?? ''),
-            'closing_time' => (string) ($body['closing_time'] ?? ''),
-            'open_days' => $body['open_days'] ?? null,
+            'museum_name' => trim((string) ($body['museum_name'] ?? $current['museum_name'])),
+            'museum_name_en' => trim((string) ($body['museum_name_en'] ?? $current['museum_name_en'])),
+            'branch_name' => trim((string) ($body['branch_name'] ?? $current['branch_name'])),
+            'branch_name_en' => trim((string) ($body['branch_name_en'] ?? $current['branch_name_en'])),
+            'logo_url' => trim((string) ($body['logo_url'] ?? $current['logo_url'])),
+            'status_mode' => (string) ($body['status_mode'] ?? $current['status_mode']),
+            'opening_time' => (string) ($body['opening_time'] ?? $current['opening_time']),
+            'closing_time' => (string) ($body['closing_time'] ?? $current['closing_time']),
+            'open_days' => $body['open_days'] ?? $current['open_days'],
+            'adult_price' => $body['adult_price'] ?? $current['adult_price'],
+            'student_price' => $body['student_price'] ?? $current['student_price'],
+            'pensioner_price' => $body['pensioner_price'] ?? $current['pensioner_price'],
+            'school_price' => $body['school_price'] ?? $current['school_price'],
+            'excursion_price' => $body['excursion_price'] ?? $current['excursion_price'],
+            'free_age' => $body['free_age'] ?? $current['free_age'],
         ];
 
         if ($values['museum_name'] === '' || mb_strlen($values['museum_name']) > 120
@@ -83,6 +88,16 @@ class SiteSettingsController
         }
         $openDays = array_values(array_unique($openDays));
         sort($openDays);
+        foreach (['adult_price', 'student_price', 'pensioner_price', 'school_price', 'excursion_price'] as $priceKey) {
+            if (!is_scalar($values[$priceKey]) || !ctype_digit((string) $values[$priceKey]) || (int) $values[$priceKey] > 1000000) {
+                return $this->jsonError($response, 'Цены должны быть целыми числами от 0 до 1 000 000 рублей.', 422);
+            }
+            $values[$priceKey] = (int) $values[$priceKey];
+        }
+        if (!is_scalar($values['free_age']) || !ctype_digit((string) $values['free_age']) || (int) $values['free_age'] > 18) {
+            return $this->jsonError($response, 'Возраст бесплатного посещения должен быть от 0 до 18 лет.', 422);
+        }
+        $values['free_age'] = (int) $values['free_age'];
         if (!preg_match('~^/img/(?:logo-samartyai\.png|uploads/[a-f0-9]{32}\.(?:jpg|png|webp|gif))$~i', $values['logo_url'])) {
             return $this->jsonError($response, 'Логотип должен быть стандартным логотипом или изображением, загруженным через админку.', 422);
         }
@@ -99,6 +114,24 @@ class SiteSettingsController
 
         $response->getBody()->write(json_encode(['success' => true, 'settings' => $values], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
         return $response->withHeader('Content-Type', 'application/json; charset=utf-8');
+    }
+
+    private function allSettings(): array
+    {
+        $settings = self::DEFAULTS;
+        $numericKeys = ['adult_price', 'student_price', 'pensioner_price', 'school_price', 'excursion_price', 'free_age'];
+        $stmt = $this->container->get('database')->query('SELECT setting_key, setting_value FROM site_settings');
+        foreach ($stmt->fetchAll() as $row) {
+            if (!array_key_exists($row['setting_key'], $settings)) continue;
+            if ($row['setting_key'] === 'open_days') {
+                $settings[$row['setting_key']] = json_decode($row['setting_value'], true) ?? self::DEFAULTS['open_days'];
+            } elseif (in_array($row['setting_key'], $numericKeys, true)) {
+                $settings[$row['setting_key']] = (int) $row['setting_value'];
+            } else {
+                $settings[$row['setting_key']] = $row['setting_value'];
+            }
+        }
+        return $settings;
     }
 
     private function jsonError(Response $response, string $message, int $status): Response

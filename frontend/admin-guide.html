@@ -17,12 +17,20 @@
   <p>Запустите проект командой <code>docker compose up -d --build</code>, откройте <code>http://localhost:8080/admin.html</code> и войдите с логином <code>admin</code> и паролем из <code>ADMIN_PASSWORD</code> в локальном файле <code>.env</code>. Не публикуйте этот файл и пароль. Кнопка «Выйти» удаляет токен из браузера; после истечения сессии войдите снова.</p>
   <h2>Материалы сайта</h2>
   <ul>
+    <li>Раздел «Обзор» показывает количество материалов, статусы новостей и мероприятий, ближайшее опубликованное событие, текущий режим работы и последние изменения.</li>
     <li>В разделах «Экспонаты», «Новости», «Мероприятия» и «Категории» можно создавать записи, изменять их, переводить на английский и удалять.</li>
     <li>Кнопка «Изменить» открывает запись целиком, кнопка <b>EN</b> — только английские поля. Если перевода нет, сайт показывает русский текст.</li>
+    <li>Для новости и мероприятия выберите статус: «Черновик» доступен только в админке, «Опубликовано» показывается на сайте, «Скрыто» остаётся в админке, но убирается с публичных страниц и поиска.</li>
+    <li>Кнопка «Посмотреть» открывает предпросмотр записи до публикации. В редакторе страниц кнопка «Посмотреть страницу» открывает соответствующую публичную страницу.</li>
     <li>Удаление новости или мероприятия скрывает запись. При удалении категории она отвязывается от экспонатов.</li>
     <li>Изображения: JPEG, PNG, WebP или GIF, максимум 10 МБ на файл. Перед сохранением показывается предпросмотр; сервер проверяет содержимое файла. В галерее экспоната — до четырёх изображений.</li>
-    <li>В разделе «Тексты сайта» выберите страницу: редактор загрузит её исходное содержимое, если сохранённой версии ещё нет. Нажмите на текст и отредактируйте его прямо на странице редактора. Сохранение заменяет содержимое выбранной страницы целиком; оставляйте нужные изображения и блоки оформления.</li>
+    <li>В разделе «Тексты сайта» выберите страницу. Для главной и архитектуры используются безопасные отдельные поля: можно менять тексты и фотографии, не затрагивая оформление. Для остальных страниц редактор загрузит их исходное содержимое; сохранение заменяет содержимое выбранной страницы целиком.</li>
     <li>Русская и английская версии страниц сохраняются отдельно. Если английский перевод ещё не создан, редактор покажет русскую версию — переведите её перед сохранением.</li>
+    <li>В разделе «Цены» задаются билеты для взрослых, студентов, пенсионеров и школьников, стоимость экскурсии и возраст бесплатного посещения. После сохранения значения обновляются на главной странице и в разделе «Посетителям».</li>
+    <li>«Медиатека» показывает загруженные изображения и места их использования. Кнопка «Выбрать из медиатеки» в полях изображения позволяет повторно использовать фотографию; для галереи можно выбрать несколько кадров.</li>
+    <li>Для экспоната задайте «Порядок отображения» (меньшее число показывается выше) и отметьте не более одного экспоната дня. Если отметка не задана, сайт выбирает случайный экспонат на текущий день.</li>
+    <li>«Расписание исключений» позволяет добавить закрытый день или рабочую дату с особым временем. Исключения применяются автоматически по времени Якутска и перекрывают недельное расписание.</li>
+    <li>«История изменений страниц» хранит предыдущую версию до каждого сохранения. Можно отменить последнее изменение выбранной страницы и языка; структура страницы восстанавливается целиком.</li>
     <li>В «Настройках сайта» можно изменить русские и английские названия музея и филиала, загрузить логотип, задать рабочие дни и время открытия / закрытия. В автоматическом режиме статус в боковой панели переключается по этому расписанию. Для праздника или санитарного дня можно выбрать ручной статус.</li>
   </ul>
   <h1 lang="en">Admin guide</h1>
@@ -30,12 +38,20 @@
   <p lang="en">Run <code>docker compose up -d --build</code>, open <code>http://localhost:8080/admin.html</code>, and sign in as <code>admin</code> with the password configured as <code>ADMIN_PASSWORD</code> in your local <code>.env</code> file. Never publish that file or password. The Log out button removes the browser token; sign in again after the session expires.</p>
   <h2 lang="en">Managing content</h2>
   <ul lang="en">
+    <li>The <b>Overview</b> shows content totals, news and event statuses, the next published event, current opening status, and recent changes.</li>
     <li>Exhibits, News, Events, and Categories support creating, editing, translating, and deleting records.</li>
     <li><b>Edit</b> opens a complete record; <b>EN</b> edits only its English fields. Missing translations fall back to Russian on the public site.</li>
+    <li>Choose a publication status for news and events: <b>Draft</b> is visible only in the admin panel, <b>Published</b> appears on the public site, and <b>Hidden</b> stays in the admin panel but is removed from public pages and search.</li>
+    <li><b>Preview</b> opens a record before publication. The page editor's <b>View page</b> link opens the corresponding public page.</li>
     <li>News and events are hidden when deleted. Deleting a category detaches it from related exhibits.</li>
     <li>JPEG, PNG, WebP, and GIF images up to 10 MB are accepted. The panel previews them and the API checks the actual file type. Exhibit galleries support up to four images.</li>
-    <li>In <b>Site Texts</b>, select a page. The editor loads its original content when no saved version exists. Click the text to edit it directly. Saving replaces the entire content area for the selected page, so keep the images and layout blocks you want to retain.</li>
+    <li>In <b>Site Texts</b>, select a page. The home and architecture pages use structured fields so their layout stays intact; the remaining pages use the full content editor.</li>
     <li>Russian and English page versions are stored separately. If no English translation exists yet, the editor shows the Russian version; translate it before saving.</li>
+    <li><b>Prices</b> controls adult, student, pensioner and school tickets, tour pricing, and the free admission age. Saved values appear on the home page and the Visitors page.</li>
+    <li><b>Media Library</b> lists uploaded images and where each is used. Use the library picker beside image fields to reuse a photo; gallery pickers support multiple images.</li>
+    <li>Set an exhibit's display order (a smaller number appears first) and select at most one Exhibit of the Day. If none is selected, the site chooses one for the current day.</li>
+    <li><b>Schedule Exceptions</b> adds closed dates or special opening hours. Exceptions are applied automatically in Yakutsk time and override the weekly schedule.</li>
+    <li><b>Page Change History</b> stores the previous version before each save. You can undo the latest change for the selected page and language; the full page version is restored.</li>
     <li><b>Site Settings</b> lets you change the museum and branch names in Russian and English, upload a logo, and set working days and opening / closing times. In automatic mode, the sidebar status follows this schedule. You can set a manual status for public holidays and sanitation days.</li>
   </ul>
 </body>

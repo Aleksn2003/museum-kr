@@ -70,6 +70,16 @@
         .msg.success { border:1px solid #d2e6d8; background:#f1f8f2; color:#316544; }
         .msg.error { border:1px solid #f0d4cf; background:#fff5f3; color:#923f35; }
         #exhibits-list,#news-list,#events-list,#categories-list { overflow-x:auto; border:1px solid var(--line); border-radius:12px; }
+        .media-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:14px; }
+        .media-card { overflow:hidden; border:1px solid var(--line); border-radius:12px; background:white; }
+        .media-card img { display:block; width:100%; height:140px; object-fit:cover; background:var(--soft); }
+        .media-card-body { padding:10px; font-size:11px; }
+        .media-card-body p { margin:4px 0; color:var(--muted); overflow-wrap:anywhere; }
+        .media-usage { max-height:82px; overflow:auto; padding-left:17px; color:#59645e; }
+        .schedule-list,.history-list { display:grid; gap:9px; margin-top:12px; }
+        .schedule-row,.history-row { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:12px; border:1px solid var(--line); border-radius:10px; background:#fff; font-size:12px; }
+        .schedule-row p,.history-row p { margin:2px 0; color:var(--muted); }
+        .editor-actions { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:8px; }
         table { width:100%; min-width:570px; border-collapse:collapse; background:var(--white); font-size:12px; }
         th,td { padding:12px 14px; border-bottom:1px solid #eeefeb; text-align:left; vertical-align:middle; }
         th { background:#f2f4f2; color:#68767a; font-size:10px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
@@ -79,6 +89,8 @@
         td:last-child button { margin:2px; }
         .table-toolbar { display:flex; justify-content:space-between; align-items:center; gap:12px; margin:5px 0 10px; }
         .table-search { max-width:310px; min-height:38px !important; padding:8px 12px !important; font-size:12px !important; }
+        .table-pagination { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:12px 14px; border-top:1px solid var(--line); color:var(--muted); font-size:12px; }
+        .table-pagination-controls { display:flex; align-items:center; gap:8px; }
         .empty-state { padding:25px 18px; color:var(--muted); text-align:center; }
         .load-error { padding:14px; color:#923f35; font-size:12px; }
         .image-preview { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
@@ -94,9 +106,40 @@
         dialog form { display:block; }
         #editor-container { padding:16px; border:1px solid var(--line); border-radius:12px; background:var(--soft); }
         #page-editor { border-radius:8px; }
+        #structured-editor-container { padding:16px; border:1px solid var(--line); border-radius:12px; background:var(--soft); }
+        .structured-page-intro { margin:0 0 14px; color:var(--muted); font-size:12px; }
+        #structured-page-form { display:block; padding:0; }
+        .structured-section { margin:0 0 12px; padding:0; border:1px solid var(--line); border-radius:11px; background:#fff; overflow:hidden; }
+        .structured-section summary { padding:13px 15px; cursor:pointer; color:var(--forest); font-weight:750; list-style-position:inside; }
+        .structured-section[open] summary { border-bottom:1px solid var(--line); background:#f8f9f6; }
+        .structured-fields { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px 16px; padding:16px; }
+        .structured-field { min-width:0; }
+        .structured-field.wide { grid-column:1 / -1; }
+        .structured-field textarea { min-height:100px; }
+        .structured-image-row { display:grid; grid-template-columns:112px minmax(0,1fr); align-items:center; gap:12px; }
+        .structured-image-preview { width:112px; height:78px; object-fit:cover; border:1px solid var(--line); border-radius:8px; background:#eee; }
+        .structured-save-row { display:flex; align-items:center; gap:12px; margin-top:14px; }
+        .dashboard-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin:20px 0; }
+        .dashboard-card { padding:18px; border:1px solid var(--line); border-radius:12px; background:var(--soft); }
+        .dashboard-card small { display:block; color:var(--muted); font-size:11px; font-weight:750; text-transform:uppercase; letter-spacing:.08em; }
+        .dashboard-card strong { display:block; margin-top:7px; color:var(--forest); font:500 30px/1 Georgia,serif; }
+        .dashboard-card span { display:block; margin-top:7px; color:var(--muted); font-size:11px; }
+        .dashboard-columns { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+        .dashboard-panel { padding:18px; border:1px solid var(--line); border-radius:12px; background:#fff; }
+        .dashboard-panel h3 { margin:0 0 12px; }
+        .dashboard-list { margin:0; padding:0; list-style:none; }
+        .dashboard-list li { display:flex; justify-content:space-between; gap:15px; padding:9px 0; border-bottom:1px solid #eeefeb; font-size:12px; }
+        .dashboard-list li:last-child { border-bottom:0; }
+        .status-badge { display:inline-block; padding:3px 7px; border-radius:999px; font-size:10px; font-weight:750; }
+        .status-draft { background:#fff3d6; color:#8a6426; }
+        .status-published { background:#e5f3e9; color:#316544; }
+        .status-hidden { background:#eceeef; color:#657076; }
+        .preview-btn { display:inline-flex; align-items:center; min-height:31px; padding:6px 10px; border:1px solid #d9e1e2; border-radius:9px; background:white; color:var(--forest); font-size:12px; font-weight:650; text-decoration:none; }
+        .page-preview-row { display:flex; justify-content:flex-end; margin:-2px 0 12px; }
         a { color:var(--forest); }
-        @media(max-width:900px) { body { padding:14px; } #admin-panel { grid-template-columns:210px minmax(0,1fr); gap:12px; min-height:calc(100vh - 28px); } .tabs { top:14px; min-height:calc(100vh - 28px); } .tab-content { padding:22px 18px 28px; } }
+        @media(max-width:900px) { body { padding:14px; } #admin-panel { grid-template-columns:210px minmax(0,1fr); gap:12px; min-height:calc(100vh - 28px); } .tabs { top:14px; min-height:calc(100vh - 28px); } .tab-content { padding:22px 18px 28px; } .dashboard-grid { grid-template-columns:1fr; } .dashboard-columns { grid-template-columns:1fr; } }
         @media(max-width:680px) { body { padding:10px; } #admin-panel { display:flex; flex-direction:column; gap:10px; min-height:calc(100vh - 20px); } .admin-header { order:0; align-items:flex-start; padding:8px 3px; } .admin-header h1 { font-size:26px; } .admin-subtitle { max-width:250px; } .admin-actions { gap:7px; } .admin-actions a { font-size:11px; } .tabs { order:1; position:static; min-height:auto; flex-direction:row; overflow-x:auto; padding:7px; border-radius:13px; } .brand,.nav-label,.sidebar-foot { display:none; } .tab-btn { justify-content:center; flex:1 0 auto; width:auto; min-height:40px; padding:9px 11px; white-space:nowrap; } .nav-icon { display:none; } .notice { order:2; font-size:11px; } .tab-content { order:3; padding:20px 14px 24px; border-radius:14px; } form { grid-template-columns:1fr; } .form-group:has(textarea),.form-group:has(input[type=file]),.form-group:has(select),.form-group:has(input[type=checkbox]) { grid-column:auto; } .tab-content h2 { font-size:22px; } .admin-actions button { padding:7px 9px; } }
+        @media(max-width:680px) { .table-pagination { align-items:flex-start; flex-direction:column; } .table-pagination-controls { align-self:flex-end; } .structured-fields { grid-template-columns:1fr; } .structured-field.wide { grid-column:auto; } .structured-image-row { grid-template-columns:1fr; } }
         @media(max-width:420px) { .admin-header { flex-direction:column; gap:10px; } .admin-actions { align-self:stretch; justify-content:flex-end; } }
     </style>
 </head>
@@ -110,18 +153,39 @@
         <div class="tabs" role="tablist" aria-label="Разделы админ-панели">
             <div class="brand"><img class="brand-logo" src="/img/logo-samartyai.png" alt="Логотип музея"><div><div class="brand-name">Самыртай</div><div class="brand-caption">Музейный комплекс</div></div></div>
             <div class="nav-label">Контент сайта</div>
-            <button class="tab-btn active" id="nav-exhibits" role="tab" aria-selected="true" aria-controls="tab-exhibits" data-tab="exhibits"><span class="nav-icon" aria-hidden="true">▧</span><span>Экспонаты</span></button>
+            <button class="tab-btn active" id="nav-overview" role="tab" aria-selected="true" aria-controls="tab-overview" data-tab="overview"><span class="nav-icon" aria-hidden="true">⌂</span><span>Обзор</span></button>
+            <button class="tab-btn" id="nav-exhibits" role="tab" aria-selected="false" aria-controls="tab-exhibits" data-tab="exhibits"><span class="nav-icon" aria-hidden="true">▧</span><span>Экспонаты</span></button>
             <button class="tab-btn" id="nav-news" role="tab" aria-selected="false" aria-controls="tab-news" data-tab="news"><span class="nav-icon" aria-hidden="true">◷</span><span>Новости</span></button>
             <button class="tab-btn" id="nav-events" role="tab" aria-selected="false" aria-controls="tab-events" data-tab="events"><span class="nav-icon" aria-hidden="true">▦</span><span>Мероприятия</span></button>
             <button class="tab-btn" id="nav-categories" role="tab" aria-selected="false" aria-controls="tab-categories" data-tab="categories"><span class="nav-icon" aria-hidden="true">◈</span><span>Категории</span></button>
+            <button class="tab-btn" id="nav-media" role="tab" aria-selected="false" aria-controls="tab-media" data-tab="media"><span class="nav-icon" aria-hidden="true">▧</span><span>Медиатека</span></button>
             <div class="nav-label">Страницы</div>
             <button class="tab-btn" id="nav-pages" role="tab" aria-selected="false" aria-controls="tab-pages" data-tab="pages"><span class="nav-icon" aria-hidden="true">▤</span><span>Тексты сайта</span></button>
+            <button class="tab-btn" id="nav-history" role="tab" aria-selected="false" aria-controls="tab-history" data-tab="history"><span class="nav-icon" aria-hidden="true">↶</span><span>История изменений</span></button>
+            <button class="tab-btn" id="nav-prices" role="tab" aria-selected="false" aria-controls="tab-prices" data-tab="prices"><span class="nav-icon" aria-hidden="true">₽</span><span>Цены</span></button>
             <button class="tab-btn" id="nav-settings" role="tab" aria-selected="false" aria-controls="tab-settings" data-tab="settings"><span class="nav-icon" aria-hidden="true">⚙</span><span>Настройки сайта</span></button>
             <div class="sidebar-foot">Администрирование<br>Кердемский музей · 2026</div>
         </div>
 
+        <div id="tab-overview" class="tab-content" role="tabpanel" aria-labelledby="nav-overview">
+            <h2>Обзор</h2>
+            <p class="admin-subtitle">Текущее состояние сайта и последние изменения.</p>
+            <div id="overview-content"><p>Загружаю данные…</p></div>
+        </div>
+
+        <div id="tab-media" class="tab-content hidden" role="tabpanel" aria-labelledby="nav-media">
+            <h2>Медиатека</h2><p class="admin-subtitle">Загруженные изображения и записи сайта, где они используются.</p>
+            <div id="media-library-content"><p>Загружаю медиатеку…</p></div>
+        </div>
+
+        <div id="tab-history" class="tab-content hidden" role="tabpanel" aria-labelledby="nav-history">
+            <h2>История изменений страниц</h2><p class="admin-subtitle">Предыдущая версия сохраняется перед каждым сохранением. Можно отменить последнее изменение выбранной страницы и языка.</p>
+            <div class="editor-actions"><label>Страница <select id="history-page"><option value="/index.html">Главная</option><option value="/architecture.html">Архитектура</option><option value="/about.html">О музее</option><option value="/visit.html">Посетителям</option><option value="/history.html">История</option></select></label><label>Язык <select id="history-language"><option value="ru">Русский</option><option value="en">English</option></select></label><button type="button" id="undo-page-change" class="secondary-btn">Отменить последнее изменение</button></div>
+            <div id="history-list" class="history-list"><p>Выберите страницу.</p></div>
+        </div>
+
         <!-- Экспонаты -->
-        <div id="tab-exhibits" class="tab-content" role="tabpanel" aria-labelledby="nav-exhibits">
+        <div id="tab-exhibits" class="tab-content hidden" role="tabpanel" aria-labelledby="nav-exhibits">
             <h2>Добавить экспонат</h2>
             <form id="exhibit-add-form">
     <div class="form-group"><input type="text" id="ex-title" placeholder="Название" required></div>
@@ -151,12 +215,17 @@
     <!-- Главное фото -->
     <div class="form-group">
         <input type="file" id="ex-image-file" accept="image/*">
+        <input type="hidden" id="ex-image-url" value="">
+        <button type="button" class="secondary-btn" id="ex-image-library">Выбрать из медиатеки</button>
     </div>
     <!-- Галерея деталей (до 4 файлов) -->
     <div class="form-group">
         <input type="file" id="ex-gallery" accept="image/*" multiple>
+        <button type="button" class="secondary-btn" id="ex-gallery-library">Добавить из медиатеки</button>
     </div>
     <div class="form-group"><label><input type="checkbox" id="ex-featured"> Показать на главной</label></div>
+    <div class="form-group"><label for="ex-display-order">Порядок отображения (меньше — выше)</label><input type="number" min="0" id="ex-display-order" value="0"></div>
+    <div class="form-group"><label><input type="checkbox" id="ex-is-day"> Выбрать как «Экспонат дня»</label></div>
     <button type="submit">Добавить экспонат</button>
 </form>
             <div id="exhibit-msg"></div>
@@ -175,8 +244,11 @@
                 <div class="form-group"><textarea id="news-full" placeholder="Полный текст"></textarea></div>
                 <div class="form-group"><textarea id="news-full-en" placeholder="Full text (English)"></textarea></div>
                 <div class="form-group"><input type="datetime-local" id="news-date" placeholder="Дата публикации"></div>
+                <div class="form-group"><select id="news-status"><option value="draft">Черновик</option><option value="published">Опубликовано</option><option value="hidden">Скрыто</option></select></div>
                 <div class="form-group">
                     <input type="file" id="news-image-file" accept="image/*">
+                    <input type="hidden" id="news-image-url" value="">
+                    <button type="button" class="secondary-btn" id="news-image-library">Выбрать из медиатеки</button>
                 </div>
                 <button type="submit">Добавить новость</button>
             </form>
@@ -199,8 +271,11 @@
                 <div class="form-group"><input type="datetime-local" id="event-end"></div>
                 <div class="form-group"><input type="text" id="event-location" placeholder="Место"></div>
                 <div class="form-group"><input type="text" id="event-location-en" placeholder="Location (English)"></div>
+                <div class="form-group"><select id="event-status"><option value="draft">Черновик</option><option value="published">Опубликовано</option><option value="hidden">Скрыто</option></select></div>
                 <div class="form-group">
                     <input type="file" id="event-image-file" accept="image/*">
+                    <input type="hidden" id="event-image-url" value="">
+                    <button type="button" class="secondary-btn" id="event-image-library">Выбрать из медиатеки</button>
                 </div>
                 <div class="form-group"><label><input type="checkbox" id="event-featured"> Показать в афише на главной</label></div>
                 <button type="submit">Добавить мероприятие</button>
@@ -234,16 +309,27 @@
         <label>Выберите страницу:</label>
         <select id="page-select">
             <option value="">-- Выберите --</option>
+            <option value="/index.html">Главная</option>
             <option value="/about.html">О музее</option>
             <option value="/visit.html">Посетителям</option>
             <option value="/history.html">История</option>
             <option value="/architecture.html">Архитектура</option>
         </select>
     </div>
+    <div class="page-preview-row"><a id="page-preview-link" class="preview-btn" href="#" target="_blank" rel="noopener" hidden>Посмотреть страницу</a></div>
 
     <div class="form-group">
         <label for="page-language">Язык редактирования:</label>
         <select id="page-language"><option value="ru">Русский</option><option value="en">English</option></select>
+    </div>
+
+    <div id="structured-editor-container" style="display:none;">
+        <p class="structured-page-intro">Меняйте содержимое в отдельных полях. Разметка и оформление страницы останутся неизменными.</p>
+        <form id="structured-page-form"></form>
+        <div class="structured-save-row">
+            <button type="button" id="save-structured-page-btn">Сохранить страницу</button>
+            <div id="structured-page-msg" class="msg" role="status" aria-live="polite"></div>
+        </div>
     </div>
 
     <div id="editor-container" style="display:none;">
@@ -265,6 +351,21 @@
     </div>
 </div>
 
+<div id="tab-prices" class="tab-content hidden" role="tabpanel" aria-labelledby="nav-prices">
+    <h2>Цены</h2>
+    <p class="admin-subtitle">Стоимость отображается на главной странице и в разделе «Посетителям».</p>
+    <form id="prices-form">
+        <div class="form-group"><label for="price-adult">Взрослый билет, руб.</label><input id="price-adult" type="number" min="0" max="1000000" required></div>
+        <div class="form-group"><label for="price-student">Студенческий билет, руб.</label><input id="price-student" type="number" min="0" max="1000000" required></div>
+        <div class="form-group"><label for="price-pensioner">Пенсионный билет, руб.</label><input id="price-pensioner" type="number" min="0" max="1000000" required></div>
+        <div class="form-group"><label for="price-school">Школьный билет, руб.</label><input id="price-school" type="number" min="0" max="1000000" required></div>
+        <div class="form-group"><label for="price-excursion">Экскурсионное обслуживание за группу, руб.</label><input id="price-excursion" type="number" min="0" max="1000000" required></div>
+        <div class="form-group"><label for="price-free-age">Бесплатное посещение до указанного возраста включительно</label><input id="price-free-age" type="number" min="0" max="18" required></div>
+        <button type="submit">Сохранить цены</button>
+    </form>
+    <div id="prices-msg" class="msg" role="status" aria-live="polite"></div>
+</div>
+
 <div id="tab-settings" class="tab-content hidden" role="tabpanel" aria-labelledby="nav-settings">
     <h2>Настройки сайта</h2>
     <p class="admin-subtitle">Название, логотип и статус отображаются на всех страницах сайта.</p>
@@ -273,7 +374,7 @@
         <div class="form-group"><label for="setting-museum-name-en">Museum name (English)</label><input id="setting-museum-name-en" type="text" maxlength="120" required></div>
         <div class="form-group"><label for="setting-branch-name">Название филиала / комплекса</label><input id="setting-branch-name" type="text" maxlength="180" required></div>
         <div class="form-group"><label for="setting-branch-name-en">Branch / complex name (English)</label><input id="setting-branch-name-en" type="text" maxlength="180" required></div>
-        <div class="form-group"><label for="setting-logo-file">Логотип</label><input id="setting-logo-file" type="file" accept="image/jpeg,image/png,image/webp,image/gif"><small>JPEG, PNG, WebP или GIF, до 10 МБ. После выбора нажмите «Сохранить настройки».</small><div id="setting-logo-preview" class="image-preview"></div></div>
+        <div class="form-group"><label for="setting-logo-file">Логотип</label><input id="setting-logo-file" type="file" accept="image/jpeg,image/png,image/webp,image/gif"><button type="button" id="setting-logo-library" class="secondary-btn">Выбрать из медиатеки</button><small>JPEG, PNG, WebP или GIF, до 10 МБ. После выбора нажмите «Сохранить настройки».</small><div id="setting-logo-preview" class="image-preview"></div></div>
         <input id="setting-logo-url" type="hidden" value="/img/logo-samartyai.png">
         <div class="form-group"><label for="setting-opening-time">Время открытия</label><input id="setting-opening-time" type="time" required></div>
         <div class="form-group"><label for="setting-closing-time">Время закрытия</label><input id="setting-closing-time" type="time" required></div>
@@ -286,19 +387,26 @@
             <label><input class="setting-open-day" type="checkbox" value="6" checked> Суббота</label>
             <label><input class="setting-open-day" type="checkbox" value="0" checked> Воскресенье</label>
         </div>
-        <div class="form-group"><label for="setting-status-mode">Статус в боковой панели</label><select id="setting-status-mode"><option value="auto">Автоматически по расписанию</option><option value="open">Всегда открыто</option><option value="closed">Всегда закрыто</option></select><small>В автоматическом режиме статус будет переключаться по указанным дням и времени Якутска. На праздники и санитарные дни вручную выберите статус или исключите день из расписания.</small></div>
+        <div class="form-group"><label for="setting-status-mode">Статус в боковой панели</label><select id="setting-status-mode"><option value="auto">Автоматически по расписанию</option><option value="open">Всегда открыто</option><option value="closed">Всегда закрыто</option></select><small>В автоматическом режиме учитываются недельное расписание и добавленные ниже исключения на конкретные даты.</small></div>
         <p id="setting-status-preview" role="status" aria-live="polite"></p>
         <button type="submit">Сохранить настройки</button>
     </form>
     <div id="site-settings-msg" class="msg" role="status" aria-live="polite"></div>
+    <section class="schedule-exceptions-section"><h3>Расписание исключений</h3><p class="admin-subtitle">Добавьте праздник, санитарный день или особые часы работы на конкретную дату. Исключение имеет приоритет над обычной неделей.</p>
+        <form id="schedule-exception-form"><div class="form-group"><label for="exception-date">Дата</label><input id="exception-date" type="date" required></div><div class="form-group"><label for="exception-label">Причина / название</label><input id="exception-label" type="text" maxlength="180" placeholder="Например, санитарный день" required></div><div class="form-group"><label><input id="exception-open" type="checkbox"> Музей открыт в этот день</label></div><div class="form-group"><label for="exception-opening">Время открытия</label><input id="exception-opening" type="time" value="10:00"></div><div class="form-group"><label for="exception-closing">Время закрытия</label><input id="exception-closing" type="time" value="18:00"></div><button type="submit">Сохранить исключение</button></form><div id="schedule-exception-msg" class="msg" role="status" aria-live="polite"></div><div id="schedule-exceptions-list" class="schedule-list"></div>
+    </section>
 </div>
     </div>
 
-    <script src="/js/admin-panel.js?v=5"></script>
+    <script src="/js/admin-panel.js?v=8"></script>
 
 <script>
     const pageEditor = document.getElementById('page-editor');
     const pageSaveButton = document.getElementById('save-page-btn');
+    const structuredPages = new Set(['/index.html', '/architecture.html']);
+    const structuredContainer = document.getElementById('structured-editor-container');
+    const structuredForm = document.getElementById('structured-page-form');
+    const structuredSaveButton = document.getElementById('save-structured-page-btn');
     let savedEditorRange = null;
 
     function rememberEditorSelection() {
@@ -323,28 +431,173 @@
         });
     });
 
-    async function getPageTemplate(url) {
+    async function getPageDocument(url) {
         const response = await fetch(url, { cache: 'no-store' });
         if (!response.ok) throw new Error('Не удалось загрузить исходный текст страницы.');
         const html = await response.text();
-        const template = new DOMParser().parseFromString(html, 'text/html').querySelector('#page-content');
+        return new DOMParser().parseFromString(html, 'text/html');
+    }
+
+    async function getPageTemplate(url) {
+        const template = (await getPageDocument(url)).querySelector('#page-content');
         if (!template) throw new Error('Для этой страницы не найден блок редактирования.');
         return template.innerHTML;
     }
 
+    function structuredDefaultValue(element) {
+        const target = element.dataset.pageBlockTarget || 'text';
+        if (target === 'src') return element.getAttribute('src') || '';
+        if (target === 'background-image') {
+            const match = (element.style.backgroundImage || '').match(/^url\(["']?(.*?)["']?\)$/);
+            return match ? match[1] : '';
+        }
+        if (element.dataset.pageBlockPreserveLines === 'true') {
+            return element.textContent.trim().replace(/[ \t]+/g, ' ').replace(/\s*\n\s*/g, '\n');
+        }
+        return element.textContent.replace(/\s+/g, ' ').trim();
+    }
+
+    function createStructuredField(definition, value) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'structured-field' + (definition.type === 'textarea' || definition.type === 'image' ? ' wide' : '');
+        const label = document.createElement('label');
+        label.htmlFor = `structured-${definition.id.replace(/[^a-z0-9_-]/gi, '-')}`;
+        label.textContent = definition.label;
+        wrapper.append(label);
+
+        if (definition.type === 'image') {
+            const row = document.createElement('div');
+            row.className = 'structured-image-row';
+            const preview = document.createElement('img');
+            preview.className = 'structured-image-preview';
+            preview.src = value;
+            preview.alt = '';
+            const input = document.createElement('input');
+            input.id = label.htmlFor;
+            input.type = 'file';
+            input.accept = 'image/jpeg,image/png,image/webp,image/gif';
+            input.dataset.blockId = definition.id;
+            input.dataset.currentValue = value;
+            input.dataset.blockType = 'image';
+            input.addEventListener('change', () => {
+                const file = input.files[0];
+                if (!file) return;
+                if (file.size > 10 * 1024 * 1024) {
+                    input.value = '';
+                    alert('Размер изображения не должен превышать 10 МБ.');
+                    return;
+                }
+                preview.src = URL.createObjectURL(file);
+            });
+            const libraryButton = document.createElement('button');
+            libraryButton.type = 'button';
+            libraryButton.className = 'secondary-btn';
+            libraryButton.textContent = 'Выбрать из медиатеки';
+            libraryButton.addEventListener('click', () => window.openAdminMediaPicker?.({ onSelect: (url) => {
+                input.value = '';
+                input.dataset.currentValue = url;
+                preview.src = url;
+            } }));
+            row.append(preview, input, libraryButton);
+            wrapper.append(row);
+            return wrapper;
+        }
+
+        const control = document.createElement(definition.type === 'textarea' ? 'textarea' : 'input');
+        control.id = label.htmlFor;
+        if (control.tagName === 'INPUT') control.type = 'text';
+        control.value = value;
+        control.dataset.blockId = definition.id;
+        control.dataset.blockType = definition.type;
+        wrapper.append(control);
+        return wrapper;
+    }
+
+    async function loadStructuredPage(url, language) {
+        structuredContainer.style.display = 'block';
+        structuredForm.replaceChildren();
+        structuredSaveButton.disabled = true;
+        const msg = document.getElementById('structured-page-msg');
+        msg.className = 'msg';
+        msg.textContent = 'Загружаю поля страницы…';
+
+        try {
+            const [pageDocument, blocksResponse] = await Promise.all([
+                getPageDocument(url),
+                fetch('/api/page-blocks?url=' + encodeURIComponent(url) + '&lang=' + language, { cache: 'no-store' })
+            ]);
+            if (!blocksResponse.ok) throw new Error('Не удалось загрузить сохранённые поля страницы.');
+            const saved = (await blocksResponse.json()).blocks || {};
+            const definitions = new Map();
+            pageDocument.querySelectorAll('[data-page-block]').forEach((element) => {
+                const id = element.dataset.pageBlock;
+                if (!id || definitions.has(id)) return;
+                definitions.set(id, {
+                    id,
+                    label: element.dataset.pageBlockLabel || id,
+                    group: element.dataset.pageBlockGroup || 'Содержимое',
+                    type: element.dataset.pageBlockType || 'text',
+                    defaultValue: structuredDefaultValue(element)
+                });
+            });
+            if (!definitions.size) throw new Error('Для страницы не настроены отдельные поля.');
+
+            const groups = new Map();
+            definitions.forEach((definition) => {
+                if (!groups.has(definition.group)) groups.set(definition.group, []);
+                groups.get(definition.group).push(definition);
+            });
+            groups.forEach((items, groupName) => {
+                const section = document.createElement('details');
+                section.className = 'structured-section';
+                section.open = groups.size === 1;
+                const summary = document.createElement('summary');
+                summary.textContent = groupName;
+                const fields = document.createElement('div');
+                fields.className = 'structured-fields';
+                items.forEach((definition) => {
+                    const value = Object.prototype.hasOwnProperty.call(saved, definition.id)
+                        ? String(saved[definition.id] ?? '')
+                        : definition.defaultValue;
+                    fields.append(createStructuredField(definition, value));
+                });
+                section.append(summary, fields);
+                structuredForm.append(section);
+            });
+            msg.textContent = language === 'en'
+                ? 'Заполните английские тексты. Пока перевода нет, показан исходный русский вариант.'
+                : '';
+            structuredSaveButton.disabled = false;
+        } catch (error) {
+            structuredForm.replaceChildren();
+            msg.className = 'msg error';
+            msg.textContent = error.message;
+        }
+    }
+
     async function loadPageContent() {
         const url = document.getElementById('page-select').value;
+        const language = document.getElementById('page-language').value;
+        const previewLink = document.getElementById('page-preview-link');
+        previewLink.hidden = !url;
+        previewLink.href = url || '#';
+        const legacyContainer = document.getElementById('editor-container');
+        legacyContainer.style.display = 'none';
+        structuredContainer.style.display = 'none';
         if (!url) {
-            document.getElementById('editor-container').style.display = 'none';
             return;
         }
 
-        document.getElementById('editor-container').style.display = 'block';
+        if (structuredPages.has(url)) {
+            await loadStructuredPage(url, language);
+            return;
+        }
+
+        legacyContainer.style.display = 'block';
         pageEditor.contentEditable = 'false';
         pageSaveButton.disabled = true;
         savedEditorRange = null;
 
-        const language = document.getElementById('page-language').value;
         const msg = document.getElementById('page-msg');
         const help = document.getElementById('page-editor-help');
         msg.textContent = '';
@@ -381,6 +634,65 @@
 
     document.getElementById('page-select').addEventListener('change', loadPageContent);
     document.getElementById('page-language').addEventListener('change', loadPageContent);
+
+    async function uploadStructuredImage(file) {
+        const formData = new FormData();
+        formData.append('image', file);
+        const response = await fetch('/api/upload', {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + window.ADMIN_TOKEN },
+            body: formData
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || !data.url) throw new Error(data.error || 'Не удалось загрузить изображение.');
+        return data.url;
+    }
+
+    structuredSaveButton.addEventListener('click', async () => {
+        const url = document.getElementById('page-select').value;
+        const language = document.getElementById('page-language').value;
+        const msg = document.getElementById('structured-page-msg');
+        structuredSaveButton.disabled = true;
+        msg.className = 'msg';
+        msg.textContent = 'Сохраняю…';
+        try {
+            const blocks = {};
+            for (const control of structuredForm.querySelectorAll('[data-block-id]')) {
+                if (control.dataset.blockType === 'image') {
+                    blocks[control.dataset.blockId] = control.files[0]
+                        ? await uploadStructuredImage(control.files[0])
+                        : control.dataset.currentValue;
+                } else {
+                    blocks[control.dataset.blockId] = control.value.trim();
+                }
+            }
+            const response = await fetch('/api/page-blocks', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + window.ADMIN_TOKEN
+                },
+                body: JSON.stringify({ page_url: url, blocks, lang: language })
+            });
+            const data = await response.json().catch(() => ({}));
+            if (response.status === 401 || response.status === 403) {
+                localStorage.removeItem('token');
+                window.location.replace('/admin.html');
+                return;
+            }
+            if (!response.ok || !data.success) throw new Error(data.error || 'Не удалось сохранить страницу.');
+            msg.className = 'msg success';
+            msg.textContent = 'Страница сохранена. Изменения уже отображаются на сайте.';
+            await loadStructuredPage(url, language);
+            document.getElementById('structured-page-msg').className = 'msg success';
+            document.getElementById('structured-page-msg').textContent = 'Страница сохранена. Изменения уже отображаются на сайте.';
+        } catch (error) {
+            msg.className = 'msg error';
+            msg.textContent = error.message;
+        } finally {
+            structuredSaveButton.disabled = false;
+        }
+    });
 
     // Сохранение контента
     document.getElementById('save-page-btn').addEventListener('click', async function() {
@@ -430,6 +742,8 @@
 
     const settingsForm = document.getElementById('site-settings-form');
     const settingsMessage = document.getElementById('site-settings-msg');
+    const pricesForm = document.getElementById('prices-form');
+    const pricesMessage = document.getElementById('prices-msg');
     const logoUrlInput = document.getElementById('setting-logo-url');
     const logoPreview = document.getElementById('setting-logo-preview');
     function updateStatusPreview() {
@@ -486,6 +800,12 @@
             document.getElementById('setting-status-mode').value = settings.status_mode || 'auto';
             document.getElementById('setting-opening-time').value = settings.opening_time || '10:00';
             document.getElementById('setting-closing-time').value = settings.closing_time || '18:00';
+            document.getElementById('price-adult').value = settings.adult_price ?? 100;
+            document.getElementById('price-student').value = settings.student_price ?? 50;
+            document.getElementById('price-pensioner').value = settings.pensioner_price ?? 50;
+            document.getElementById('price-school').value = settings.school_price ?? 30;
+            document.getElementById('price-excursion').value = settings.excursion_price ?? 300;
+            document.getElementById('price-free-age').value = settings.free_age ?? 7;
             const openDays = Array.isArray(settings.open_days) ? settings.open_days.map(Number) : [0, 2, 3, 4, 5, 6];
             document.querySelectorAll('.setting-open-day').forEach((checkbox) => {
                 checkbox.checked = openDays.includes(Number(checkbox.value));
@@ -559,6 +879,44 @@
         } catch (error) {
             settingsMessage.className = 'msg error';
             settingsMessage.textContent = error.message;
+        } finally {
+            submit.disabled = false;
+        }
+    });
+
+    pricesForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const submit = pricesForm.querySelector('button[type="submit"]');
+        submit.disabled = true;
+        pricesMessage.className = 'msg';
+        pricesMessage.textContent = 'Сохраняю…';
+        try {
+            const payload = {
+                adult_price: Number(document.getElementById('price-adult').value),
+                student_price: Number(document.getElementById('price-student').value),
+                pensioner_price: Number(document.getElementById('price-pensioner').value),
+                school_price: Number(document.getElementById('price-school').value),
+                excursion_price: Number(document.getElementById('price-excursion').value),
+                free_age: Number(document.getElementById('price-free-age').value)
+            };
+            const response = await fetch('/api/site-settings', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + window.ADMIN_TOKEN },
+                body: JSON.stringify(payload)
+            });
+            const result = await response.json();
+            if (response.status === 401 || response.status === 403) {
+                localStorage.removeItem('token');
+                window.location.replace('/admin.html');
+                return;
+            }
+            if (!response.ok || !result.success) throw new Error(result.error || 'Не удалось сохранить цены.');
+            pricesMessage.className = 'msg success';
+            pricesMessage.textContent = 'Цены сохранены и уже отображаются на сайте.';
+            loadSiteSettings();
+        } catch (error) {
+            pricesMessage.className = 'msg error';
+            pricesMessage.textContent = error.message;
         } finally {
             submit.disabled = false;
         }

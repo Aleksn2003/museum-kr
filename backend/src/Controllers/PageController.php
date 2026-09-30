@@ -7,7 +7,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class PageController
 {
-    private const EDITABLE_PAGES = ['/about.html', '/visit.html', '/history.html', '/architecture.html'];
+    private const EDITABLE_PAGES = ['/index.html', '/about.html', '/visit.html', '/history.html', '/architecture.html'];
     private ContainerInterface $container;
 
     public function __construct(ContainerInterface $container)
@@ -53,10 +53,19 @@ class PageController
         }
 
         $db = $this->container->get('database');
+        $db->beginTransaction();
+        try {
+        PageEditHistoryController::captureHtml($db, $url, $language);
         $stmt = $language === 'en'
             ? $db->prepare('INSERT INTO page_content (page_url, content, content_en, updated_at) VALUES (?, NULL, ?, NOW()) ON CONFLICT (page_url) DO UPDATE SET content_en = EXCLUDED.content_en, updated_at = NOW()')
             : $db->prepare('INSERT INTO page_content (page_url, content, updated_at) VALUES (?, ?, NOW()) ON CONFLICT (page_url) DO UPDATE SET content = EXCLUDED.content, updated_at = NOW()');
         $stmt->execute($language === 'en' ? [$url, $content] : [$url, $content]);
+        $db->commit();
+        } catch (\Throwable $error) {
+            if ($db->inTransaction()) $db->rollBack();
+            $response->getBody()->write(json_encode(['error' => 'Не удалось сохранить страницу.'], JSON_UNESCAPED_UNICODE));
+            return $response->withStatus(500)->withHeader('Content-Type', 'application/json; charset=utf-8');
+        }
 
         $response->getBody()->write(json_encode(['success' => true]));
         return $response->withHeader('Content-Type', 'application/json');

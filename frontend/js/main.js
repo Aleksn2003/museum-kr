@@ -242,25 +242,8 @@ if (document.getElementById('news-carousel-track')) {
   if (document.getElementById('events-list')) loadEventsList();
 });
 
-document.addEventListener('DOMContentLoaded', async () => {
-    const titleEl = document.getElementById('exhibit-of-day-title');
-    if (!titleEl) return;
-
-    try {
-        const res = await fetch('/api/exhibits');
-        const data = await res.json();
-        if (data && data.length > 0) {
-            const random = data[Math.floor(Math.random() * data.length)];
-            titleEl.textContent = random.title || 'Без названия';
-        } else {
-            titleEl.textContent = 'Нет экспонатов';
-        }
-    } catch (err) {
-        titleEl.textContent = 'Ошибка загрузки';
-    }
-});
-
 let museumSettingsPromise;
+let museumScheduleExceptionsPromise;
 function getMuseumSiteSettings() {
     if (!museumSettingsPromise) {
         museumSettingsPromise = fetch('/api/site-settings', { cache: 'no-store' })
@@ -277,6 +260,8 @@ async function updateWorkingHours() {
     if (!statusDot || !statusText || !iconEl) return;
 
     const settings = await getMuseumSiteSettings();
+    if (!museumScheduleExceptionsPromise) museumScheduleExceptionsPromise = fetch('/api/schedule-exceptions', { cache: 'no-store' }).then((response) => response.ok ? response.json() : []).catch(() => []);
+    const exceptions = await museumScheduleExceptionsPromise;
     const schedule = document.getElementById('working-hours-schedule');
     const homeSchedule = document.getElementById('home-working-hours-schedule');
     const openDays = Array.isArray(settings?.open_days) ? settings.open_days.map(Number) : [0, 2, 3, 4, 5, 6];
@@ -313,11 +298,16 @@ async function updateWorkingHours() {
     const minute = Number(values.minute);
 
     const currentTime = hour * 60 + minute;
-    const [openingHour, openingMinute] = openingTime.split(':').map(Number);
-    const [closingHour, closingMinute] = closingTime.split(':').map(Number);
+    const dateParts = Object.fromEntries(new Intl.DateTimeFormat('en', { timeZone: 'Asia/Yakutsk', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date()).map((part) => [part.type, part.value]));
+    const yakutskDate = `${dateParts.year}-${dateParts.month}-${dateParts.day}`;
+    const exception = exceptions.find((item) => String(item.exception_date).slice(0, 10) === yakutskDate);
+    const effectiveOpening = exception?.is_open && exception.opening_time ? String(exception.opening_time).slice(0, 5) : openingTime;
+    const effectiveClosing = exception?.is_open && exception.closing_time ? String(exception.closing_time).slice(0, 5) : closingTime;
+    const [openingHour, openingMinute] = effectiveOpening.split(':').map(Number);
+    const [closingHour, closingMinute] = effectiveClosing.split(':').map(Number);
     const openTime = openingHour * 60 + openingMinute;
     const closeTime = closingHour * 60 + closingMinute;
-    const isOpenDay = openDays.includes(day);
+    const isOpenDay = exception ? (exception.is_open === true) : openDays.includes(day);
     const isOpen = settings?.status_mode === 'open'
         ? true
         : settings?.status_mode === 'closed'
@@ -355,7 +345,52 @@ async function applyMuseumSiteSettings() {
         if (labels[1] && branchName) labels[1].textContent = branchName;
     });
 
+    const priceText = (value) => language === 'en' ? `RUB ${Number(value).toLocaleString('en-GB')}` : `${Number(value).toLocaleString('ru-RU')} руб.`;
+    const priceBindings = {
+        'visit-adult-price': settings.adult_price,
+        'visit-student-price': settings.student_price,
+        'visit-pensioner-price': settings.pensioner_price,
+        'visit-school-price': settings.school_price
+    };
+    Object.entries(priceBindings).forEach(([id, value]) => {
+        const element = document.getElementById(id);
+        if (element && value !== undefined) element.textContent = priceText(value);
+    });
+    const ticketRows = Array.from(document.querySelectorAll('#page-content table tbody tr'));
+    const ticketFallbacks = [
+        [/взросл|adult/i, settings.adult_price],
+        [/студент|student/i, settings.student_price],
+        [/пенсион|pension/i, settings.pensioner_price],
+        [/школь|school/i, settings.school_price]
+    ];
+    ticketFallbacks.forEach(([pattern, value]) => {
+        const row = ticketRows.find((candidate) => pattern.test(candidate.cells?.[0]?.textContent || ''));
+        if (row?.cells?.[1] && value !== undefined) row.cells[1].textContent = priceText(value);
+    });
+    const freeAgeText = Array.from(document.querySelectorAll('#page-content p')).find((element) => /дети до \d+ лет|children.*\d+.*under/i.test(element.textContent || ''));
+    if (freeAgeText && settings.free_age !== undefined) {
+        freeAgeText.textContent = freeAgeText.textContent.replace(/Дети до \d+ лет/i, `Дети до ${settings.free_age} лет`).replace(/Children[^,.]*\d+[^,.]*under/i, `Children aged ${settings.free_age} and under`);
+    }
+    const excursionPrice = document.getElementById('visit-excursion-price')
+        || Array.from(document.querySelectorAll('#page-content p')).find((element) => /стоимость экскурсионного обслуживания|guided tour/i.test(element.textContent || ''));
+    if (excursionPrice && settings.excursion_price !== undefined) {
+        excursionPrice.textContent = language === 'en'
+            ? `Guided tour: ${priceText(settings.excursion_price)} per group.`
+            : `Стоимость экскурсионного обслуживания: ${priceText(settings.excursion_price)}/группа.`;
+    }
+    if (typeof infoData !== 'undefined' && infoData.tickets) {
+        infoData.tickets.content = language === 'en'
+            ? `<p>Adult: ${priceText(settings.adult_price)}</p><p>Children aged ${settings.free_age} and under: free</p><p>Guided tour: ${priceText(settings.excursion_price)} per group</p>`
+            : `<p>Взрослый: ${priceText(settings.adult_price)}</p><p>Дети до ${settings.free_age} лет включительно: бесплатно</p><p>Экскурсионное обслуживание: ${priceText(settings.excursion_price)}/группа</p>`;
+    }
+
     if (museumName) document.title = document.title.replace(/Кердемский музей(?:-комплекс)?|Kerdem Museum(?: Complex)?/, museumName);
+}
+
+const STRUCTURED_PAGE_URLS = new Set(['/index.html', '/architecture.html']);
+
+function currentEditablePageUrl() {
+    return window.location.pathname === '/' ? '/index.html' : window.location.pathname;
 }
 
 async function applySavedPageContent() {
@@ -363,7 +398,10 @@ async function applySavedPageContent() {
     if (!contentRoot) return;
 
     try {
-        const response = await fetch('/api/page?url=' + encodeURIComponent(window.location.pathname), { cache: 'no-store' });
+        const pageUrl = currentEditablePageUrl();
+        if (STRUCTURED_PAGE_URLS.has(pageUrl)) return;
+        const language = document.documentElement.lang === 'en' ? 'en' : 'ru';
+        const response = await fetch('/api/page?url=' + encodeURIComponent(pageUrl) + '&lang=' + language, { cache: 'no-store' });
         if (!response.ok) return;
         const data = await response.json();
         if (typeof data.content === 'string' && data.content.trim()) {
@@ -388,9 +426,35 @@ async function applySavedPageContent() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    applyMuseumSiteSettings();
-    applySavedPageContent();
+async function applySavedPageBlocks() {
+    const editableBlocks = document.querySelectorAll('[data-page-block]');
+    if (!editableBlocks.length) return;
+
+    try {
+        const language = document.documentElement.lang === 'en' ? 'en' : 'ru';
+        const response = await fetch('/api/page-blocks?url=' + encodeURIComponent(currentEditablePageUrl()) + '&lang=' + language, { cache: 'no-store' });
+        if (!response.ok) return;
+        const data = await response.json();
+        const blocks = data.blocks || {};
+
+        editableBlocks.forEach((element) => {
+            const blockId = element.dataset.pageBlock;
+            if (!Object.prototype.hasOwnProperty.call(blocks, blockId)) return;
+            const value = String(blocks[blockId] ?? '');
+            const target = element.dataset.pageBlockTarget || 'text';
+            if (target === 'src') element.setAttribute('src', value);
+            else if (target === 'background-image') element.style.backgroundImage = `url(${JSON.stringify(value).slice(1, -1)})`;
+            else element.textContent = value;
+        });
+    } catch (_) {
+        // Keep the bundled page blocks available if the API is temporarily offline.
+    }
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    await applySavedPageContent();
+    await applySavedPageBlocks();
+    await applyMuseumSiteSettings();
 });
 
 
@@ -468,23 +532,12 @@ async function loadExhibitOfDay() {
     if (!container || !title || !date || !link) return;
 
     try {
-        //const res = await fetch('/api/exhibits?per_page=100');
-        const res = await fetch('/api/exhibits?per_page=100', {
-    cache: 'no-store',
-    headers: { 'Cache-Control': 'no-cache' }
-});
-        const data = await res.json();
-        const exhibits = data.items || data;
-
-        if (!exhibits || exhibits.length === 0) {
+        const res = await fetch('/api/exhibit-of-day', { cache: 'no-store', headers: { 'Cache-Control': 'no-cache' } });
+        const exhibit = await res.json();
+        if (!exhibit) {
             container.style.display = 'none';
             return;
         }
-
-        const now = new Date();
-        const seed = now.getFullYear() * 10000 + (now.getMonth() + 1) * 100 + now.getDate() + now.getHours() * 60 + now.getMinutes();
-        const index = seed % exhibits.length;
-        const exhibit = exhibits[index];
 
         title.textContent = exhibit.title || 'Без названия';
         date.textContent = exhibit.creation_date || '';
@@ -515,6 +568,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadUpcomingEventSidebar();
     setInterval(() => {
         museumSettingsPromise = null;
+        museumScheduleExceptionsPromise = null;
         updateWorkingHours();
     }, 60000);
 
